@@ -161,6 +161,7 @@
             Controls.Add(txtFuncionBiseccion);
             Name = "FormBiseccion";
             Text = "FormBiseccion";
+            Load += FormBiseccion_Load;
             ((System.ComponentModel.ISupportInitialize)dgvBiseccion).EndInit();
             ResumeLayout(false);
             PerformLayout();
