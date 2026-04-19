@@ -1,0 +1,125 @@
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.exe
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.deps.json
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.runtimeconfig.json
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.pdb
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.csproj.GenerateResource.cache
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.AssemblyInfo.cs
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\refint\Métodos Numéricos.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.pdb
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.genruntimeconfig.cache
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\ref\Métodos Numéricos.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\ExtendedNumerics.BigDecimal.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Configuration.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Configuration.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Console.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.TraceSource.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Primitives.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\NCalc.Core.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\NCalc.Sync.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\Parlot.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\System.Diagnostics.DiagnosticSource.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\System.IO.Pipelines.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\System.Text.Encodings.Web.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\System.Text.Json.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\bin\Debug\net8.0-windows\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\M_todos .D0EFFEAE.Up2Date
+C:\Users\user\source\repos\Métodos Numéricos\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.btnReglaFalsa.resources
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.exe
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.deps.json
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.runtimeconfig.json
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.pdb
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\ExtendedNumerics.BigDecimal.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Configuration.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Configuration.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Console.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.TraceSource.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Primitives.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\NCalc.Core.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\NCalc.Sync.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Parlot.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\System.Diagnostics.DiagnosticSource.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\System.IO.Pipelines.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\System.Text.Encodings.Web.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\System.Text.Json.dll
+C:\Users\user\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.csproj.AssemblyReference.cache
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.btnReglaFalsa.resources
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.csproj.GenerateResource.cache
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.AssemblyInfoInputs.cache
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.AssemblyInfo.cs
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.csproj.CoreCompileInputs.cache
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\M_todos .D0EFFEAE.Up2Date
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.dll
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\refint\Métodos Numéricos.dll
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.pdb
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.genruntimeconfig.cache
+C:\Users\user\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\ref\Métodos Numéricos.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.exe
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.deps.json
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.runtimeconfig.json
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Métodos Numéricos.pdb
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\ExtendedNumerics.BigDecimal.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Configuration.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Configuration.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Console.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.TraceSource.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Microsoft.Extensions.Primitives.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\NCalc.Core.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\NCalc.Sync.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\Parlot.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\System.IO.Pipelines.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\System.Text.Encodings.Web.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\System.Text.Json.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.csproj.AssemblyReference.cache
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.csproj.GenerateResource.cache
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.AssemblyInfoInputs.cache
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.AssemblyInfo.cs
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.csproj.CoreCompileInputs.cache
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\M_todos .D0EFFEAE.Up2Date
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\refint\Métodos Numéricos.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.pdb
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.genruntimeconfig.cache
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\ref\Métodos Numéricos.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormBiseccion.resources
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormNewton.resources
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormPrincipal.resources
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormPuntoFijo.resources
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormReglaFalsa.resources
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormSecante.resources
