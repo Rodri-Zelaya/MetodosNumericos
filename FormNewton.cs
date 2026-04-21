@@ -19,8 +19,7 @@ namespace Métodos_Numéricos
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtFuncionNewton.Text) || string.IsNullOrWhiteSpace(txtDerivada.Text) ||
-        string.IsNullOrWhiteSpace(txtVI.Text) || string.IsNullOrWhiteSpace(txtTolNewton.Text))
+            if (string.IsNullOrWhiteSpace(txtFuncionNewton.Text) || string.IsNullOrWhiteSpace(txtVI.Text) || string.IsNullOrWhiteSpace(txtTolNewton.Text))
             {
                 MessageBox.Show("Por favor, llena todos los campos de Newton-Raphson.");
                 return;
@@ -29,13 +28,11 @@ namespace Métodos_Numéricos
             try
             {
                 string funcion = txtFuncionNewton.Text;
-                string derivada = txtDerivada.Text;
                 double x0 = double.Parse(txtVI.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
                 double tol = double.Parse(txtTolNewton.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                int maxIter = int.Parse(txtMaxIterNewton.Text);
 
                 MetodosNumericos metodos = new MetodosNumericos();
-                metodos.NewtonRaphson(funcion, derivada, x0, tol, maxIter, dgvNewton);
+                metodos.NewtonRaphson(funcion, x0, tol, dgvNewton);
             }
             catch (Exception ex)
             {

@@ -12,7 +12,7 @@ namespace Métodos_Numéricos
 {
     public partial class FormPrincipal : Form
     {
-        private Form formularioActivo = null;
+        private Form? formularioActivo = null;
         public FormPrincipal()
         {
             InitializeComponent();

@@ -31,11 +31,9 @@
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
-            label4 = new Label();
             txtFuncionPuntoFijo = new TextBox();
             txtX0PuntoFijo = new TextBox();
             txtTolPuntoFijo = new TextBox();
-            txtMaxIterPuntoFijo = new TextBox();
             btnCalcular = new Button();
             dgvPuntoFijo = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dgvPuntoFijo).BeginInit();
@@ -68,15 +66,6 @@
             label3.TabIndex = 2;
             label3.Text = "Tolerancia";
             // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(340, 56);
-            label4.Name = "label4";
-            label4.Size = new Size(81, 20);
-            label4.TabIndex = 3;
-            label4.Text = "Iteraciones";
-            // 
             // txtFuncionPuntoFijo
             // 
             txtFuncionPuntoFijo.Location = new Point(195, 7);
@@ -97,13 +86,6 @@
             txtTolPuntoFijo.Name = "txtTolPuntoFijo";
             txtTolPuntoFijo.Size = new Size(125, 27);
             txtTolPuntoFijo.TabIndex = 7;
-            // 
-            // txtMaxIterPuntoFijo
-            // 
-            txtMaxIterPuntoFijo.Location = new Point(427, 49);
-            txtMaxIterPuntoFijo.Name = "txtMaxIterPuntoFijo";
-            txtMaxIterPuntoFijo.Size = new Size(125, 27);
-            txtMaxIterPuntoFijo.TabIndex = 8;
             // 
             // btnCalcular
             // 
@@ -131,11 +113,9 @@
             ClientSize = new Size(800, 450);
             Controls.Add(dgvPuntoFijo);
             Controls.Add(btnCalcular);
-            Controls.Add(txtMaxIterPuntoFijo);
             Controls.Add(txtTolPuntoFijo);
             Controls.Add(txtX0PuntoFijo);
             Controls.Add(txtFuncionPuntoFijo);
-            Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -151,11 +131,9 @@
         private Label label1;
         private Label label2;
         private Label label3;
-        private Label label4;
         private TextBox txtFuncionPuntoFijo;
         private TextBox txtX0PuntoFijo;
         private TextBox txtTolPuntoFijo;
-        private TextBox txtMaxIterPuntoFijo;
         private Button btnCalcular;
         private DataGridView dgvPuntoFijo;
     }

@@ -32,10 +32,9 @@ namespace Métodos_Numéricos
                 double c0 = double.Parse(txtVI.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
                 double c1 = double.Parse(txtV2.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
                 double tol = double.Parse(txtTolSecante.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                int maxIter = int.Parse(txtMaxIterSecante.Text);
 
                 MetodosNumericos metodos = new MetodosNumericos();
-                metodos.Secante(funcion, c0, c1, tol, maxIter, dgvSecante);
+                metodos.Secante(funcion, c0, c1, tol, dgvSecante);
             }
             catch (Exception ex)
             {

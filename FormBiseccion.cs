@@ -20,8 +20,7 @@ namespace Métodos_Numéricos
         private void btnCalcular_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtFuncionBiseccion.Text) || string.IsNullOrWhiteSpace(txtA.Text) ||
-        string.IsNullOrWhiteSpace(txtB.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text) ||
-        string.IsNullOrWhiteSpace(txtMaxIter.Text))
+        string.IsNullOrWhiteSpace(txtB.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
             {
                 MessageBox.Show("Por favor, llena todos los campos.");
                 return;
@@ -33,10 +32,9 @@ namespace Métodos_Numéricos
                 double a = double.Parse(txtA.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
                 double b = double.Parse(txtB.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
                 double tol = double.Parse(txtTolerancia.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                int maxIter = int.Parse(txtMaxIter.Text);
 
                 MetodosNumericos metodos = new MetodosNumericos();
-                metodos.Biseccion(funcion, a, b, tol, maxIter, dgvBiseccion);
+                metodos.Biseccion(funcion, a, b, tol, dgvBiseccion);
             }
             catch (Exception ex)
             {

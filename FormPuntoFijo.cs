@@ -19,15 +19,20 @@ namespace Métodos_Numéricos
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtFuncionPuntoFijo.Text) || string.IsNullOrWhiteSpace(txtX0PuntoFijo.Text) || string.IsNullOrWhiteSpace(txtTolPuntoFijo.Text))
+            {
+                MessageBox.Show("Por favor, llena todos los campos.");
+                return;
+            }
+
             try
             {
                 string g_x = txtFuncionPuntoFijo.Text;
                 double x0 = double.Parse(txtX0PuntoFijo.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
                 double tol = double.Parse(txtTolPuntoFijo.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                int maxIter = int.Parse(txtMaxIterPuntoFijo.Text);
 
                 MetodosNumericos metodos = new MetodosNumericos();
-                metodos.PuntoFijo(g_x, x0, tol, maxIter, dgvPuntoFijo);
+                metodos.PuntoFijo(g_x, x0, tol, dgvPuntoFijo);
             }
             catch (Exception ex)
             {

@@ -32,12 +32,10 @@
             txtA = new TextBox();
             txtB = new TextBox();
             txtTolerancia = new TextBox();
-            txtMaxIter = new TextBox();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
-            label5 = new Label();
             dgvReglaFalsa = new DataGridView();
             btnCalcular = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvReglaFalsa).BeginInit();
@@ -70,13 +68,6 @@
             txtTolerancia.Name = "txtTolerancia";
             txtTolerancia.Size = new Size(125, 27);
             txtTolerancia.TabIndex = 3;
-            // 
-            // txtMaxIter
-            // 
-            txtMaxIter.Location = new Point(482, 70);
-            txtMaxIter.Name = "txtMaxIter";
-            txtMaxIter.Size = new Size(125, 27);
-            txtMaxIter.TabIndex = 4;
             // 
             // label1
             // 
@@ -114,15 +105,6 @@
             label4.TabIndex = 8;
             label4.Text = "Tolerancia";
             // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(398, 77);
-            label5.Name = "label5";
-            label5.Size = new Size(81, 20);
-            label5.TabIndex = 9;
-            label5.Text = "Iteraciones";
-            // 
             // dgvReglaFalsa
             // 
             dgvReglaFalsa.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -149,12 +131,10 @@
             ClientSize = new Size(800, 450);
             Controls.Add(btnCalcular);
             Controls.Add(dgvReglaFalsa);
-            Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(txtMaxIter);
             Controls.Add(txtTolerancia);
             Controls.Add(txtB);
             Controls.Add(txtA);
@@ -173,12 +153,10 @@
         private TextBox txtA;
         private TextBox txtB;
         private TextBox txtTolerancia;
-        private TextBox txtMaxIter;
         private Label label1;
         private Label label2;
         private Label label3;
         private Label label4;
-        private Label label5;
         private DataGridView dgvReglaFalsa;
         private Button btnCalcular;
     }

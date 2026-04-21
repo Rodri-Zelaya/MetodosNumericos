@@ -37,10 +37,9 @@ namespace Métodos_Numéricos
                 double a = double.Parse(txtA.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
                 double b = double.Parse(txtB.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
                 double tol = double.Parse(txtTolerancia.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                int maxIter = int.Parse(txtMaxIter.Text);
 
                 MetodosNumericos metodos = new MetodosNumericos();
-                metodos.ReglaFalsa(funcion, a, b, tol, maxIter, dgvReglaFalsa);
+                metodos.ReglaFalsa(funcion, a, b, tol, dgvReglaFalsa);
             }
             catch (Exception ex)
             {
