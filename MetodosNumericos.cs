@@ -1,22 +1,32 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Windows.Forms;
-using NCalc; // Importante: ¡Agregamos la librería aquí arriba!
+using org.mariuszgromada.math.mxparser;
 
 public class MetodosNumericos
 {
+    public MetodosNumericos()
+    {
+        License.iConfirmNonCommercialUse("Uso educativo");
+    }
     // Ahora f(x) recibe el texto de la función y el valor de X
     public double EvaluarFuncion(string expresion, double x)
     {
-        // Creamos el evaluador matemático con el texto que escribiste
-        // Cambia tu línea por esta:
-        NCalc.Expression e = new NCalc.Expression(expresion);
+        try
+        {
+            // mXparser entiende "x" como un argumento
+            Argument argX = new Argument("x", x);
 
-        // Le decimos que la letra "x" vale el número que le pasemos
-        e.Parameters["x"] = x;
+            // Evaluamos la expresión con ese argumento
+            Expression e = new Expression(expresion, argX);
 
-        // Calcula el resultado y lo devuelve
-        return Convert.ToDouble(e.Evaluate());
+            double resultado = e.calculate();
+
+            // Si el usuario mete algo ilógico (ej. dividir entre 0), mXparser devuelve "NaN"
+            if (double.IsNaN(resultado)) return 0;
+
+            return resultado;
+        }
+        catch { return 0; }
     }
 
     // Fíjate que agregamos "string funcion" a los parámetros
