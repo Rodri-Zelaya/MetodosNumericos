@@ -1122,11 +1122,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Rodrigo Alejandro\\Documents\\Métodos Numéricos\\Métodos Numéricos.csproj",
+      "projectUniqueName": "C:\\Users\\Rodrigo Alejandro\\Documents\\Repositorio New Implementations\\Métodos Numéricos.csproj",
       "projectName": "Métodos Numéricos",
-      "projectPath": "C:\\Users\\Rodrigo Alejandro\\Documents\\Métodos Numéricos\\Métodos Numéricos.csproj",
+      "projectPath": "C:\\Users\\Rodrigo Alejandro\\Documents\\Repositorio New Implementations\\Métodos Numéricos.csproj",
       "packagesPath": "C:\\Users\\Rodrigo Alejandro\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Rodrigo Alejandro\\Documents\\Métodos Numéricos\\obj\\",
+      "outputPath": "C:\\Users\\Rodrigo Alejandro\\Documents\\Repositorio New Implementations\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Rodrigo Alejandro\\AppData\\Roaming\\NuGet\\NuGet.Config",
