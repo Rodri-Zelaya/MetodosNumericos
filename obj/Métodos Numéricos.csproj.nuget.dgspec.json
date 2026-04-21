@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Rodrigo Alejandro\\Documents\\Repositorio New Implementations\\Métodos Numéricos.csproj": {}
+    "C:\\Users\\Rodrigo Alejandro\\Documents\\Métodos Numéricos\\Métodos Numéricos.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Rodrigo Alejandro\\Documents\\Repositorio New Implementations\\Métodos Numéricos.csproj": {
+    "C:\\Users\\Rodrigo Alejandro\\Documents\\Métodos Numéricos\\Métodos Numéricos.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Rodrigo Alejandro\\Documents\\Repositorio New Implementations\\Métodos Numéricos.csproj",
+        "projectUniqueName": "C:\\Users\\Rodrigo Alejandro\\Documents\\Métodos Numéricos\\Métodos Numéricos.csproj",
         "projectName": "Métodos Numéricos",
-        "projectPath": "C:\\Users\\Rodrigo Alejandro\\Documents\\Repositorio New Implementations\\Métodos Numéricos.csproj",
+        "projectPath": "C:\\Users\\Rodrigo Alejandro\\Documents\\Métodos Numéricos\\Métodos Numéricos.csproj",
         "packagesPath": "C:\\Users\\Rodrigo Alejandro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Rodrigo Alejandro\\Documents\\Repositorio New Implementations\\obj\\",
+        "outputPath": "C:\\Users\\Rodrigo Alejandro\\Documents\\Métodos Numéricos\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Rodrigo Alejandro\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -25,7 +25,8 @@
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0-windows7.0": {
+          "net8.0-windows": {
+            "framework": "net8.0-windows7.0",
             "targetAlias": "net8.0-windows",
             "projectReferences": {}
           }
@@ -43,12 +44,13 @@
         "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
-        "net8.0-windows7.0": {
+        "net8.0-windows": {
+          "framework": "net8.0-windows7.0",
           "targetAlias": "net8.0-windows",
           "dependencies": {
-            "NCalcSync": {
+            "MathParser.org-mXparser": {
               "target": "Package",
-              "version": "[5.12.0, )"
+              "version": "[6.1.0, )"
             }
           },
           "imports": [
@@ -70,7 +72,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
