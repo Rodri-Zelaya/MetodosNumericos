@@ -32,7 +32,10 @@ namespace Métodos_Numéricos
                 double tol = double.Parse(txtTolPuntoFijo.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 
                 MetodosNumericos metodos = new MetodosNumericos();
-                metodos.PuntoFijo(g_x, x0, tol, dgvPuntoFijo);
+
+                // Atrapamos la raíz y la mandamos al Label
+                string raizEncontrada = metodos.PuntoFijo(g_x, x0, tol, dgvPuntoFijo);
+                lblRaiz.Text = "Raíz: " + raizEncontrada;
             }
             catch (Exception ex)
             {

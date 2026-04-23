@@ -38,6 +38,7 @@
             label4 = new Label();
             dgvReglaFalsa = new DataGridView();
             btnCalcular = new Button();
+            lblRaiz = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvReglaFalsa).BeginInit();
             SuspendLayout();
             // 
@@ -124,11 +125,22 @@
             btnCalcular.UseVisualStyleBackColor = true;
             btnCalcular.Click += btnCalcular_Click;
             // 
+            // lblRaiz
+            // 
+            lblRaiz.AutoSize = true;
+            lblRaiz.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblRaiz.Location = new Point(419, 69);
+            lblRaiz.Name = "lblRaiz";
+            lblRaiz.Size = new Size(57, 28);
+            lblRaiz.TabIndex = 12;
+            lblRaiz.Text = "Raiz:";
+            // 
             // FormReglaFalsa
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(lblRaiz);
             Controls.Add(btnCalcular);
             Controls.Add(dgvReglaFalsa);
             Controls.Add(label4);
@@ -159,5 +171,6 @@
         private Label label4;
         private DataGridView dgvReglaFalsa;
         private Button btnCalcular;
+        private Label lblRaiz;
     }
 }

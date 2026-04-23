@@ -38,6 +38,7 @@
             label4 = new Label();
             dgvBiseccion = new DataGridView();
             btnCalcular = new Button();
+            lblRaiz = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvBiseccion).BeginInit();
             SuspendLayout();
             // 
@@ -124,11 +125,22 @@
             btnCalcular.UseVisualStyleBackColor = true;
             btnCalcular.Click += btnCalcular_Click;
             // 
+            // lblRaiz
+            // 
+            lblRaiz.AutoSize = true;
+            lblRaiz.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblRaiz.Location = new Point(427, 66);
+            lblRaiz.Name = "lblRaiz";
+            lblRaiz.Size = new Size(63, 28);
+            lblRaiz.TabIndex = 12;
+            lblRaiz.Text = "Raiz: ";
+            // 
             // FormBiseccion
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(lblRaiz);
             Controls.Add(btnCalcular);
             Controls.Add(dgvBiseccion);
             Controls.Add(label4);
@@ -159,5 +171,6 @@
         private Label label4;
         private DataGridView dgvBiseccion;
         private Button btnCalcular;
+        private Label lblRaiz;
     }
 }

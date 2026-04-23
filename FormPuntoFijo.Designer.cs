@@ -36,6 +36,7 @@
             txtTolPuntoFijo = new TextBox();
             btnCalcular = new Button();
             dgvPuntoFijo = new DataGridView();
+            lblRaiz = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvPuntoFijo).BeginInit();
             SuspendLayout();
             // 
@@ -106,11 +107,22 @@
             dgvPuntoFijo.Size = new Size(776, 334);
             dgvPuntoFijo.TabIndex = 10;
             // 
+            // lblRaiz
+            // 
+            lblRaiz.AutoSize = true;
+            lblRaiz.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblRaiz.Location = new Point(344, 53);
+            lblRaiz.Name = "lblRaiz";
+            lblRaiz.Size = new Size(57, 28);
+            lblRaiz.TabIndex = 11;
+            lblRaiz.Text = "Raiz:";
+            // 
             // FormPuntoFijo
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(lblRaiz);
             Controls.Add(dgvPuntoFijo);
             Controls.Add(btnCalcular);
             Controls.Add(txtTolPuntoFijo);
@@ -136,5 +148,6 @@
         private TextBox txtTolPuntoFijo;
         private Button btnCalcular;
         private DataGridView dgvPuntoFijo;
+        private Label lblRaiz;
     }
 }

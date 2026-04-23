@@ -36,6 +36,7 @@
             txtTolNewton = new TextBox();
             btnCalcular = new Button();
             dgvNewton = new DataGridView();
+            lblRaiz = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvNewton).BeginInit();
             SuspendLayout();
             // 
@@ -106,11 +107,22 @@
             dgvNewton.Size = new Size(776, 333);
             dgvNewton.TabIndex = 11;
             // 
+            // lblRaiz
+            // 
+            lblRaiz.AutoSize = true;
+            lblRaiz.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblRaiz.Location = new Point(462, 67);
+            lblRaiz.Name = "lblRaiz";
+            lblRaiz.Size = new Size(57, 28);
+            lblRaiz.TabIndex = 12;
+            lblRaiz.Text = "Raiz:";
+            // 
             // FormNewton
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(lblRaiz);
             Controls.Add(dgvNewton);
             Controls.Add(btnCalcular);
             Controls.Add(txtTolNewton);
@@ -136,5 +148,6 @@
         private TextBox txtTolNewton;
         private Button btnCalcular;
         private DataGridView dgvNewton;
+        private Label lblRaiz;
     }
 }

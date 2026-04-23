@@ -34,7 +34,10 @@ namespace Métodos_Numéricos
                 double tol = double.Parse(txtTolerancia.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 
                 MetodosNumericos metodos = new MetodosNumericos();
-                metodos.Biseccion(funcion, a, b, tol, dgvBiseccion);
+
+                // Atrapamos la raíz y la mandamos al Label
+                string raizEncontrada = metodos.Biseccion(funcion, a, b, tol, dgvBiseccion);
+                lblRaiz.Text = "Raíz: " + raizEncontrada;
             }
             catch (Exception ex)
             {

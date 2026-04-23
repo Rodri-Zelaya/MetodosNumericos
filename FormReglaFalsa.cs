@@ -39,7 +39,10 @@ namespace Métodos_Numéricos
                 double tol = double.Parse(txtTolerancia.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 
                 MetodosNumericos metodos = new MetodosNumericos();
-                metodos.ReglaFalsa(funcion, a, b, tol, dgvReglaFalsa);
+
+                // Atrapamos la raíz y la mandamos al Label
+                string raizEncontrada = metodos.ReglaFalsa(funcion, a, b, tol, dgvReglaFalsa);
+                lblRaiz.Text = "Raíz: " + raizEncontrada;
             }
             catch (Exception ex)
             {

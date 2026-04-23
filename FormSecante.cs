@@ -34,7 +34,10 @@ namespace Métodos_Numéricos
                 double tol = double.Parse(txtTolSecante.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 
                 MetodosNumericos metodos = new MetodosNumericos();
-                metodos.Secante(funcion, c0, c1, tol, dgvSecante);
+
+                // Atrapamos la raíz y la mandamos al Label
+                string raizEncontrada = metodos.Secante(funcion, c0, c1, tol, dgvSecante);
+                lblRaiz.Text = "Raíz: " + raizEncontrada;
             }
             catch (Exception ex)
             {

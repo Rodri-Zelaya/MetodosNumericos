@@ -32,7 +32,10 @@ namespace Métodos_Numéricos
                 double tol = double.Parse(txtTolNewton.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 
                 MetodosNumericos metodos = new MetodosNumericos();
-                metodos.NewtonRaphson(funcion, x0, tol, dgvNewton);
+
+                // Atrapamos la raíz y la mandamos al Label
+                string raizEncontrada = metodos.NewtonRaphson(funcion, x0, tol, dgvNewton);
+                lblRaiz.Text = "Raíz: " + raizEncontrada;
             }
             catch (Exception ex)
             {

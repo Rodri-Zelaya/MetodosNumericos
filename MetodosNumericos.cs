@@ -42,7 +42,7 @@ public class MetodosNumericos
     }
 
     // Fíjate que agregamos "string funcion" a los parámetros
-    public void Biseccion(string funcion, double a, double b, double tol, DataGridView dgv)
+    public string Biseccion(string funcion, double a, double b, double tol, DataGridView dgv)
     {
         dgv.Columns.Clear();
         dgv.Columns.Add("Iter", "Iteración");
@@ -81,9 +81,12 @@ public class MetodosNumericos
             if (prod < 0) b = c; else a = c;
             i++;
         }
+
+        // DEVOLVEMOS LA RAÍZ FINAL
+        return c.ToString("0.########");
     }
 
-    public void ReglaFalsa(string funcion, double a, double b, double tol, DataGridView dgv)
+    public string ReglaFalsa(string funcion, double a, double b, double tol, DataGridView dgv)
     {
         dgv.Columns.Clear();
         dgv.Columns.Add("Iter", "Iteración");
@@ -117,9 +120,10 @@ public class MetodosNumericos
             if (prod < 0) b = c; else a = c;
             i++;
         }
+        return c.ToString("0.########");
     }
 
-    public void NewtonRaphson(string funcion, double x0, double tol, DataGridView dgv)
+    public string NewtonRaphson(string funcion, double x0, double tol, DataGridView dgv)
     {
         dgv.Columns.Clear();
         dgv.Columns.Add("Iter", "Iteración");
@@ -155,9 +159,10 @@ public class MetodosNumericos
             ci = ci_siguiente;
             i++;
         }
+        return ci.ToString("0.########");
     }
 
-    public void Secante(string funcion, double c0, double c1, double tol, DataGridView dgv)
+    public string Secante(string funcion, double c0, double c1, double tol, DataGridView dgv)
     {
         dgv.Columns.Clear();
         dgv.Columns.Add("Iter", "Iteración");
@@ -170,6 +175,7 @@ public class MetodosNumericos
 
         double x0 = c0;
         double x1 = c1;
+        double ci = 0;
         double last_ci = 0, errorRelativo = 100;
         int i = 1;// Variable clave para calcular el error igual que el Excel
 
@@ -177,7 +183,7 @@ public class MetodosNumericos
         {
             double f0 = EvaluarFuncion(funcion, x0);
             double f1 = EvaluarFuncion(funcion, x1);
-            double ci = x1 - ((f1 * (x0 - x1)) / (f0 - f1));
+            ci = x1 - ((f1 * (x0 - x1)) / (f0 - f1));
             double f_ci = EvaluarFuncion(funcion, ci);
 
             if (i > 1) errorRelativo = Math.Abs((ci - last_ci) / ci) * 100;
@@ -197,9 +203,10 @@ public class MetodosNumericos
             last_ci = ci;
             i++;
         }
+        return ci.ToString("0.########");
     }
 
-    public void PuntoFijo(string funcionG, double x0, double tol, DataGridView dgv)
+    public string PuntoFijo(string funcionG, double x0, double tol, DataGridView dgv)
     {
         // Configuración exacta a tu Excel
         dgv.Columns.Clear();
@@ -231,6 +238,8 @@ public class MetodosNumericos
             ci = g;
             i++;
         }
+
+        return ci.ToString("0.########");
     }
 }
 //Confirmación de los cambios
