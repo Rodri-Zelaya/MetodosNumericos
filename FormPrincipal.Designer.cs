@@ -29,19 +29,21 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnMuller = new Button();
             btnPuntoFijo = new Button();
             btnSecante = new Button();
             btnNewton = new Button();
             btnReglaFalsa = new Button();
             btnBiseccion = new Button();
             panelContenedor = new Panel();
-            btnMuller = new Button();
+            btnBairstow = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = SystemColors.ActiveCaption;
+            panel1.Controls.Add(btnBairstow);
             panel1.Controls.Add(btnMuller);
             panel1.Controls.Add(btnPuntoFijo);
             panel1.Controls.Add(btnSecante);
@@ -53,6 +55,16 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(800, 34);
             panel1.TabIndex = 0;
+            // 
+            // btnMuller
+            // 
+            btnMuller.Location = new Point(544, -1);
+            btnMuller.Name = "btnMuller";
+            btnMuller.Size = new Size(94, 35);
+            btnMuller.TabIndex = 2;
+            btnMuller.Text = "Muller";
+            btnMuller.UseVisualStyleBackColor = true;
+            btnMuller.Click += btnMuller_Click;
             // 
             // btnPuntoFijo
             // 
@@ -113,15 +125,15 @@
             panelContenedor.Size = new Size(800, 416);
             panelContenedor.TabIndex = 1;
             // 
-            // btnMuller
+            // btnBairstow
             // 
-            btnMuller.Location = new Point(544, -1);
-            btnMuller.Name = "btnMuller";
-            btnMuller.Size = new Size(94, 35);
-            btnMuller.TabIndex = 2;
-            btnMuller.Text = "Muller";
-            btnMuller.UseVisualStyleBackColor = true;
-            btnMuller.Click += btnMuller_Click;
+            btnBairstow.Location = new Point(644, -1);
+            btnBairstow.Name = "btnBairstow";
+            btnBairstow.Size = new Size(94, 35);
+            btnBairstow.TabIndex = 5;
+            btnBairstow.Text = "Bairstow";
+            btnBairstow.UseVisualStyleBackColor = true;
+            btnBairstow.Click += btnBairstow_Click;
             // 
             // FormPrincipal
             // 
@@ -147,5 +159,6 @@
         private Button btnBiseccion;
         private Panel panelContenedor;
         private Button btnMuller;
+        private Button btnBairstow;
     }
 }

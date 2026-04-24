@@ -73,5 +73,10 @@ namespace Métodos_Numéricos
         {
             AbrirFormularioEnPanel(new FormMuller());
         }
+
+        private void btnBairstow_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel(new FormBairstow());
+        }
     }
 }

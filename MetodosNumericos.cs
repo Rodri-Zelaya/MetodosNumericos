@@ -326,5 +326,108 @@ public class MetodosNumericos
         // Devolvemos la raíz final al Label
         return x2.ToString("0.########");
     }
+
+    public string Bairstow(double[] a, double r0, double s0, double tol, DataGridView dgv)
+    {
+        int n = a.Length - 1; // El grado es la cantidad de números menos 1
+
+        if (n < 3) return "Error: El polinomio debe ser al menos de grado 3 (4 coeficientes).";
+
+        dgv.Columns.Clear();
+        dgv.Columns.Add("Iter", "Iter");
+
+        // Magia: Creamos las columnas b y c de forma automática según el tamaño
+        for (int i = n; i >= 0; i--) dgv.Columns.Add($"b{i}", $"b{i}");
+        for (int i = n; i >= 1; i--) dgv.Columns.Add($"c{i}", $"c{i}");
+
+        dgv.Columns.Add("Dr", "Δr"); dgv.Columns.Add("Ds", "Δs");
+        dgv.Columns.Add("r", "r"); dgv.Columns.Add("s", "s");
+        dgv.Columns.Add("ErrR", "Er(r)%"); dgv.Columns.Add("ErrS", "Er(s)%");
+        dgv.Columns.Add("X1", "X1"); dgv.Columns.Add("X2", "X2");
+        dgv.Columns.Add("Cond", "Condición");
+
+        dgv.Rows.Clear();
+
+        double r = r0, s = s0;
+        double errorR = 100, errorS = 100;
+        int iter = 0;
+        // 1. AGREGA ESTA LÍNEA AQUÍ AFUERA:
+        string x1_str = "", x2_str = "";
+
+        double[] b = new double[n + 1];
+        double[] c = new double[n + 1];
+
+        while (iter < 500)
+        {
+            // División sintética 1
+            b[n] = a[n];
+            b[n - 1] = a[n - 1] + r * b[n];
+            for (int i = n - 2; i >= 0; i--) b[i] = a[i] + r * b[i + 1] + s * b[i + 2];
+
+            // División sintética 2
+            c[n] = b[n];
+            c[n - 1] = b[n - 1] + r * c[n];
+            for (int i = n - 2; i >= 1; i--) c[i] = b[i] + r * c[i + 1] + s * c[i + 2];
+
+            // Cramer
+            double D = (c[2] * c[2]) - (c[1] * c[3]);
+            double dr = 0, ds = 0;
+
+            if (D != 0)
+            {
+                dr = (-b[1] * c[2] + b[0] * c[3]) / D;
+                ds = (-b[0] * c[2] + b[1] * c[1]) / D;
+            }
+
+            double r_nuevo = r + dr;
+            double s_nuevo = s + ds;
+
+            if (iter > 0)
+            {
+                errorR = Math.Abs(dr / r_nuevo) * 100;
+                errorS = Math.Abs(ds / s_nuevo) * 100;
+            }
+
+            // Chicharronera para sacar las raíces
+            double raiz_interna = (r_nuevo * r_nuevo) + (4 * s_nuevo);
+            x1_str = ""; x2_str = "";
+
+            if (raiz_interna >= 0)
+            {
+                double raiz_calc = Math.Sqrt(raiz_interna);
+                x1_str = ((r_nuevo + raiz_calc) / 2).ToString("F8");
+                x2_str = ((r_nuevo - raiz_calc) / 2).ToString("F8");
+            }
+            else
+            {
+                double real = r_nuevo / 2;
+                double imaginaria = Math.Sqrt(Math.Abs(raiz_interna)) / 2;
+                x1_str = $"{real:F8} + {imaginaria:F8}i";
+                x2_str = $"{real:F8} - {imaginaria:F8}i";
+            }
+
+            string condicion = (iter > 0 && errorR < tol && errorS < tol) ? "Finalizar" : "Continuar";
+
+            // Armamos la fila dinámicamente juntando todos los pedazos
+            System.Collections.Generic.List<object> fila = new System.Collections.Generic.List<object>();
+            fila.Add(iter);
+            for (int i = n; i >= 0; i--) fila.Add(b[i].ToString("F8"));
+            for (int i = n; i >= 1; i--) fila.Add(c[i].ToString("F8"));
+            fila.Add(dr.ToString("F8")); fila.Add(ds.ToString("F8"));
+            fila.Add(r_nuevo.ToString("F8")); fila.Add(s_nuevo.ToString("F8"));
+            fila.Add(iter == 0 ? "-" : errorR.ToString("F8"));
+            fila.Add(iter == 0 ? "-" : errorS.ToString("F8"));
+            fila.Add(x1_str); fila.Add(x2_str);
+            fila.Add(iter == 0 ? "-" : condicion);
+
+            dgv.Rows.Add(fila.ToArray());
+
+            if (condicion == "Finalizar") break;
+
+            r = r_nuevo; s = s_nuevo;
+            iter++;
+        }
+        return $"X1: {x1_str}  |  X2: {x2_str}";
+    }
 }
 //Confirmación de los cambios
