@@ -68,5 +68,10 @@ namespace Métodos_Numéricos
         {
             AbrirFormularioEnPanel(new FormPuntoFijo());
         }
+
+        private void btnMuller_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel(new FormMuller());
+        }
     }
 }

@@ -35,12 +35,14 @@
             btnReglaFalsa = new Button();
             btnBiseccion = new Button();
             panelContenedor = new Panel();
+            btnMuller = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = SystemColors.ActiveCaption;
+            panel1.Controls.Add(btnMuller);
             panel1.Controls.Add(btnPuntoFijo);
             panel1.Controls.Add(btnSecante);
             panel1.Controls.Add(btnNewton);
@@ -111,6 +113,16 @@
             panelContenedor.Size = new Size(800, 416);
             panelContenedor.TabIndex = 1;
             // 
+            // btnMuller
+            // 
+            btnMuller.Location = new Point(544, -1);
+            btnMuller.Name = "btnMuller";
+            btnMuller.Size = new Size(94, 35);
+            btnMuller.TabIndex = 2;
+            btnMuller.Text = "Muller";
+            btnMuller.UseVisualStyleBackColor = true;
+            btnMuller.Click += btnMuller_Click;
+            // 
             // FormPrincipal
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -134,5 +146,6 @@
         private Button btnReglaFalsa;
         private Button btnBiseccion;
         private Panel panelContenedor;
+        private Button btnMuller;
     }
 }

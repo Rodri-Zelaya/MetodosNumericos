@@ -4,6 +4,9 @@
     <Compile Update="FormBiseccion.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormMuller.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FormNewton.cs">
       <SubType>Form</SubType>
     </Compile>

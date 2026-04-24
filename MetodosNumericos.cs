@@ -241,5 +241,90 @@ public class MetodosNumericos
 
         return ci.ToString("0.########");
     }
+
+    public string Muller(string funcion, double x0, double x1, double x2, double tol, DataGridView dgv)
+    {
+        dgv.Columns.Clear();
+        dgv.Columns.Add("Iter", "i");
+        dgv.Columns.Add("Xi", "Xi");
+        dgv.Columns.Add("Xi1", "Xi+1");
+        dgv.Columns.Add("hi", "hi");
+        dgv.Columns.Add("hi1", "hi+1");
+        dgv.Columns.Add("fXi", "f(Xi)");
+        dgv.Columns.Add("fXi1", "f(Xi+1)");
+        dgv.Columns.Add("Di", "δi");
+        dgv.Columns.Add("Di1", "δi+1");
+        dgv.Columns.Add("A", "a");
+        dgv.Columns.Add("B", "b");
+        dgv.Columns.Add("C", "c");
+        dgv.Columns.Add("BPlus", "b+√");
+        dgv.Columns.Add("BMinus", "b-√");
+        dgv.Columns.Add("Er", "Error %");
+        dgv.Columns.Add("Decision", "Continuar");
+
+        dgv.Rows.Clear();
+
+        double last_x0 = 0, errorRelativo = 100;
+        int i = 0;
+
+        while (i < 500)
+        {
+            double h0 = x1 - x0;
+            double h1 = x2 - x1;
+
+            double fx0 = EvaluarFuncion(funcion, x0);
+            double fx1 = EvaluarFuncion(funcion, x1);
+            double fx2 = EvaluarFuncion(funcion, x2); // fx2 es igual a "c"
+
+            double d0 = (fx1 - fx0) / h0;
+            double d1 = (fx2 - fx1) / h1;
+
+            double a = (d1 - d0) / (h1 + h0);
+            double b = a * h1 + d1;
+            double c = fx2;
+
+            // Math.Sqrt calcula la raíz cuadrada de (b^2 - 4ac)
+            double rad = Math.Sqrt(b * b - 4 * a * c);
+            double b_plus = b + rad;
+            double b_minus = b - rad;
+
+            // El error en el Excel se calcula usando la variación del punto x0 respecto a la fila anterior
+            if (i > 0) errorRelativo = Math.Abs((last_x0 - x0) / x0) * 100;
+
+            string decision = (i > 0 && errorRelativo < tol) ? "Finalizar" : "Continuar";
+
+            // Mandamos los 16 datos a la tabla (usando "G8" para que ponga la notación científica como tu Excel)
+            dgv.Rows.Add(
+                i,
+                x0.ToString("G8"), x1.ToString("G8"),
+                h0.ToString("G8"), h1.ToString("G8"),
+                fx0.ToString("G8"), fx1.ToString("G8"),
+                d0.ToString("G8"), d1.ToString("G8"),
+                a.ToString("G8"), b.ToString("G8"), c.ToString("G8"),
+                b_plus.ToString("G8"), b_minus.ToString("G8"),
+                (i == 0) ? "-" : errorRelativo.ToString("G8"),
+                (i == 0) ? "-" : decision
+            );
+
+            if (decision == "Finalizar") break;
+
+            // Lógica de Müller: Elegir el denominador más grande (en valor absoluto) para evitar dividir por cero
+            double denom = Math.Abs(b_plus) > Math.Abs(b_minus) ? b_plus : b_minus;
+
+            // Calculamos el nuevo punto x3
+            double x3 = x2 + (-2 * c) / denom;
+
+            // Recorremos los valores para la siguiente vuelta
+            last_x0 = x0;
+            x0 = x1;
+            x1 = x2;
+            x2 = x3;
+
+            i++;
+        }
+
+        // Devolvemos la raíz final al Label
+        return x2.ToString("0.########");
+    }
 }
 //Confirmación de los cambios

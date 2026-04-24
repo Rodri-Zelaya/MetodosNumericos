@@ -103,3 +103,4 @@ C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-window
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.pdb
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.genruntimeconfig.cache
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\ref\Métodos Numéricos.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormMuller.resources
