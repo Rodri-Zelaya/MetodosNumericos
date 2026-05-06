@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using org.mariuszgromada.math.mxparser;
+using Excel = Microsoft.Office.Interop.Excel;
 
 public class MetodosNumericos
 {
@@ -429,5 +430,224 @@ public class MetodosNumericos
         }
         return $"X1: {x1_str}  |  X2: {x2_str}";
     }
+
+    public string HornerNewton(double[] a, double r0, double tol, DataGridView dgv)
+    {
+        int n = a.Length - 1; // El grado del polinomio
+
+        if (n < 1) return "Error: El polinomio debe ser al menos de grado 1.";
+
+        dgv.Columns.Clear();
+        dgv.Columns.Add("Iter", "Iteración");
+
+        // Creamos las columnas b y c de forma automática y dinámica
+        for (int i = n; i >= 0; i--) dgv.Columns.Add($"b{i}", $"b{i}");
+        for (int i = n; i >= 1; i--) dgv.Columns.Add($"c{i}", $"c{i}");
+
+        dgv.Columns.Add("r", "r");
+        dgv.Columns.Add("Er", "Er");
+
+        dgv.Rows.Clear();
+
+        double r = r0;
+        double errorRelativo = 100;
+        int iter = 1;
+
+        double[] b = new double[n + 1];
+        double[] c = new double[n + 1];
+
+        while (iter < 500)
+        {
+            // Primera división sintética (Genera las "b")
+            // b0 termina siendo el valor de f(r)
+            b[n] = a[n];
+            for (int i = n - 1; i >= 0; i--)
+            {
+                b[i] = a[i] + r * b[i + 1];
+            }
+
+            // Segunda división sintética (Genera las "c")
+            // c1 termina siendo el valor de la derivada f'(r)
+            c[n] = b[n];
+            for (int i = n - 1; i >= 1; i--)
+            {
+                c[i] = b[i] + r * c[i + 1];
+            }
+
+            // Aplicamos Newton-Raphson para predecir la nueva raíz
+            double r_nuevo = r - (b[0] / c[1]);
+
+            // Calculamos el error basándonos en la iteración anterior
+            if (iter > 1)
+            {
+                errorRelativo = Math.Abs((r_nuevo - r) / r_nuevo) * 100;
+            }
+
+            // Armamos la fila juntando todo como si fuera legos
+            System.Collections.Generic.List<object> fila = new System.Collections.Generic.List<object>();
+            fila.Add(iter);
+            for (int i = n; i >= 0; i--) fila.Add(b[i].ToString("G8"));
+            for (int i = n; i >= 1; i--) fila.Add(c[i].ToString("G8"));
+            fila.Add(r_nuevo.ToString("F8"));
+
+            // A la primera iteración le ponemos vacío en el error, y a las demás su porcentaje
+            if (iter == 1)
+                fila.Add("");
+            else
+                fila.Add(errorRelativo.ToString("F4") + "%");
+
+            dgv.Rows.Add(fila.ToArray());
+
+            // Si llegamos a la tolerancia, nos salimos
+            if (iter > 1 && errorRelativo < tol) break;
+
+            r = r_nuevo;
+            iter++;
+        }
+
+        return r.ToString("0.########");
+    }
+
+    // Método auxiliar para evaluar con mXparser usando X y Y
+    private double Evaluar2Var(string funcion, double x, double y)
+    {
+        org.mariuszgromada.math.mxparser.Argument argX = new org.mariuszgromada.math.mxparser.Argument("x", x);
+        org.mariuszgromada.math.mxparser.Argument argY = new org.mariuszgromada.math.mxparser.Argument("y", y);
+        org.mariuszgromada.math.mxparser.Expression exp = new org.mariuszgromada.math.mxparser.Expression(funcion, argX, argY);
+        return exp.calculate();
+    }
+    public string NewtonRaphsonNoLineal(string funcF, string funcG, double x0, double y0, double tol, DataGridView dgv)
+    {
+        dgv.Columns.Clear();
+        dgv.Columns.Add("Iter", "i");
+        dgv.Columns.Add("X", "Xi");
+        dgv.Columns.Add("Y", "Yi");
+        dgv.Columns.Add("F", "f(x,y)");
+        dgv.Columns.Add("G", "g(x,y)");
+        dgv.Columns.Add("dfdx", "df/dx");
+        dgv.Columns.Add("dfdy", "df/dy");
+        dgv.Columns.Add("dgdx", "dg/dx");
+        dgv.Columns.Add("dgdy", "dg/dy");
+        dgv.Columns.Add("Det", "Jacobiano");
+        dgv.Columns.Add("Dx", "Δx");
+        dgv.Columns.Add("Dy", "Δy");
+        dgv.Columns.Add("ErX", "Er(x)%");
+        dgv.Columns.Add("ErY", "Er(y)%");
+
+        dgv.Rows.Clear();
+
+        double x = x0, y = y0;
+        double errorX = 100, errorY = 100;
+        int iter = 0;
+        double h = 0.0001; // Paso pequeñito para calcular las derivadas numéricas
+
+        while (iter < 100)
+        {
+            // Evaluamos las funciones originales
+            double f = Evaluar2Var(funcF, x, y);
+            double g = Evaluar2Var(funcG, x, y);
+
+            // Magia: Calculamos las 4 derivadas parciales usando Diferencias Centrales
+            double dfdx = (Evaluar2Var(funcF, x + h, y) - Evaluar2Var(funcF, x - h, y)) / (2 * h);
+            double dfdy = (Evaluar2Var(funcF, x, y + h) - Evaluar2Var(funcF, x, y - h)) / (2 * h);
+
+            double dgdx = (Evaluar2Var(funcG, x + h, y) - Evaluar2Var(funcG, x - h, y)) / (2 * h);
+            double dgdy = (Evaluar2Var(funcG, x, y + h) - Evaluar2Var(funcG, x, y - h)) / (2 * h);
+
+            // Determinante de la Matriz Jacobiana
+            double jacobiano = (dfdx * dgdy) - (dfdy * dgdx);
+
+            if (Math.Abs(jacobiano) < 1E-10)
+            {
+                MessageBox.Show("El Jacobiano se hizo cero. El método no puede continuar desde este punto inicial.");
+                break;
+            }
+
+            // Regla de Cramer para resolver el sistema y hallar los deltas
+            double dx = (-f * dgdy + g * dfdy) / jacobiano;
+            double dy = (-g * dfdx + f * dgdx) / jacobiano;
+
+            double x_nuevo = x + dx;
+            double y_nuevo = y + dy;
+
+            if (iter > 0)
+            {
+                errorX = Math.Abs(dx / x_nuevo) * 100;
+                errorY = Math.Abs(dy / y_nuevo) * 100;
+            }
+
+            // Mandamos los datos a la tabla
+            dgv.Rows.Add(
+                iter,
+                x.ToString("F6"), y.ToString("F6"),
+                f.ToString("F6"), g.ToString("F6"),
+                dfdx.ToString("F4"), dfdy.ToString("F4"),
+                dgdx.ToString("F4"), dgdy.ToString("F4"),
+                jacobiano.ToString("F6"),
+                dx.ToString("F6"), dy.ToString("F6"),
+                (iter == 0) ? "-" : errorX.ToString("F6"),
+                (iter == 0) ? "-" : errorY.ToString("F6")
+            );
+
+            if (iter > 0 && errorX < tol && errorY < tol)
+            {
+                // Agregamos la última fila con los resultados finales clavados
+                dgv.Rows.Add(iter + 1, x_nuevo.ToString("F6"), y_nuevo.ToString("F6"), "0.000000", "0.000000", "-", "-", "-", "-", "-", "-", "-", "-", "-");
+                x = x_nuevo;
+                y = y_nuevo;
+                break;
+            }
+
+            x = x_nuevo;
+            y = y_nuevo;
+            iter++;
+        }
+
+        return $"X: {x:F6}  |  Y: {y:F6}";
+    }
+
+    public void ExportarAExcel(DataGridView dgv)
+    {
+        if (dgv.Rows.Count == 0) return;
+
+        // 1. Usamos el alias 'Excel' para que no haya duda
+        Excel.Application excelApp = new Excel.Application();
+        Excel.Workbook workbook = excelApp.Workbooks.Add(true);
+        Excel._Worksheet worksheet = (Excel._Worksheet)workbook.ActiveSheet;
+
+        try
+        {
+            // 2. Exportamos los Encabezados
+            int indiceColumna = 0;
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                indiceColumna++;
+                // IMPORTANTE: En .NET moderno hay que ser específicos con el rango
+                Excel.Range celda = (Excel.Range)worksheet.Cells[1, indiceColumna];
+                celda.Value = col.HeaderText;
+                celda.Font.Bold = true;
+                celda.Interior.Color = ColorTranslator.ToOle(Color.LightGray);
+            }
+
+            // 3. Exportamos las Filas
+            for (int i = 0; i < dgv.Rows.Count; i++)
+            {
+                if (!dgv.Rows[i].IsNewRow)
+                {
+                    for (int j = 0; j < dgv.Columns.Count; j++)
+                    {
+                        worksheet.Cells[i + 2, j + 1] = dgv.Rows[i].Cells[j].Value?.ToString();
+                    }
+                }
+            }
+
+            excelApp.Columns.AutoFit();
+            excelApp.Visible = true;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Error bro: " + ex.Message);
+        }
+    }
 }
-//Confirmación de los cambios
+//Confirmación de los cambios 

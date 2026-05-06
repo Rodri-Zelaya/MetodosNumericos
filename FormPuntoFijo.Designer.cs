@@ -37,13 +37,14 @@
             btnCalcular = new Button();
             dgvPuntoFijo = new DataGridView();
             lblRaiz = new Label();
+            btnExportar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvPuntoFijo).BeginInit();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(129, 14);
+            label1.Location = new Point(336, 15);
             label1.Name = "label1";
             label1.Size = new Size(60, 20);
             label1.TabIndex = 0;
@@ -52,7 +53,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(151, 60);
+            label2.Location = new Point(353, 64);
             label2.Name = "label2";
             label2.Size = new Size(26, 20);
             label2.TabIndex = 1;
@@ -61,7 +62,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(344, 14);
+            label3.Location = new Point(651, 15);
             label3.Name = "label3";
             label3.Size = new Size(77, 20);
             label3.TabIndex = 2;
@@ -69,30 +70,30 @@
             // 
             // txtFuncionPuntoFijo
             // 
-            txtFuncionPuntoFijo.Location = new Point(195, 7);
+            txtFuncionPuntoFijo.Location = new Point(402, 12);
             txtFuncionPuntoFijo.Name = "txtFuncionPuntoFijo";
-            txtFuncionPuntoFijo.Size = new Size(125, 27);
+            txtFuncionPuntoFijo.Size = new Size(188, 27);
             txtFuncionPuntoFijo.TabIndex = 5;
             // 
             // txtX0PuntoFijo
             // 
-            txtX0PuntoFijo.Location = new Point(195, 53);
+            txtX0PuntoFijo.Location = new Point(402, 57);
             txtX0PuntoFijo.Name = "txtX0PuntoFijo";
             txtX0PuntoFijo.Size = new Size(125, 27);
             txtX0PuntoFijo.TabIndex = 6;
             // 
             // txtTolPuntoFijo
             // 
-            txtTolPuntoFijo.Location = new Point(427, 7);
+            txtTolPuntoFijo.Location = new Point(744, 12);
             txtTolPuntoFijo.Name = "txtTolPuntoFijo";
             txtTolPuntoFijo.Size = new Size(125, 27);
             txtTolPuntoFijo.TabIndex = 7;
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(593, 25);
+            btnCalcular.Location = new Point(962, 7);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(110, 51);
+            btnCalcular.Size = new Size(115, 51);
             btnCalcular.TabIndex = 9;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -101,7 +102,7 @@
             // dgvPuntoFijo
             // 
             dgvPuntoFijo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvPuntoFijo.Location = new Point(12, 104);
+            dgvPuntoFijo.Location = new Point(301, 121);
             dgvPuntoFijo.Name = "dgvPuntoFijo";
             dgvPuntoFijo.RowHeadersWidth = 51;
             dgvPuntoFijo.Size = new Size(776, 334);
@@ -111,17 +112,28 @@
             // 
             lblRaiz.AutoSize = true;
             lblRaiz.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRaiz.Location = new Point(344, 53);
+            lblRaiz.Location = new Point(661, 64);
             lblRaiz.Name = "lblRaiz";
             lblRaiz.Size = new Size(57, 28);
             lblRaiz.TabIndex = 11;
             lblRaiz.Text = "Raiz:";
             // 
+            // btnExportar
+            // 
+            btnExportar.Location = new Point(962, 64);
+            btnExportar.Name = "btnExportar";
+            btnExportar.Size = new Size(115, 51);
+            btnExportar.TabIndex = 12;
+            btnExportar.Text = "Exportar Excel";
+            btnExportar.UseVisualStyleBackColor = true;
+            btnExportar.Click += btnExportar_Click;
+            // 
             // FormPuntoFijo
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1342, 467);
+            Controls.Add(btnExportar);
             Controls.Add(lblRaiz);
             Controls.Add(dgvPuntoFijo);
             Controls.Add(btnCalcular);
@@ -149,5 +161,6 @@
         private Button btnCalcular;
         private DataGridView dgvPuntoFijo;
         private Label lblRaiz;
+        private Button btnExportar;
     }
 }

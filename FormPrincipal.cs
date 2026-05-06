@@ -78,5 +78,15 @@ namespace Métodos_Numéricos
         {
             AbrirFormularioEnPanel(new FormBairstow());
         }
+
+        private void btnHornerNewton_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel(new FormHornerNewton());
+        }
+
+        private void btnNewtonNL_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel(new FormNoLinealNewton());
+        }
     }
 }

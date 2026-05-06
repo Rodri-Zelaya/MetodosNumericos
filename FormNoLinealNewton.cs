@@ -10,36 +10,32 @@ using System.Windows.Forms;
 
 namespace Métodos_Numéricos
 {
-    public partial class FormNewton : Form
+    public partial class FormNoLinealNewton : Form
     {
-        public FormNewton()
+        public FormNoLinealNewton()
         {
             InitializeComponent();
         }
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtFuncionNewton.Text) || string.IsNullOrWhiteSpace(txtVI.Text) || string.IsNullOrWhiteSpace(txtTolNewton.Text))
-            {
-                MessageBox.Show("Por favor, llena todos los campos de Newton-Raphson.");
-                return;
-            }
-
             try
             {
-                string funcion = txtFuncionNewton.Text;
-                double x0 = double.Parse(txtVI.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double tol = double.Parse(txtTolNewton.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+                string funcF = txtF.Text;
+                string funcG = txtG.Text;
+
+                double x0 = double.Parse(txtX0.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+                double y0 = double.Parse(txtY0.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+                double tol = double.Parse(txtTol.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 
                 MetodosNumericos metodos = new MetodosNumericos();
 
-                // Atrapamos la raíz y la mandamos al Label
-                string raizEncontrada = metodos.NewtonRaphson(funcion, x0, tol, dgvNewton);
-                lblRaiz.Text = "Raíz: " + raizEncontrada;
+                string resultado = metodos.NewtonRaphsonNoLineal(funcF, funcG, x0, y0, tol, dgvNoLinealNewton);
+                lblRespuesta.Text = "Intersección: " + resultado;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Revisa la sintaxis de la función o los valores: " + ex.Message);
+                MessageBox.Show("Revisa la sintaxis de tus funciones bro: " + ex.Message);
             }
         }
 
@@ -52,7 +48,7 @@ namespace Métodos_Numéricos
 
                 // 2. Llamamos al método y le mandamos la tabla de esta ventana
                 // OJO: Si tu tabla se llama distinto (ej. dgvNewton o dgvBairstow), cámbiale el nombre aquí
-                metodos.ExportarAExcel(dgvNewton);
+                metodos.ExportarAExcel(dgvNoLinealNewton);
             }
             catch (Exception ex)
             {

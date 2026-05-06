@@ -49,5 +49,22 @@ namespace Métodos_Numéricos
                 MessageBox.Show("Error en los datos o en la función: " + ex.Message);
             }
         }
+
+        private void btnExportar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // 1. Instanciamos tu clase cerebro donde metimos el código universal
+                MetodosNumericos metodos = new MetodosNumericos();
+
+                // 2. Llamamos al método y le mandamos la tabla de esta ventana
+                // OJO: Si tu tabla se llama distinto (ej. dgvNewton o dgvBairstow), cámbiale el nombre aquí
+                metodos.ExportarAExcel(dgvReglaFalsa);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Algo falló al intentar mandar la tabla, bro: " + ex.Message);
+            }
+        }
     }
 }

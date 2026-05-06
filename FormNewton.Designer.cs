@@ -37,13 +37,14 @@
             btnCalcular = new Button();
             dgvNewton = new DataGridView();
             lblRaiz = new Label();
+            btnExportar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvNewton).BeginInit();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(37, 21);
+            label1.Location = new Point(105, 50);
             label1.Name = "label1";
             label1.Size = new Size(60, 20);
             label1.TabIndex = 0;
@@ -52,7 +53,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(234, 46);
+            label3.Location = new Point(438, 50);
             label3.Name = "label3";
             label3.Size = new Size(86, 20);
             label3.TabIndex = 2;
@@ -61,7 +62,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(464, 18);
+            label4.Location = new Point(733, 25);
             label4.Name = "label4";
             label4.Size = new Size(77, 20);
             label4.TabIndex = 3;
@@ -69,28 +70,28 @@
             // 
             // txtFuncionNewton
             // 
-            txtFuncionNewton.Location = new Point(103, 18);
+            txtFuncionNewton.Location = new Point(180, 47);
             txtFuncionNewton.Name = "txtFuncionNewton";
-            txtFuncionNewton.Size = new Size(125, 27);
+            txtFuncionNewton.Size = new Size(219, 27);
             txtFuncionNewton.TabIndex = 5;
             // 
             // txtVI
             // 
-            txtVI.Location = new Point(326, 43);
+            txtVI.Location = new Point(543, 43);
             txtVI.Name = "txtVI";
             txtVI.Size = new Size(125, 27);
             txtVI.TabIndex = 7;
             // 
             // txtTolNewton
             // 
-            txtTolNewton.Location = new Point(547, 18);
+            txtTolNewton.Location = new Point(830, 18);
             txtTolNewton.Name = "txtTolNewton";
             txtTolNewton.Size = new Size(125, 27);
             txtTolNewton.TabIndex = 8;
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(678, 32);
+            btnCalcular.Location = new Point(1063, 32);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(110, 49);
             btnCalcular.TabIndex = 10;
@@ -104,24 +105,35 @@
             dgvNewton.Location = new Point(12, 105);
             dgvNewton.Name = "dgvNewton";
             dgvNewton.RowHeadersWidth = 51;
-            dgvNewton.Size = new Size(776, 333);
+            dgvNewton.Size = new Size(1318, 333);
             dgvNewton.TabIndex = 11;
             // 
             // lblRaiz
             // 
             lblRaiz.AutoSize = true;
             lblRaiz.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRaiz.Location = new Point(462, 67);
+            lblRaiz.Location = new Point(744, 64);
             lblRaiz.Name = "lblRaiz";
             lblRaiz.Size = new Size(57, 28);
             lblRaiz.TabIndex = 12;
             lblRaiz.Text = "Raiz:";
             // 
+            // btnExportar
+            // 
+            btnExportar.Location = new Point(1188, 29);
+            btnExportar.Name = "btnExportar";
+            btnExportar.Size = new Size(122, 52);
+            btnExportar.TabIndex = 13;
+            btnExportar.Text = "Exportar Excel";
+            btnExportar.UseVisualStyleBackColor = true;
+            btnExportar.Click += btnExportar_Click;
+            // 
             // FormNewton
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1342, 450);
+            Controls.Add(btnExportar);
             Controls.Add(lblRaiz);
             Controls.Add(dgvNewton);
             Controls.Add(btnCalcular);
@@ -149,5 +161,6 @@
         private Button btnCalcular;
         private DataGridView dgvNewton;
         private Label lblRaiz;
+        private Button btnExportar;
     }
 }

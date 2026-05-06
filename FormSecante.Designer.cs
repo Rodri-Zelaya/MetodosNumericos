@@ -39,33 +39,34 @@
             btnCalcular = new Button();
             dgvSecante = new DataGridView();
             lblRaiz = new Label();
+            btnExportar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvSecante).BeginInit();
             SuspendLayout();
             // 
             // txtFuncionSecante
             // 
-            txtFuncionSecante.Location = new Point(87, 39);
+            txtFuncionSecante.Location = new Point(117, 39);
             txtFuncionSecante.Name = "txtFuncionSecante";
-            txtFuncionSecante.Size = new Size(125, 27);
+            txtFuncionSecante.Size = new Size(215, 27);
             txtFuncionSecante.TabIndex = 0;
             // 
             // txtVI
             // 
-            txtVI.Location = new Point(321, 11);
+            txtVI.Location = new Point(483, 15);
             txtVI.Name = "txtVI";
             txtVI.Size = new Size(125, 27);
             txtVI.TabIndex = 1;
             // 
             // txtV2
             // 
-            txtV2.Location = new Point(321, 58);
+            txtV2.Location = new Point(483, 54);
             txtV2.Name = "txtV2";
             txtV2.Size = new Size(125, 27);
             txtV2.TabIndex = 2;
             // 
             // txtTolSecante
             // 
-            txtTolSecante.Location = new Point(532, 11);
+            txtTolSecante.Location = new Point(784, 11);
             txtTolSecante.Name = "txtTolSecante";
             txtTolSecante.Size = new Size(125, 27);
             txtTolSecante.TabIndex = 3;
@@ -73,7 +74,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(31, 46);
+            label1.Location = new Point(51, 46);
             label1.Name = "label1";
             label1.Size = new Size(60, 20);
             label1.TabIndex = 5;
@@ -82,7 +83,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(229, 18);
+            label2.Location = new Point(382, 18);
             label2.Name = "label2";
             label2.Size = new Size(86, 20);
             label2.TabIndex = 6;
@@ -91,7 +92,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(218, 65);
+            label3.Location = new Point(371, 61);
             label3.Name = "label3";
             label3.Size = new Size(106, 20);
             label3.TabIndex = 7;
@@ -100,7 +101,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(458, 18);
+            label4.Location = new Point(701, 18);
             label4.Name = "label4";
             label4.Size = new Size(77, 20);
             label4.TabIndex = 8;
@@ -108,9 +109,9 @@
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(663, 28);
+            btnCalcular.Location = new Point(1026, 28);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(125, 48);
+            btnCalcular.Size = new Size(125, 53);
             btnCalcular.TabIndex = 10;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -122,24 +123,35 @@
             dgvSecante.Location = new Point(15, 97);
             dgvSecante.Name = "dgvSecante";
             dgvSecante.RowHeadersWidth = 51;
-            dgvSecante.Size = new Size(773, 341);
+            dgvSecante.Size = new Size(1313, 363);
             dgvSecante.TabIndex = 11;
             // 
             // lblRaiz
             // 
             lblRaiz.AutoSize = true;
             lblRaiz.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRaiz.Location = new Point(457, 57);
+            lblRaiz.Location = new Point(711, 54);
             lblRaiz.Name = "lblRaiz";
             lblRaiz.Size = new Size(57, 28);
             lblRaiz.TabIndex = 12;
             lblRaiz.Text = "Raiz:";
             // 
+            // btnExportar
+            // 
+            btnExportar.Location = new Point(1157, 28);
+            btnExportar.Name = "btnExportar";
+            btnExportar.Size = new Size(124, 53);
+            btnExportar.TabIndex = 13;
+            btnExportar.Text = "Exportar Excel";
+            btnExportar.UseVisualStyleBackColor = true;
+            btnExportar.Click += btnExportar_Click;
+            // 
             // FormSecante
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1340, 472);
+            Controls.Add(btnExportar);
             Controls.Add(lblRaiz);
             Controls.Add(dgvSecante);
             Controls.Add(btnCalcular);
@@ -171,5 +183,6 @@
         private Button btnCalcular;
         private DataGridView dgvSecante;
         private Label lblRaiz;
+        private Button btnExportar;
     }
 }

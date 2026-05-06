@@ -39,33 +39,34 @@
             dgvReglaFalsa = new DataGridView();
             btnCalcular = new Button();
             lblRaiz = new Label();
+            btnExportar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvReglaFalsa).BeginInit();
             SuspendLayout();
             // 
             // txtFuncionReglaFalsa
             // 
-            txtFuncionReglaFalsa.Location = new Point(72, 45);
+            txtFuncionReglaFalsa.Location = new Point(170, 45);
             txtFuncionReglaFalsa.Name = "txtFuncionReglaFalsa";
-            txtFuncionReglaFalsa.Size = new Size(125, 27);
+            txtFuncionReglaFalsa.Size = new Size(203, 27);
             txtFuncionReglaFalsa.TabIndex = 0;
             // 
             // txtA
             // 
-            txtA.Location = new Point(267, 18);
+            txtA.Location = new Point(491, 12);
             txtA.Name = "txtA";
             txtA.Size = new Size(125, 27);
             txtA.TabIndex = 1;
             // 
             // txtB
             // 
-            txtB.Location = new Point(267, 70);
+            txtB.Location = new Point(491, 65);
             txtB.Name = "txtB";
             txtB.Size = new Size(125, 27);
             txtB.TabIndex = 2;
             // 
             // txtTolerancia
             // 
-            txtTolerancia.Location = new Point(482, 18);
+            txtTolerancia.Location = new Point(803, 12);
             txtTolerancia.Name = "txtTolerancia";
             txtTolerancia.Size = new Size(125, 27);
             txtTolerancia.TabIndex = 3;
@@ -73,7 +74,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(16, 52);
+            label1.Location = new Point(104, 52);
             label1.Name = "label1";
             label1.Size = new Size(60, 20);
             label1.TabIndex = 5;
@@ -82,7 +83,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(202, 25);
+            label2.Location = new Point(411, 19);
             label2.Name = "label2";
             label2.Size = new Size(57, 20);
             label2.TabIndex = 6;
@@ -91,7 +92,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(202, 77);
+            label3.Location = new Point(411, 72);
             label3.Name = "label3";
             label3.Size = new Size(56, 20);
             label3.TabIndex = 7;
@@ -100,7 +101,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(399, 21);
+            label4.Location = new Point(720, 19);
             label4.Name = "label4";
             label4.Size = new Size(77, 20);
             label4.TabIndex = 8;
@@ -112,14 +113,14 @@
             dgvReglaFalsa.Location = new Point(16, 123);
             dgvReglaFalsa.Name = "dgvReglaFalsa";
             dgvReglaFalsa.RowHeadersWidth = 51;
-            dgvReglaFalsa.Size = new Size(772, 315);
+            dgvReglaFalsa.Size = new Size(1318, 315);
             dgvReglaFalsa.TabIndex = 10;
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(636, 31);
+            btnCalcular.Location = new Point(1055, 32);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(122, 54);
+            btnCalcular.Size = new Size(122, 60);
             btnCalcular.TabIndex = 11;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -129,17 +130,28 @@
             // 
             lblRaiz.AutoSize = true;
             lblRaiz.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRaiz.Location = new Point(419, 69);
+            lblRaiz.Location = new Point(730, 61);
             lblRaiz.Name = "lblRaiz";
             lblRaiz.Size = new Size(57, 28);
             lblRaiz.TabIndex = 12;
             lblRaiz.Text = "Raiz:";
             // 
+            // btnExportar
+            // 
+            btnExportar.Location = new Point(1183, 32);
+            btnExportar.Name = "btnExportar";
+            btnExportar.Size = new Size(139, 60);
+            btnExportar.TabIndex = 13;
+            btnExportar.Text = "Exportar Excel";
+            btnExportar.UseVisualStyleBackColor = true;
+            btnExportar.Click += btnExportar_Click;
+            // 
             // FormReglaFalsa
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1346, 468);
+            Controls.Add(btnExportar);
             Controls.Add(lblRaiz);
             Controls.Add(btnCalcular);
             Controls.Add(dgvReglaFalsa);
@@ -172,5 +184,6 @@
         private DataGridView dgvReglaFalsa;
         private Button btnCalcular;
         private Label lblRaiz;
+        private Button btnExportar;
     }
 }

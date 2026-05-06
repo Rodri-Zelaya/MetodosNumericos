@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Métodos_Numéricos
 {
-    public partial class FormBairstow : Form
+    public partial class FormHornerNewton : Form
     {
-        public FormBairstow()
+        public FormHornerNewton()
         {
             InitializeComponent();
         }
@@ -27,11 +27,11 @@ namespace Métodos_Numéricos
 
             try
             {
-                // Cortamos el texto por cada espacio que haya
+                // Partimos el texto en pedacitos cada vez que haya un espacio
                 string[] partes = txtCoeficientes.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                int n = partes.Length - 1;
+                int n = partes.Length - 1; // Calculamos el grado del polinomio
 
-                // Creamos el arreglo y acomodamos los coeficientes desde el grado mayor hasta a0
+                // Acomodamos los números de izquierda a derecha (an hasta a0)
                 double[] a = new double[n + 1];
                 for (int i = 0; i <= n; i++)
                 {
@@ -39,17 +39,16 @@ namespace Métodos_Numéricos
                 }
 
                 double r0 = double.Parse(txtR0.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double s0 = double.Parse(txtS0.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
                 double tol = double.Parse(txtTolerancia.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 
                 MetodosNumericos metodos = new MetodosNumericos();
 
-                string raices = metodos.Bairstow(a, r0, s0, tol, dgvBairstow);
-                lblRaiz.Text = "Raíces: " + raices;
+                string raizEncontrada = metodos.HornerNewton(a, r0, tol, dgvHornerNewton);
+                lblRaiz.Text = "Raíz encontrada: " + raizEncontrada;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Verifica los datos. Recuerda separarlos con ESPACIOS, no con comas: " + ex.Message);
+                MessageBox.Show("Verifica los datos. Recuerda poner los coeficientes separados por espacios: " + ex.Message);
             }
         }
 
@@ -62,7 +61,7 @@ namespace Métodos_Numéricos
 
                 // 2. Llamamos al método y le mandamos la tabla de esta ventana
                 // OJO: Si tu tabla se llama distinto (ej. dgvNewton o dgvBairstow), cámbiale el nombre aquí
-                metodos.ExportarAExcel(dgvBairstow);
+                metodos.ExportarAExcel(dgvHornerNewton);
             }
             catch (Exception ex)
             {

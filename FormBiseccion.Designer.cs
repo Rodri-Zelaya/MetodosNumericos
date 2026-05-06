@@ -39,33 +39,34 @@
             dgvBiseccion = new DataGridView();
             btnCalcular = new Button();
             lblRaiz = new Label();
+            btnExportar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvBiseccion).BeginInit();
             SuspendLayout();
             // 
             // txtFuncionBiseccion
             // 
-            txtFuncionBiseccion.Location = new Point(82, 46);
+            txtFuncionBiseccion.Location = new Point(225, 46);
             txtFuncionBiseccion.Name = "txtFuncionBiseccion";
-            txtFuncionBiseccion.Size = new Size(125, 27);
+            txtFuncionBiseccion.Size = new Size(152, 27);
             txtFuncionBiseccion.TabIndex = 0;
             // 
             // txtA
             // 
-            txtA.Location = new Point(282, 16);
+            txtA.Location = new Point(491, 16);
             txtA.Name = "txtA";
             txtA.Size = new Size(125, 27);
             txtA.TabIndex = 1;
             // 
             // txtB
             // 
-            txtB.Location = new Point(282, 67);
+            txtB.Location = new Point(491, 63);
             txtB.Name = "txtB";
             txtB.Size = new Size(125, 27);
             txtB.TabIndex = 2;
             // 
             // txtTolerancia
             // 
-            txtTolerancia.Location = new Point(488, 16);
+            txtTolerancia.Location = new Point(830, 20);
             txtTolerancia.Name = "txtTolerancia";
             txtTolerancia.Size = new Size(125, 27);
             txtTolerancia.TabIndex = 3;
@@ -73,7 +74,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 53);
+            label1.Location = new Point(159, 53);
             label1.Name = "label1";
             label1.Size = new Size(60, 20);
             label1.TabIndex = 5;
@@ -82,7 +83,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(226, 23);
+            label2.Location = new Point(428, 19);
             label2.Name = "label2";
             label2.Size = new Size(57, 20);
             label2.TabIndex = 6;
@@ -91,7 +92,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(226, 74);
+            label3.Location = new Point(428, 66);
             label3.Name = "label3";
             label3.Size = new Size(56, 20);
             label3.TabIndex = 7;
@@ -100,7 +101,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(413, 23);
+            label4.Location = new Point(747, 27);
             label4.Name = "label4";
             label4.Size = new Size(77, 20);
             label4.TabIndex = 8;
@@ -112,12 +113,12 @@
             dgvBiseccion.Location = new Point(12, 112);
             dgvBiseccion.Name = "dgvBiseccion";
             dgvBiseccion.RowHeadersWidth = 51;
-            dgvBiseccion.Size = new Size(776, 326);
+            dgvBiseccion.Size = new Size(1323, 344);
             dgvBiseccion.TabIndex = 10;
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(652, 34);
+            btnCalcular.Location = new Point(1049, 34);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(113, 50);
             btnCalcular.TabIndex = 11;
@@ -129,17 +130,28 @@
             // 
             lblRaiz.AutoSize = true;
             lblRaiz.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRaiz.Location = new Point(427, 66);
+            lblRaiz.Location = new Point(747, 63);
             lblRaiz.Name = "lblRaiz";
             lblRaiz.Size = new Size(63, 28);
             lblRaiz.TabIndex = 12;
             lblRaiz.Text = "Raiz: ";
             // 
+            // btnExportar
+            // 
+            btnExportar.Location = new Point(1180, 34);
+            btnExportar.Name = "btnExportar";
+            btnExportar.Size = new Size(137, 50);
+            btnExportar.TabIndex = 13;
+            btnExportar.Text = "Exportar Excel";
+            btnExportar.UseVisualStyleBackColor = true;
+            btnExportar.Click += btnExportar_Click;
+            // 
             // FormBiseccion
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1347, 480);
+            Controls.Add(btnExportar);
             Controls.Add(lblRaiz);
             Controls.Add(btnCalcular);
             Controls.Add(dgvBiseccion);
@@ -172,5 +184,6 @@
         private DataGridView dgvBiseccion;
         private Button btnCalcular;
         private Label lblRaiz;
+        private Button btnExportar;
     }
 }

@@ -41,40 +41,41 @@
             label4 = new Label();
             label5 = new Label();
             btnCalcular = new Button();
+            btnExportar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvMuller).BeginInit();
             SuspendLayout();
             // 
             // txtX1
             // 
-            txtX1.Location = new Point(252, 47);
+            txtX1.Location = new Point(510, 45);
             txtX1.Name = "txtX1";
             txtX1.Size = new Size(125, 27);
             txtX1.TabIndex = 0;
             // 
             // txtX0
             // 
-            txtX0.Location = new Point(252, 12);
+            txtX0.Location = new Point(510, 12);
             txtX0.Name = "txtX0";
             txtX0.Size = new Size(125, 27);
             txtX0.TabIndex = 1;
             // 
             // txtFuncionMuller
             // 
-            txtFuncionMuller.Location = new Point(68, 47);
+            txtFuncionMuller.Location = new Point(196, 45);
             txtFuncionMuller.Name = "txtFuncionMuller";
-            txtFuncionMuller.Size = new Size(125, 27);
+            txtFuncionMuller.Size = new Size(203, 27);
             txtFuncionMuller.TabIndex = 2;
             // 
             // txtX2
             // 
-            txtX2.Location = new Point(252, 80);
+            txtX2.Location = new Point(510, 84);
             txtX2.Name = "txtX2";
             txtX2.Size = new Size(125, 27);
             txtX2.TabIndex = 3;
             // 
             // txtTolerancia
             // 
-            txtTolerancia.Location = new Point(488, 27);
+            txtTolerancia.Location = new Point(815, 19);
             txtTolerancia.Name = "txtTolerancia";
             txtTolerancia.Size = new Size(125, 27);
             txtTolerancia.TabIndex = 4;
@@ -83,7 +84,7 @@
             // 
             lblRaiz.AutoSize = true;
             lblRaiz.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRaiz.Location = new Point(425, 76);
+            lblRaiz.Location = new Point(743, 79);
             lblRaiz.Name = "lblRaiz";
             lblRaiz.Size = new Size(57, 28);
             lblRaiz.TabIndex = 5;
@@ -95,13 +96,13 @@
             dgvMuller.Location = new Point(12, 134);
             dgvMuller.Name = "dgvMuller";
             dgvMuller.RowHeadersWidth = 51;
-            dgvMuller.Size = new Size(776, 304);
+            dgvMuller.Size = new Size(1321, 306);
             dgvMuller.TabIndex = 6;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 50);
+            label1.Location = new Point(130, 52);
             label1.Name = "label1";
             label1.Size = new Size(60, 20);
             label1.TabIndex = 7;
@@ -110,7 +111,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(220, 19);
+            label2.Location = new Point(450, 15);
             label2.Name = "label2";
             label2.Size = new Size(26, 20);
             label2.TabIndex = 8;
@@ -119,7 +120,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(220, 54);
+            label3.Location = new Point(450, 48);
             label3.Name = "label3";
             label3.Size = new Size(26, 20);
             label3.TabIndex = 9;
@@ -128,7 +129,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(220, 87);
+            label4.Location = new Point(450, 87);
             label4.Name = "label4";
             label4.Size = new Size(26, 20);
             label4.TabIndex = 10;
@@ -137,7 +138,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(405, 34);
+            label5.Location = new Point(732, 26);
             label5.Name = "label5";
             label5.Size = new Size(77, 20);
             label5.TabIndex = 11;
@@ -145,19 +146,30 @@
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(652, 39);
+            btnCalcular.Location = new Point(1055, 39);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(115, 50);
+            btnCalcular.Size = new Size(115, 53);
             btnCalcular.TabIndex = 12;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
             btnCalcular.Click += btnCalcular_Click;
             // 
+            // btnExportar
+            // 
+            btnExportar.Location = new Point(1176, 39);
+            btnExportar.Name = "btnExportar";
+            btnExportar.Size = new Size(146, 53);
+            btnExportar.TabIndex = 13;
+            btnExportar.Text = "Exportar Excel";
+            btnExportar.UseVisualStyleBackColor = true;
+            btnExportar.Click += btnExportar_Click;
+            // 
             // FormMuller
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1345, 467);
+            Controls.Add(btnExportar);
             Controls.Add(btnCalcular);
             Controls.Add(label5);
             Controls.Add(label4);
@@ -193,5 +205,6 @@
         private Label label4;
         private Label label5;
         private Button btnCalcular;
+        private Button btnExportar;
     }
 }
