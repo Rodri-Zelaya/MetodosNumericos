@@ -508,102 +508,148 @@ public class MetodosNumericos
         return r.ToString("0.########");
     }
 
-    // Método auxiliar para evaluar con mXparser usando X y Y
-    private double Evaluar2Var(string funcion, double x, double y)
+    private double EvaluarNVar(string funcion, string[] variables, double[] valores)
     {
-        org.mariuszgromada.math.mxparser.Argument argX = new org.mariuszgromada.math.mxparser.Argument("x", x);
-        org.mariuszgromada.math.mxparser.Argument argY = new org.mariuszgromada.math.mxparser.Argument("y", y);
-        org.mariuszgromada.math.mxparser.Expression exp = new org.mariuszgromada.math.mxparser.Expression(funcion, argX, argY);
+        org.mariuszgromada.math.mxparser.Expression exp = new org.mariuszgromada.math.mxparser.Expression(funcion);
+        for (int i = 0; i < variables.Length; i++)
+        {
+            exp.addArguments(new org.mariuszgromada.math.mxparser.Argument(variables[i], valores[i]));
+        }
         return exp.calculate();
     }
-    public string NewtonRaphsonNoLineal(string funcF, string funcG, double x0, double y0, double tol, DataGridView dgv)
+
+    private double[,] InvertirMatriz(double[,] matriz)
     {
+        int n = matriz.GetLength(0);
+        double[,] result = new double[n, n];
+        double[,] a = new double[n, n];
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                a[i, j] = matriz[i, j];
+                result[i, j] = i == j ? 1.0 : 0.0;
+            }
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            double pivot = a[i, i];
+            if (Math.Abs(pivot) < 1e-12) throw new Exception("Matriz singular, no se puede invertir.");
+
+            for (int j = 0; j < n; j++)
+            {
+                a[i, j] /= pivot;
+                result[i, j] /= pivot;
+            }
+            for (int k = 0; k < n; k++)
+            {
+                if (k != i)
+                {
+                    double factor = a[k, i];
+                    for (int j = 0; j < n; j++)
+                    {
+                        a[k, j] -= factor * a[i, j];
+                        result[k, j] -= factor * result[i, j];
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public void NewtonRaphsonGeneral(string[] funciones, double[] X0, double tol, DataGridView dgv)
+    {
+        int N = funciones.Length;
+        // Asignamos variables: si es 2 usa x,y. Si es 3 usa x,y,z.
+        string[] vars = new string[N];
+        if (N == 2) { vars[0] = "x"; vars[1] = "y"; }
+        else if (N == 3) { vars[0] = "x"; vars[1] = "y"; vars[2] = "z"; }
+        else { for (int i = 0; i < N; i++) vars[i] = "x" + (i + 1); }
+
         dgv.Columns.Clear();
-        dgv.Columns.Add("Iter", "i");
-        dgv.Columns.Add("X", "Xi");
-        dgv.Columns.Add("Y", "Yi");
-        dgv.Columns.Add("F", "f(x,y)");
-        dgv.Columns.Add("G", "g(x,y)");
-        dgv.Columns.Add("dfdx", "df/dx");
-        dgv.Columns.Add("dfdy", "df/dy");
-        dgv.Columns.Add("dgdx", "dg/dx");
-        dgv.Columns.Add("dgdy", "dg/dy");
-        dgv.Columns.Add("Det", "Jacobiano");
-        dgv.Columns.Add("Dx", "Δx");
-        dgv.Columns.Add("Dy", "Δy");
-        dgv.Columns.Add("ErX", "Er(x)%");
-        dgv.Columns.Add("ErY", "Er(y)%");
+        dgv.Columns.Add("X", "X");
+        for (int i = 0; i < N; i++) dgv.Columns.Add($"J{i}", $"J(X)_{i + 1}");
+        for (int i = 0; i < N; i++) dgv.Columns.Add($"Jinv{i}", $"[J(X)]^-1_{i + 1}");
+        dgv.Columns.Add("F", "F(X)");
+        dgv.Columns.Add("Delta", "[J(X)]^-1 * F(X)");
+        dgv.Columns.Add("Er", "Er");
 
         dgv.Rows.Clear();
 
-        double x = x0, y = y0;
-        double errorX = 100, errorY = 100;
+        double[] X = (double[])X0.Clone();
+        double[] Delta = new double[N];
+        double[] X_next = new double[N];
+        double[] Er = new double[N];
         int iter = 0;
-        double h = 0.0001; // Paso pequeñito para calcular las derivadas numéricas
+
+        // Colores para los bloques igual que tu Excel
+        System.Drawing.Color[] colores = {
+            System.Drawing.Color.LightGoldenrodYellow, System.Drawing.Color.LightGray,
+            System.Drawing.Color.LightSteelBlue, System.Drawing.Color.LightSalmon,
+            System.Drawing.Color.PaleGoldenrod, System.Drawing.Color.DarkSeaGreen
+        };
 
         while (iter < 100)
         {
-            // Evaluamos las funciones originales
-            double f = Evaluar2Var(funcF, x, y);
-            double g = Evaluar2Var(funcG, x, y);
+            double[,] J = new double[N, N];
+            double[] F = new double[N];
+            double h = 0.0001;
 
-            // Magia: Calculamos las 4 derivadas parciales usando Diferencias Centrales
-            double dfdx = (Evaluar2Var(funcF, x + h, y) - Evaluar2Var(funcF, x - h, y)) / (2 * h);
-            double dfdy = (Evaluar2Var(funcF, x, y + h) - Evaluar2Var(funcF, x, y - h)) / (2 * h);
-
-            double dgdx = (Evaluar2Var(funcG, x + h, y) - Evaluar2Var(funcG, x - h, y)) / (2 * h);
-            double dgdy = (Evaluar2Var(funcG, x, y + h) - Evaluar2Var(funcG, x, y - h)) / (2 * h);
-
-            // Determinante de la Matriz Jacobiana
-            double jacobiano = (dfdx * dgdy) - (dfdy * dgdx);
-
-            if (Math.Abs(jacobiano) < 1E-10)
+            // 1. Evaluar Funciones y Matriz Jacobiana
+            for (int i = 0; i < N; i++)
             {
-                MessageBox.Show("El Jacobiano se hizo cero. El método no puede continuar desde este punto inicial.");
-                break;
+                F[i] = EvaluarNVar(funciones[i], vars, X);
+                for (int j = 0; j < N; j++)
+                {
+                    double[] X_temp = (double[])X.Clone();
+                    X_temp[j] += h;
+                    double f_plus = EvaluarNVar(funciones[i], vars, X_temp);
+                    X_temp[j] -= 2 * h;
+                    double f_minus = EvaluarNVar(funciones[i], vars, X_temp);
+                    J[i, j] = (f_plus - f_minus) / (2 * h);
+                }
             }
 
-            // Regla de Cramer para resolver el sistema y hallar los deltas
-            double dx = (-f * dgdy + g * dfdy) / jacobiano;
-            double dy = (-g * dfdx + f * dgdx) / jacobiano;
+            // 2. Invertir Jacobiano y Calcular Deltas
+            double[,] Jinv = InvertirMatriz(J);
+            double errorMax = 0;
 
-            double x_nuevo = x + dx;
-            double y_nuevo = y + dy;
-
-            if (iter > 0)
+            for (int i = 0; i < N; i++)
             {
-                errorX = Math.Abs(dx / x_nuevo) * 100;
-                errorY = Math.Abs(dy / y_nuevo) * 100;
+                Delta[i] = 0;
+                for (int k = 0; k < N; k++) Delta[i] += Jinv[i, k] * F[k];
+                X_next[i] = X[i] - Delta[i];
+
+                // La fórmula del error según tu Excel
+                Er[i] = Math.Abs(Delta[i] / X_next[i]) * 100;
+                if (Er[i] > errorMax) errorMax = Er[i];
             }
 
-            // Mandamos los datos a la tabla
-            dgv.Rows.Add(
-                iter,
-                x.ToString("F6"), y.ToString("F6"),
-                f.ToString("F6"), g.ToString("F6"),
-                dfdx.ToString("F4"), dfdy.ToString("F4"),
-                dgdx.ToString("F4"), dgdy.ToString("F4"),
-                jacobiano.ToString("F6"),
-                dx.ToString("F6"), dy.ToString("F6"),
-                (iter == 0) ? "-" : errorX.ToString("F6"),
-                (iter == 0) ? "-" : errorY.ToString("F6")
-            );
-
-            if (iter > 0 && errorX < tol && errorY < tol)
+            // 3. Pintar el bloque de N filas en el DataGridView
+            System.Drawing.Color colorBloque = colores[iter % colores.Length];
+            for (int r = 0; r < N; r++)
             {
-                // Agregamos la última fila con los resultados finales clavados
-                dgv.Rows.Add(iter + 1, x_nuevo.ToString("F6"), y_nuevo.ToString("F6"), "0.000000", "0.000000", "-", "-", "-", "-", "-", "-", "-", "-", "-");
-                x = x_nuevo;
-                y = y_nuevo;
-                break;
+                System.Collections.Generic.List<object> fila = new System.Collections.Generic.List<object>();
+                fila.Add(X[r].ToString("G8"));
+
+                for (int c = 0; c < N; c++) fila.Add(J[r, c].ToString("G8"));
+                for (int c = 0; c < N; c++) fila.Add(Jinv[r, c].ToString("G8"));
+
+                fila.Add(F[r].ToString("G8"));
+                fila.Add(Delta[r].ToString("G8"));
+                fila.Add(iter == 0 ? "" : Er[r].ToString("F4") + "%");
+
+                int index = dgv.Rows.Add(fila.ToArray());
+                dgv.Rows[index].DefaultCellStyle.BackColor = colorBloque;
             }
 
-            x = x_nuevo;
-            y = y_nuevo;
+            if (iter > 0 && errorMax < tol) break;
+
+            X = (double[])X_next.Clone();
             iter++;
         }
-
-        return $"X: {x:F6}  |  Y: {y:F6}";
     }
 
     public void ExportarAExcel(DataGridView dgv)

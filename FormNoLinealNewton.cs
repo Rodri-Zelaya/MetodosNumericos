@@ -21,21 +21,30 @@ namespace Métodos_Numéricos
         {
             try
             {
-                string funcF = txtF.Text;
-                string funcG = txtG.Text;
+                // Leemos las funciones línea por línea ignorando las vacías
+                string[] funciones = txtFunciones.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] strValores = txtValoresIniciales.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-                double x0 = double.Parse(txtX0.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double y0 = double.Parse(txtY0.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+                if (funciones.Length != strValores.Length)
+                {
+                    MessageBox.Show("Bro, la cantidad de funciones debe ser igual a la cantidad de valores iniciales.");
+                    return;
+                }
+
+                double[] X0 = new double[strValores.Length];
+                for (int i = 0; i < strValores.Length; i++)
+                {
+                    X0[i] = double.Parse(strValores[i].Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+                }
+
                 double tol = double.Parse(txtTol.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 
                 MetodosNumericos metodos = new MetodosNumericos();
-
-                string resultado = metodos.NewtonRaphsonNoLineal(funcF, funcG, x0, y0, tol, dgvNoLinealNewton);
-                lblRespuesta.Text = "Intersección: " + resultado;
+                metodos.NewtonRaphsonGeneral(funciones, X0, tol, dgvNoLinealNewton);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Revisa la sintaxis de tus funciones bro: " + ex.Message);
+                MessageBox.Show("Verifica la sintaxis bro. Recuerda escribir cada función en una línea nueva: " + ex.Message);
             }
         }
 
