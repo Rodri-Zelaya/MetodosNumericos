@@ -328,16 +328,31 @@ public class MetodosNumericos
         return x2.ToString("0.########");
     }
 
-    public string Bairstow(double[] a, double r0, double s0, double tol, DataGridView dgv)
+    public string Bairstow(double[] a, double tol, DataGridView dgv, out double r0_out, out double s0_out)
     {
-        int n = a.Length - 1; // El grado es la cantidad de números menos 1
+        int n = a.Length - 1;
+        r0_out = 0; s0_out = 0;
 
-        if (n < 3) return "Error: El polinomio debe ser al menos de grado 3 (4 coeficientes).";
+        if (n < 3) return "Error: El polinomio debe ser al menos de grado 3.";
+
+        // --- LÓGICA DEL PROFE (Basada en tu script de Python) ---
+        // Por defecto usar Pequeñas a menos que a[2] sea 0 
+        if (a[2] != 0)
+        {
+            // Rama de Raíces Pequeñas
+            r0_out = a[1] / a[2];
+            s0_out = a[0] / a[2];
+        }
+        else
+        {
+            // Rama de Raíces Muy Grandes
+            r0_out = a[n - 1] / a[n];
+            s0_out = a[n - 2] / a[n];
+        }
+        // --------------------------------------------------------
 
         dgv.Columns.Clear();
         dgv.Columns.Add("Iter", "Iter");
-
-        // Magia: Creamos las columnas b y c de forma automática según el tamaño
         for (int i = n; i >= 0; i--) dgv.Columns.Add($"b{i}", $"b{i}");
         for (int i = n; i >= 1; i--) dgv.Columns.Add($"c{i}", $"c{i}");
 
@@ -349,10 +364,11 @@ public class MetodosNumericos
 
         dgv.Rows.Clear();
 
-        double r = r0, s = s0;
+        // AQUÍ ESTABAN LOS ERRORES. Ya quedó limpio con una sola declaración:
+        double r = r0_out, s = s0_out;
         double errorR = 100, errorS = 100;
         int iter = 0;
-        // 1. AGREGA ESTA LÍNEA AQUÍ AFUERA:
+
         string x1_str = "", x2_str = "";
 
         double[] b = new double[n + 1];
@@ -385,6 +401,7 @@ public class MetodosNumericos
 
             if (iter > 0)
             {
+                // Nota: Aquí estamos usando el error real matemático, sin el "hack" de clonar el Excel.
                 errorR = Math.Abs(dr / r_nuevo) * 100;
                 errorS = Math.Abs(ds / s_nuevo) * 100;
             }
@@ -428,7 +445,35 @@ public class MetodosNumericos
             r = r_nuevo; s = s_nuevo;
             iter++;
         }
-        return $"X1: {x1_str}  |  X2: {x2_str}";
+
+        // --- MAGIA FINAL: CALCULAMOS LAS RAÍCES RESTANTES ---
+        string extras = "";
+
+        if (n == 3)
+        {
+            double x3 = -b[2] / b[3];
+            extras = $"  |  X3: {x3:F8}";
+        }
+        else if (n == 4)
+        {
+            double a_cuad = b[4], b_cuad = b[3], c_cuad = b[2];
+            double disc = (b_cuad * b_cuad) - (4 * a_cuad * c_cuad);
+
+            if (disc >= 0)
+            {
+                double x3 = (-b_cuad + Math.Sqrt(disc)) / (2 * a_cuad);
+                double x4 = (-b_cuad - Math.Sqrt(disc)) / (2 * a_cuad);
+                extras = $"  |  X3: {x3:F8}  |  X4: {x4:F8}";
+            }
+            else
+            {
+                double real = -b_cuad / (2 * a_cuad);
+                double imag = Math.Sqrt(Math.Abs(disc)) / (2 * a_cuad);
+                extras = $"  |  X3: {real:F8} + {imag:F8}i  |  X4: {real:F8} - {imag:F8}i";
+            }
+        }
+
+        return $"X1: {x1_str}  |  X2: {x2_str}" + extras;
     }
 
     public string HornerNewton(double[] a, double r0, double tol, DataGridView dgv)

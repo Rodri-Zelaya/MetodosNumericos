@@ -27,29 +27,36 @@ namespace Métodos_Numéricos
 
             try
             {
-                // Cortamos el texto por cada espacio que haya
+                // 1. Preparamos los datos
                 string[] partes = txtCoeficientes.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 int n = partes.Length - 1;
 
-                // Creamos el arreglo y acomodamos los coeficientes desde el grado mayor hasta a0
                 double[] a = new double[n + 1];
                 for (int i = 0; i <= n; i++)
                 {
                     a[n - i] = double.Parse(partes[i].Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
                 }
 
-                double r0 = double.Parse(txtR0.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double s0 = double.Parse(txtS0.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
                 double tol = double.Parse(txtTolerancia.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
 
                 MetodosNumericos metodos = new MetodosNumericos();
 
-                string raices = metodos.Bairstow(a, r0, s0, tol, dgvBairstow);
-                lblRaiz.Text = "Raíces: " + raices;
+                // 2. Preparamos variables vacías para atrapar r0 y s0
+                double r0_calculado, s0_calculado;
+
+                // 3. Ejecutamos el método
+                string resultado = metodos.Bairstow(a, tol, dgvBairstow, out r0_calculado, out s0_calculado);
+
+                // 4. Mostramos resultados en la pantalla
+                lblRaiz.Text = "Raíces encontradas: " + resultado;
+
+                // Asegúrate de tener creados estos dos Labels en tu diseño:
+                lblR0.Text = "r0 automático: " + r0_calculado.ToString("F4");
+                lblS0.Text = "s0 automático: " + s0_calculado.ToString("F4");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Verifica los datos. Recuerda separarlos con ESPACIOS, no con comas: " + ex.Message);
+                MessageBox.Show("Error bro. Revisa la sintaxis: " + ex.Message);
             }
         }
 
