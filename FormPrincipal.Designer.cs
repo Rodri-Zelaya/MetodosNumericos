@@ -185,8 +185,11 @@
             ClientSize = new Size(1352, 509);
             Controls.Add(panelContenedor);
             Controls.Add(panel1);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FormPrincipal";
             Text = "FormPrincipal";
+            WindowState = FormWindowState.Maximized;
             Load += FormPrincipal_Load;
             panel1.ResumeLayout(false);
             ResumeLayout(false);
