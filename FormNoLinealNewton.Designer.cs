@@ -43,16 +43,20 @@
             // 
             // txtTol
             // 
-            txtTol.Location = new Point(879, 27);
+            txtTol.Anchor = AnchorStyles.Top;
+            txtTol.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtTol.Location = new Point(939, 27);
             txtTol.Name = "txtTol";
-            txtTol.Size = new Size(125, 27);
+            txtTol.Size = new Size(175, 34);
             txtTol.TabIndex = 4;
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(1041, 30);
+            btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCalcular.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCalcular.Location = new Point(969, 17);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(129, 60);
+            btnCalcular.Size = new Size(161, 62);
             btnCalcular.TabIndex = 5;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -60,25 +64,31 @@
             // 
             // label1
             // 
+            label1.Anchor = AnchorStyles.Top;
             label1.AutoSize = true;
-            label1.Location = new Point(796, 30);
+            label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(810, 30);
             label1.Name = "label1";
-            label1.Size = new Size(77, 20);
+            label1.Size = new Size(123, 31);
             label1.TabIndex = 6;
             label1.Text = "Tolerancia";
             // 
             // lblRespuesta
             // 
+            lblRespuesta.Anchor = AnchorStyles.Top;
             lblRespuesta.AutoSize = true;
-            lblRespuesta.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRespuesta.Location = new Point(796, 111);
+            lblRespuesta.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblRespuesta.Location = new Point(810, 111);
             lblRespuesta.Name = "lblRespuesta";
-            lblRespuesta.Size = new Size(111, 25);
+            lblRespuesta.Size = new Size(137, 31);
             lblRespuesta.TabIndex = 11;
             lblRespuesta.Text = "RESPUESTA";
             // 
             // dgvNoLinealNewton
             // 
+            dgvNoLinealNewton.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvNoLinealNewton.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvNoLinealNewton.BackgroundColor = SystemColors.ActiveCaption;
             dgvNoLinealNewton.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvNoLinealNewton.Location = new Point(9, 151);
             dgvNoLinealNewton.Name = "dgvNoLinealNewton";
@@ -88,9 +98,11 @@
             // 
             // btnExportar
             // 
-            btnExportar.Location = new Point(1176, 30);
+            btnExportar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnExportar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnExportar.Location = new Point(1136, 17);
             btnExportar.Name = "btnExportar";
-            btnExportar.Size = new Size(139, 60);
+            btnExportar.Size = new Size(206, 62);
             btnExportar.TabIndex = 13;
             btnExportar.Text = "Exportar Excel";
             btnExportar.UseVisualStyleBackColor = true;
@@ -98,7 +110,8 @@
             // 
             // txtFunciones
             // 
-            txtFunciones.Location = new Point(89, 12);
+            txtFunciones.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtFunciones.Location = new Point(124, 9);
             txtFunciones.Multiline = true;
             txtFunciones.Name = "txtFunciones";
             txtFunciones.Size = new Size(287, 133);
@@ -107,15 +120,17 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(9, 70);
+            label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(-4, 70);
             label2.Name = "label2";
-            label2.Size = new Size(74, 20);
+            label2.Size = new Size(122, 31);
             label2.TabIndex = 15;
             label2.Text = "Funciones";
             // 
             // txtValoresIniciales
             // 
-            txtValoresIniciales.Location = new Point(502, 12);
+            txtValoresIniciales.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtValoresIniciales.Location = new Point(607, 12);
             txtValoresIniciales.Multiline = true;
             txtValoresIniciales.Name = "txtValoresIniciales";
             txtValoresIniciales.Size = new Size(287, 133);
@@ -124,9 +139,10 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(382, 70);
+            label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(417, 70);
             label3.Name = "label3";
-            label3.Size = new Size(114, 20);
+            label3.Size = new Size(184, 31);
             label3.TabIndex = 17;
             label3.Text = "Valores iniciales";
             // 
