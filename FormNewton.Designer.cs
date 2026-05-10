@@ -44,56 +44,68 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(105, 50);
+            label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(32, 47);
             label1.Name = "label1";
-            label1.Size = new Size(60, 20);
+            label1.Size = new Size(100, 31);
             label1.TabIndex = 0;
             label1.Text = "Función";
             // 
             // label3
             // 
+            label3.Anchor = AnchorStyles.Top;
             label3.AutoSize = true;
-            label3.Location = new Point(438, 50);
+            label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(482, 11);
             label3.Name = "label3";
-            label3.Size = new Size(86, 20);
+            label3.Size = new Size(140, 31);
             label3.TabIndex = 2;
             label3.Text = "Valor Inicial";
             // 
             // label4
             // 
+            label4.Anchor = AnchorStyles.Top;
             label4.AutoSize = true;
-            label4.Location = new Point(733, 25);
+            label4.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.Location = new Point(482, 65);
             label4.Name = "label4";
-            label4.Size = new Size(77, 20);
+            label4.Size = new Size(123, 31);
             label4.TabIndex = 3;
             label4.Text = "Tolerancia";
             // 
             // txtFuncionNewton
             // 
-            txtFuncionNewton.Location = new Point(180, 47);
+            txtFuncionNewton.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtFuncionNewton.Location = new Point(138, 47);
             txtFuncionNewton.Name = "txtFuncionNewton";
-            txtFuncionNewton.Size = new Size(219, 27);
+            txtFuncionNewton.Size = new Size(414, 34);
             txtFuncionNewton.TabIndex = 5;
             // 
             // txtVI
             // 
-            txtVI.Location = new Point(543, 43);
+            txtVI.Anchor = AnchorStyles.Top;
+            txtVI.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtVI.Location = new Point(628, 11);
             txtVI.Name = "txtVI";
-            txtVI.Size = new Size(125, 27);
+            txtVI.Size = new Size(185, 34);
             txtVI.TabIndex = 7;
             // 
             // txtTolNewton
             // 
-            txtTolNewton.Location = new Point(830, 18);
+            txtTolNewton.Anchor = AnchorStyles.Top;
+            txtTolNewton.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtTolNewton.Location = new Point(628, 62);
             txtTolNewton.Name = "txtTolNewton";
-            txtTolNewton.Size = new Size(125, 27);
+            txtTolNewton.Size = new Size(185, 34);
             txtTolNewton.TabIndex = 8;
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(1063, 32);
+            btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCalcular.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCalcular.Location = new Point(967, 11);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(110, 49);
+            btnCalcular.Size = new Size(157, 52);
             btnCalcular.TabIndex = 10;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -101,6 +113,9 @@
             // 
             // dgvNewton
             // 
+            dgvNewton.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvNewton.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvNewton.BackgroundColor = SystemColors.ActiveCaption;
             dgvNewton.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvNewton.Location = new Point(12, 105);
             dgvNewton.Name = "dgvNewton";
@@ -110,19 +125,22 @@
             // 
             // lblRaiz
             // 
+            lblRaiz.Anchor = AnchorStyles.Top;
             lblRaiz.AutoSize = true;
-            lblRaiz.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRaiz.Location = new Point(744, 64);
+            lblRaiz.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblRaiz.Location = new Point(854, 62);
             lblRaiz.Name = "lblRaiz";
-            lblRaiz.Size = new Size(57, 28);
+            lblRaiz.Size = new Size(65, 31);
             lblRaiz.TabIndex = 12;
             lblRaiz.Text = "Raiz:";
             // 
             // btnExportar
             // 
-            btnExportar.Location = new Point(1188, 29);
+            btnExportar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnExportar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnExportar.Location = new Point(1130, 11);
             btnExportar.Name = "btnExportar";
-            btnExportar.Size = new Size(122, 52);
+            btnExportar.Size = new Size(188, 52);
             btnExportar.TabIndex = 13;
             btnExportar.Text = "Exportar Excel";
             btnExportar.UseVisualStyleBackColor = true;
