@@ -25,7 +25,7 @@ namespace Métodos_Numéricos
         private void btnCalcular_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtFuncionReglaFalsa.Text) || string.IsNullOrWhiteSpace(txtA.Text) ||
-        string.IsNullOrWhiteSpace(txtB.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
+       string.IsNullOrWhiteSpace(txtB.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
             {
                 MessageBox.Show("Llena todos los campos bro.");
                 return;
@@ -48,6 +48,7 @@ namespace Métodos_Numéricos
             {
                 MessageBox.Show("Error en los datos o en la función: " + ex.Message);
             }
+
         }
 
         private void btnExportar_Click(object sender, EventArgs e)

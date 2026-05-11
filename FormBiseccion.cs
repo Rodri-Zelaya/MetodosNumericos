@@ -20,7 +20,7 @@ namespace Métodos_Numéricos
         private void btnCalcular_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtFuncionBiseccion.Text) || string.IsNullOrWhiteSpace(txtA.Text) ||
-        string.IsNullOrWhiteSpace(txtB.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
+         string.IsNullOrWhiteSpace(txtB.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
             {
                 MessageBox.Show("Por favor, llena todos los campos.");
                 return;
@@ -43,10 +43,6 @@ namespace Métodos_Numéricos
             {
                 MessageBox.Show("Error de cálculo: " + ex.Message);
             }
-        }
-
-        private void FormBiseccion_Load(object sender, EventArgs e)
-        {
 
         }
 
