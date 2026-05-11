@@ -31,10 +31,24 @@ namespace Métodos_Numéricos
                 string[] partes = txtCoeficientes.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 int n = partes.Length - 1;
 
+                // 🛡️ REGLA MATEMÁTICA 1: Grado del polinomio
+                if (n < 3)
+                {
+                    MessageBox.Show("Bro, matemáticamente Bairstow es para ligas mayores. Solo funciona para polinomios de grado 3 o superior. Si tienes uno de grado 2, usa la fórmula cuadrática.", "Error de Grado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 double[] a = new double[n + 1];
                 for (int i = 0; i <= n; i++)
                 {
                     a[n - i] = double.Parse(partes[i].Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+                }
+
+                // 🛡️ REGLA MATEMÁTICA 2: Coeficiente principal no nulo
+                if (a[n] == 0)
+                {
+                    MessageBox.Show("El primer coeficiente (el principal) no puede ser cero, bro. Revisa tus números.", "Error de Coeficiente", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
 
                 double tol = double.Parse(txtTolerancia.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);

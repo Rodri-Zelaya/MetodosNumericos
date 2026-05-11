@@ -19,32 +19,62 @@ namespace Métodos_Numéricos
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
+            // 1. Verificamos que no haya campos vacíos
+            if (string.IsNullOrWhiteSpace(txtFunciones.Text) || string.IsNullOrWhiteSpace(txtValoresIniciales.Text) || string.IsNullOrWhiteSpace(txtTol.Text))
+            {
+                MessageBox.Show("Llena todos los campos bro.");
+                return;
+            }
+
             try
             {
-                // Leemos las funciones línea por línea ignorando las vacías
+                // Instanciamos el cerebro PRIMERO para usar tu traductor universal
+                MetodosNumericos metodos = new MetodosNumericos();
+
+                // 2. Leemos las funciones línea por línea ignorando las vacías
                 string[] funciones = txtFunciones.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                // 3. Leemos los valores iniciales (uno por línea según tu diseño)
                 string[] strValores = txtValoresIniciales.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
+                // 🛡️ REGLA MATEMÁTICA 1: SISTEMA CUADRADO (NxN)
                 if (funciones.Length != strValores.Length)
                 {
-                    MessageBox.Show("Bro, la cantidad de funciones debe ser igual a la cantidad de valores iniciales.");
+                    MessageBox.Show($"Bro, pusiste {funciones.Length} funciones pero {strValores.Length} valores iniciales.\n\nMatemáticamente el sistema debe ser cuadrado (NxN). La cantidad debe ser igual.", "Error de Dimensión", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
+                // 4. Traducimos los valores iniciales con el método seguro
                 double[] X0 = new double[strValores.Length];
                 for (int i = 0; i < strValores.Length; i++)
                 {
-                    X0[i] = double.Parse(strValores[i].Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+                    X0[i] = metodos.ConvertirADouble(strValores[i]);
                 }
 
-                double tol = double.Parse(txtTol.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
+                // 5. Traducimos la tolerancia
+                double tol = metodos.ConvertirADouble(txtTol.Text);
 
-                MetodosNumericos metodos = new MetodosNumericos();
+                // 6. Arrancamos el motor
                 metodos.NewtonRaphsonGeneral(funciones, X0, tol, dgvNoLinealNewton);
+
+                // Un mensajito de éxito nunca está de más cuando el método es tan pesado
+                MessageBox.Show("¡Cálculo terminado con éxito!", "Excelente", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Verifica la sintaxis bro. Recuerda escribir cada función en una línea nueva: " + ex.Message);
+                // 🛡️ REGLA MATEMÁTICA 2: MATRIZ SINGULAR (Atrapada desde el motor)
+                if (ex.Message.Contains("Matriz singular"))
+                {
+                    MessageBox.Show(
+                        "El método falló matemáticamente bro.\n\nMotivo: " + ex.Message + "\n\nIntenta con otros valores iniciales para evitar que la matriz Jacobiana se vuelva cero (divisiones por cero en el espacio multidimensional).",
+                        "Alerta de Sistema (Jacobiano)",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Verifica la sintaxis bro. Recuerda escribir cada función en una línea nueva: " + ex.Message);
+                }
             }
         }
 

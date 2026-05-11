@@ -30,7 +30,7 @@
         {
             txtX1 = new TextBox();
             txtX0 = new TextBox();
-            txtFuncionMuller = new TextBox();
+            txtCoeficientes = new TextBox();
             txtX2 = new TextBox();
             txtTolerancia = new TextBox();
             lblRaiz = new Label();
@@ -63,13 +63,13 @@
             txtX0.Size = new Size(125, 34);
             txtX0.TabIndex = 1;
             // 
-            // txtFuncionMuller
+            // txtCoeficientes
             // 
-            txtFuncionMuller.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtFuncionMuller.Location = new Point(134, 110);
-            txtFuncionMuller.Name = "txtFuncionMuller";
-            txtFuncionMuller.Size = new Size(374, 34);
-            txtFuncionMuller.TabIndex = 2;
+            txtCoeficientes.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtCoeficientes.Location = new Point(167, 110);
+            txtCoeficientes.Name = "txtCoeficientes";
+            txtCoeficientes.Size = new Size(374, 34);
+            txtCoeficientes.TabIndex = 2;
             // 
             // txtX2
             // 
@@ -116,11 +116,11 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(28, 113);
+            label1.Location = new Point(16, 113);
             label1.Name = "label1";
-            label1.Size = new Size(100, 31);
+            label1.Size = new Size(145, 31);
             label1.TabIndex = 7;
-            label1.Text = "Función";
+            label1.Text = "Coeficientes";
             // 
             // label2
             // 
@@ -206,7 +206,7 @@
             Controls.Add(lblRaiz);
             Controls.Add(txtTolerancia);
             Controls.Add(txtX2);
-            Controls.Add(txtFuncionMuller);
+            Controls.Add(txtCoeficientes);
             Controls.Add(txtX0);
             Controls.Add(txtX1);
             Name = "FormMuller";
@@ -220,7 +220,7 @@
 
         private TextBox txtX1;
         private TextBox txtX0;
-        private TextBox txtFuncionMuller;
+        private TextBox txtCoeficientes;
         private TextBox txtX2;
         private TextBox txtTolerancia;
         private Label lblRaiz;

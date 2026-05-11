@@ -19,23 +19,50 @@ namespace Métodos_Numéricos
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtFuncionMuller.Text) || string.IsNullOrWhiteSpace(txtX0.Text) ||
-       string.IsNullOrWhiteSpace(txtX1.Text) || string.IsNullOrWhiteSpace(txtX2.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
+            // 1. Validar que no falte nada
+            if (string.IsNullOrWhiteSpace(txtCoeficientes.Text) || string.IsNullOrWhiteSpace(txtX0.Text) ||
+                string.IsNullOrWhiteSpace(txtX1.Text) || string.IsNullOrWhiteSpace(txtX2.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
             {
-                MessageBox.Show("Llena todos los campos.");
+                MessageBox.Show("Llena todos los campos bro (Recuerda los coeficientes separados por espacios).");
                 return;
             }
+
             try
             {
-                string funcion = txtFuncionMuller.Text;
-                double x0 = double.Parse(txtX0.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double x1 = double.Parse(txtX1.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double x2 = double.Parse(txtX2.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double tol = double.Parse(txtTolerancia.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-
                 MetodosNumericos metodos = new MetodosNumericos();
 
-                string raizEncontrada = metodos.Muller(funcion, x0, x1, x2, tol, dgvMuller);
+                // 2. Leemos puntos y tolerancia con el traductor universal
+                double x0 = metodos.ConvertirADouble(txtX0.Text);
+                double x1 = metodos.ConvertirADouble(txtX1.Text);
+                double x2 = metodos.ConvertirADouble(txtX2.Text);
+                double tol = metodos.ConvertirADouble(txtTolerancia.Text);
+
+                // 🛡️ 3. REGLA MATEMÁTICA: PUNTOS DIFERENTES 
+                if (x0 == x1 || x1 == x2 || x0 == x2)
+                {
+                    MessageBox.Show("Los tres puntos iniciales deben ser diferentes para la parábola de Müller.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 4. PREPARAMOS LOS COEFICIENTES (Al estilo Bairstow)
+                string[] partes = txtCoeficientes.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                int n = partes.Length - 1;
+
+                if (n < 2)
+                {
+                    MessageBox.Show("Bro, Müller necesita al menos un polinomio de grado 2 (3 coeficientes).");
+                    return;
+                }
+
+                double[] a = new double[n + 1];
+                for (int i = 0; i <= n; i++)
+                {
+                    // Usamos el traductor universal para cada numerito del arreglo
+                    a[n - i] = metodos.ConvertirADouble(partes[i]);
+                }
+
+                // 5. Llamamos al motor de Müller
+                string raizEncontrada = metodos.Muller(a, x0, x1, x2, tol, dgvMuller);
                 lblRaiz.Text = "Raíz: " + raizEncontrada;
             }
             catch (Exception ex)
