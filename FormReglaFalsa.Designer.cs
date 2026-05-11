@@ -40,13 +40,14 @@
             btnCalcular = new Button();
             lblRaiz = new Label();
             btnExportar = new Button();
+            btnGraficar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvReglaFalsa).BeginInit();
             SuspendLayout();
             // 
             // txtFuncionReglaFalsa
             // 
             txtFuncionReglaFalsa.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtFuncionReglaFalsa.Location = new Point(124, 40);
+            txtFuncionReglaFalsa.Location = new Point(124, 89);
             txtFuncionReglaFalsa.Name = "txtFuncionReglaFalsa";
             txtFuncionReglaFalsa.Size = new Size(424, 34);
             txtFuncionReglaFalsa.TabIndex = 0;
@@ -55,7 +56,7 @@
             // 
             txtA.Anchor = AnchorStyles.Top;
             txtA.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtA.Location = new Point(533, 5);
+            txtA.Location = new Point(737, 53);
             txtA.Name = "txtA";
             txtA.Size = new Size(125, 34);
             txtA.TabIndex = 1;
@@ -64,7 +65,7 @@
             // 
             txtB.Anchor = AnchorStyles.Top;
             txtB.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtB.Location = new Point(533, 65);
+            txtB.Location = new Point(737, 122);
             txtB.Name = "txtB";
             txtB.Size = new Size(125, 34);
             txtB.TabIndex = 2;
@@ -73,7 +74,7 @@
             // 
             txtTolerancia.Anchor = AnchorStyles.Top;
             txtTolerancia.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtTolerancia.Location = new Point(833, 6);
+            txtTolerancia.Location = new Point(1054, 53);
             txtTolerancia.Name = "txtTolerancia";
             txtTolerancia.Size = new Size(197, 34);
             txtTolerancia.TabIndex = 3;
@@ -82,7 +83,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(27, 43);
+            label1.Location = new Point(18, 92);
             label1.Name = "label1";
             label1.Size = new Size(100, 31);
             label1.TabIndex = 5;
@@ -93,7 +94,7 @@
             label2.Anchor = AnchorStyles.Top;
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(425, 8);
+            label2.Location = new Point(628, 56);
             label2.Name = "label2";
             label2.Size = new Size(91, 31);
             label2.TabIndex = 6;
@@ -104,7 +105,7 @@
             label3.Anchor = AnchorStyles.Top;
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(426, 68);
+            label3.Location = new Point(628, 125);
             label3.Name = "label3";
             label3.Size = new Size(90, 31);
             label3.TabIndex = 7;
@@ -115,7 +116,7 @@
             label4.Anchor = AnchorStyles.Top;
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(704, 9);
+            label4.Location = new Point(925, 53);
             label4.Name = "label4";
             label4.Size = new Size(123, 31);
             label4.TabIndex = 8;
@@ -127,19 +128,19 @@
             dgvReglaFalsa.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvReglaFalsa.BackgroundColor = SystemColors.ActiveCaption;
             dgvReglaFalsa.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvReglaFalsa.Location = new Point(16, 123);
+            dgvReglaFalsa.Location = new Point(16, 193);
             dgvReglaFalsa.Name = "dgvReglaFalsa";
             dgvReglaFalsa.RowHeadersWidth = 51;
-            dgvReglaFalsa.Size = new Size(1318, 315);
+            dgvReglaFalsa.Size = new Size(1761, 263);
             dgvReglaFalsa.TabIndex = 10;
             // 
             // btnCalcular
             // 
             btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCalcular.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCalcular.Location = new Point(969, 14);
+            btnCalcular.Location = new Point(1268, 35);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(168, 60);
+            btnCalcular.Size = new Size(168, 73);
             btnCalcular.TabIndex = 11;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -150,7 +151,7 @@
             lblRaiz.Anchor = AnchorStyles.Top;
             lblRaiz.AutoSize = true;
             lblRaiz.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRaiz.Location = new Point(715, 68);
+            lblRaiz.Location = new Point(925, 123);
             lblRaiz.Name = "lblRaiz";
             lblRaiz.Size = new Size(65, 31);
             lblRaiz.TabIndex = 12;
@@ -160,19 +161,32 @@
             // 
             btnExportar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnExportar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportar.Location = new Point(1143, 14);
+            btnExportar.Location = new Point(1586, 32);
             btnExportar.Name = "btnExportar";
-            btnExportar.Size = new Size(191, 60);
+            btnExportar.Size = new Size(191, 73);
             btnExportar.TabIndex = 13;
             btnExportar.Text = "Exportar Excel";
             btnExportar.UseVisualStyleBackColor = true;
             btnExportar.Click += btnExportar_Click;
             // 
+            // btnGraficar
+            // 
+            btnGraficar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnGraficar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnGraficar.Location = new Point(1442, 33);
+            btnGraficar.Name = "btnGraficar";
+            btnGraficar.Size = new Size(138, 73);
+            btnGraficar.TabIndex = 14;
+            btnGraficar.Text = "Graficar";
+            btnGraficar.UseVisualStyleBackColor = true;
+            btnGraficar.Click += btnGraficar_Click;
+            // 
             // FormReglaFalsa
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1346, 468);
+            ClientSize = new Size(1789, 468);
+            Controls.Add(btnGraficar);
             Controls.Add(btnExportar);
             Controls.Add(lblRaiz);
             Controls.Add(btnCalcular);
@@ -207,5 +221,6 @@
         private Button btnCalcular;
         private Label lblRaiz;
         private Button btnExportar;
+        private Button btnGraficar;
     }
 }

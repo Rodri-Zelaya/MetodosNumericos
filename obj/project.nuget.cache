@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "/5vsC1WrBj0=",
+  "dgSpecHash": "MYVyG/wCqdU=",
   "success": true,
   "projectFilePath": "C:\\Users\\Rodrigo Alejandro\\Documents\\Métodos Numéricos\\Métodos Numéricos.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Rodrigo Alejandro\\.nuget\\packages\\mathparser.org-mxparser\\6.1.0\\mathparser.org-mxparser.6.1.0.nupkg.sha512"
+    "C:\\Users\\Rodrigo Alejandro\\.nuget\\packages\\mathparser.org-mxparser\\6.1.0\\mathparser.org-mxparser.6.1.0.nupkg.sha512",
+    "C:\\Users\\Rodrigo Alejandro\\.nuget\\packages\\winforms.datavisualization\\1.10.2\\winforms.datavisualization.1.10.2.nupkg.sha512"
   ],
   "logs": []
 }

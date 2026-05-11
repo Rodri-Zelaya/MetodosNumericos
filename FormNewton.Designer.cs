@@ -38,6 +38,7 @@
             dgvNewton = new DataGridView();
             lblRaiz = new Label();
             btnExportar = new Button();
+            btnGraficar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvNewton).BeginInit();
             SuspendLayout();
             // 
@@ -45,7 +46,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(32, 47);
+            label1.Location = new Point(32, 98);
             label1.Name = "label1";
             label1.Size = new Size(100, 31);
             label1.TabIndex = 0;
@@ -56,7 +57,7 @@
             label3.Anchor = AnchorStyles.Top;
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(482, 11);
+            label3.Location = new Point(611, 73);
             label3.Name = "label3";
             label3.Size = new Size(140, 31);
             label3.TabIndex = 2;
@@ -67,7 +68,7 @@
             label4.Anchor = AnchorStyles.Top;
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(482, 65);
+            label4.Location = new Point(611, 129);
             label4.Name = "label4";
             label4.Size = new Size(123, 31);
             label4.TabIndex = 3;
@@ -76,7 +77,7 @@
             // txtFuncionNewton
             // 
             txtFuncionNewton.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtFuncionNewton.Location = new Point(138, 47);
+            txtFuncionNewton.Location = new Point(138, 98);
             txtFuncionNewton.Name = "txtFuncionNewton";
             txtFuncionNewton.Size = new Size(414, 34);
             txtFuncionNewton.TabIndex = 5;
@@ -85,7 +86,7 @@
             // 
             txtVI.Anchor = AnchorStyles.Top;
             txtVI.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtVI.Location = new Point(628, 11);
+            txtVI.Location = new Point(757, 70);
             txtVI.Name = "txtVI";
             txtVI.Size = new Size(185, 34);
             txtVI.TabIndex = 7;
@@ -94,7 +95,7 @@
             // 
             txtTolNewton.Anchor = AnchorStyles.Top;
             txtTolNewton.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtTolNewton.Location = new Point(628, 62);
+            txtTolNewton.Location = new Point(757, 126);
             txtTolNewton.Name = "txtTolNewton";
             txtTolNewton.Size = new Size(185, 34);
             txtTolNewton.TabIndex = 8;
@@ -103,9 +104,9 @@
             // 
             btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCalcular.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCalcular.Location = new Point(967, 11);
+            btnCalcular.Location = new Point(1158, 30);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(157, 52);
+            btnCalcular.Size = new Size(172, 78);
             btnCalcular.TabIndex = 10;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -117,10 +118,10 @@
             dgvNewton.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvNewton.BackgroundColor = SystemColors.ActiveCaption;
             dgvNewton.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvNewton.Location = new Point(12, 105);
+            dgvNewton.Location = new Point(12, 204);
             dgvNewton.Name = "dgvNewton";
             dgvNewton.RowHeadersWidth = 51;
-            dgvNewton.Size = new Size(1318, 333);
+            dgvNewton.Size = new Size(1662, 234);
             dgvNewton.TabIndex = 11;
             // 
             // lblRaiz
@@ -128,7 +129,7 @@
             lblRaiz.Anchor = AnchorStyles.Top;
             lblRaiz.AutoSize = true;
             lblRaiz.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRaiz.Location = new Point(854, 62);
+            lblRaiz.Location = new Point(972, 129);
             lblRaiz.Name = "lblRaiz";
             lblRaiz.Size = new Size(65, 31);
             lblRaiz.TabIndex = 12;
@@ -138,19 +139,32 @@
             // 
             btnExportar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnExportar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportar.Location = new Point(1130, 11);
+            btnExportar.Location = new Point(1486, 30);
             btnExportar.Name = "btnExportar";
-            btnExportar.Size = new Size(188, 52);
+            btnExportar.Size = new Size(188, 78);
             btnExportar.TabIndex = 13;
             btnExportar.Text = "Exportar Excel";
             btnExportar.UseVisualStyleBackColor = true;
             btnExportar.Click += btnExportar_Click;
             // 
+            // btnGraficar
+            // 
+            btnGraficar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnGraficar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnGraficar.Location = new Point(1336, 30);
+            btnGraficar.Name = "btnGraficar";
+            btnGraficar.Size = new Size(144, 78);
+            btnGraficar.TabIndex = 14;
+            btnGraficar.Text = "Graficar";
+            btnGraficar.UseVisualStyleBackColor = true;
+            btnGraficar.Click += btnGraficar_Click;
+            // 
             // FormNewton
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1342, 450);
+            ClientSize = new Size(1686, 450);
+            Controls.Add(btnGraficar);
             Controls.Add(btnExportar);
             Controls.Add(lblRaiz);
             Controls.Add(dgvNewton);
@@ -180,5 +194,6 @@
         private DataGridView dgvNewton;
         private Label lblRaiz;
         private Button btnExportar;
+        private Button btnGraficar;
     }
 }

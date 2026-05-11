@@ -66,6 +66,24 @@ namespace Métodos_Numéricos
                 MessageBox.Show("Algo falló al intentar mandar la tabla, bro: " + ex.Message);
             }
         }
+
+        private void btnGraficar_Click(object sender, EventArgs e)
+        {
+            string funcion = txtFuncionBiseccion.Text;
+
+            if (string.IsNullOrWhiteSpace(funcion))
+            {
+                MessageBox.Show("Bro, escribe una función primero.");
+                return;
+            }
+
+            // 1. Creamos la ventana graficadora y le pasamos la función
+            FormGraficador visor = new FormGraficador(funcion);
+
+            // 2. Usamos ShowDialog() para que la ventana se abra como un Pop-up 
+            // y el usuario no pueda tocar la tabla hasta que cierre la gráfica
+            visor.ShowDialog();
+        }
     }
 }
 

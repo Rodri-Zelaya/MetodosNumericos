@@ -49,7 +49,7 @@
             // 
             txtX1.Anchor = AnchorStyles.Top;
             txtX1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtX1.Location = new Point(510, 48);
+            txtX1.Location = new Point(741, 109);
             txtX1.Name = "txtX1";
             txtX1.Size = new Size(125, 34);
             txtX1.TabIndex = 0;
@@ -58,7 +58,7 @@
             // 
             txtX0.Anchor = AnchorStyles.Top;
             txtX0.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtX0.Location = new Point(510, 6);
+            txtX0.Location = new Point(741, 56);
             txtX0.Name = "txtX0";
             txtX0.Size = new Size(125, 34);
             txtX0.TabIndex = 1;
@@ -66,7 +66,7 @@
             // txtFuncionMuller
             // 
             txtFuncionMuller.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtFuncionMuller.Location = new Point(130, 47);
+            txtFuncionMuller.Location = new Point(134, 110);
             txtFuncionMuller.Name = "txtFuncionMuller";
             txtFuncionMuller.Size = new Size(374, 34);
             txtFuncionMuller.TabIndex = 2;
@@ -75,7 +75,7 @@
             // 
             txtX2.Anchor = AnchorStyles.Top;
             txtX2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtX2.Location = new Point(510, 92);
+            txtX2.Location = new Point(741, 156);
             txtX2.Name = "txtX2";
             txtX2.Size = new Size(125, 34);
             txtX2.TabIndex = 3;
@@ -83,9 +83,10 @@
             // txtTolerancia
             // 
             txtTolerancia.Anchor = AnchorStyles.Top;
-            txtTolerancia.Location = new Point(844, 26);
+            txtTolerancia.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtTolerancia.Location = new Point(1068, 77);
             txtTolerancia.Name = "txtTolerancia";
-            txtTolerancia.Size = new Size(192, 27);
+            txtTolerancia.Size = new Size(192, 34);
             txtTolerancia.TabIndex = 4;
             // 
             // lblRaiz
@@ -93,7 +94,7 @@
             lblRaiz.Anchor = AnchorStyles.Top;
             lblRaiz.AutoSize = true;
             lblRaiz.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRaiz.Location = new Point(736, 82);
+            lblRaiz.Location = new Point(973, 156);
             lblRaiz.Name = "lblRaiz";
             lblRaiz.Size = new Size(65, 31);
             lblRaiz.TabIndex = 5;
@@ -105,17 +106,17 @@
             dgvMuller.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvMuller.BackgroundColor = SystemColors.ActiveCaption;
             dgvMuller.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvMuller.Location = new Point(12, 134);
+            dgvMuller.Location = new Point(12, 215);
             dgvMuller.Name = "dgvMuller";
             dgvMuller.RowHeadersWidth = 51;
-            dgvMuller.Size = new Size(1321, 306);
+            dgvMuller.Size = new Size(1783, 225);
             dgvMuller.TabIndex = 6;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(24, 48);
+            label1.Location = new Point(28, 113);
             label1.Name = "label1";
             label1.Size = new Size(100, 31);
             label1.TabIndex = 7;
@@ -126,7 +127,7 @@
             label2.Anchor = AnchorStyles.Top;
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(462, 9);
+            label2.Location = new Point(693, 56);
             label2.Name = "label2";
             label2.Size = new Size(42, 31);
             label2.TabIndex = 8;
@@ -137,7 +138,7 @@
             label3.Anchor = AnchorStyles.Top;
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(462, 51);
+            label3.Location = new Point(693, 110);
             label3.Name = "label3";
             label3.Size = new Size(42, 31);
             label3.TabIndex = 9;
@@ -148,7 +149,7 @@
             label4.Anchor = AnchorStyles.Top;
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(462, 95);
+            label4.Location = new Point(693, 159);
             label4.Name = "label4";
             label4.Size = new Size(42, 31);
             label4.TabIndex = 10;
@@ -159,7 +160,7 @@
             label5.Anchor = AnchorStyles.Top;
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label5.Location = new Point(715, 26);
+            label5.Location = new Point(939, 80);
             label5.Name = "label5";
             label5.Size = new Size(123, 31);
             label5.TabIndex = 11;
@@ -169,9 +170,9 @@
             // 
             btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCalcular.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCalcular.Location = new Point(987, 6);
+            btnCalcular.Location = new Point(1426, 39);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(159, 66);
+            btnCalcular.Size = new Size(176, 66);
             btnCalcular.TabIndex = 12;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -181,9 +182,9 @@
             // 
             btnExportar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnExportar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportar.Location = new Point(1155, 6);
+            btnExportar.Location = new Point(1608, 38);
             btnExportar.Name = "btnExportar";
-            btnExportar.Size = new Size(178, 66);
+            btnExportar.Size = new Size(187, 66);
             btnExportar.TabIndex = 13;
             btnExportar.Text = "Exportar Excel";
             btnExportar.UseVisualStyleBackColor = true;
@@ -193,7 +194,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1345, 467);
+            ClientSize = new Size(1807, 467);
             Controls.Add(btnExportar);
             Controls.Add(btnCalcular);
             Controls.Add(label5);

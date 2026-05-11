@@ -31,7 +31,6 @@
             txtTol = new TextBox();
             btnCalcular = new Button();
             label1 = new Label();
-            lblRespuesta = new Label();
             dgvNoLinealNewton = new DataGridView();
             btnExportar = new Button();
             txtFunciones = new TextBox();
@@ -45,7 +44,7 @@
             // 
             txtTol.Anchor = AnchorStyles.Top;
             txtTol.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtTol.Location = new Point(939, 27);
+            txtTol.Location = new Point(1069, 114);
             txtTol.Name = "txtTol";
             txtTol.Size = new Size(175, 34);
             txtTol.TabIndex = 4;
@@ -54,9 +53,9 @@
             // 
             btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCalcular.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCalcular.Location = new Point(969, 17);
+            btnCalcular.Location = new Point(1389, 45);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(161, 62);
+            btnCalcular.Size = new Size(193, 71);
             btnCalcular.TabIndex = 5;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -67,22 +66,11 @@
             label1.Anchor = AnchorStyles.Top;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(810, 30);
+            label1.Location = new Point(940, 117);
             label1.Name = "label1";
             label1.Size = new Size(123, 31);
             label1.TabIndex = 6;
             label1.Text = "Tolerancia";
-            // 
-            // lblRespuesta
-            // 
-            lblRespuesta.Anchor = AnchorStyles.Top;
-            lblRespuesta.AutoSize = true;
-            lblRespuesta.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblRespuesta.Location = new Point(810, 111);
-            lblRespuesta.Name = "lblRespuesta";
-            lblRespuesta.Size = new Size(137, 31);
-            lblRespuesta.TabIndex = 11;
-            lblRespuesta.Text = "RESPUESTA";
             // 
             // dgvNoLinealNewton
             // 
@@ -90,19 +78,19 @@
             dgvNoLinealNewton.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvNoLinealNewton.BackgroundColor = SystemColors.ActiveCaption;
             dgvNoLinealNewton.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvNoLinealNewton.Location = new Point(9, 151);
+            dgvNoLinealNewton.Location = new Point(9, 253);
             dgvNoLinealNewton.Name = "dgvNoLinealNewton";
             dgvNoLinealNewton.RowHeadersWidth = 51;
-            dgvNoLinealNewton.Size = new Size(1324, 308);
+            dgvNoLinealNewton.Size = new Size(1782, 206);
             dgvNoLinealNewton.TabIndex = 12;
             // 
             // btnExportar
             // 
             btnExportar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnExportar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportar.Location = new Point(1136, 17);
+            btnExportar.Location = new Point(1588, 45);
             btnExportar.Name = "btnExportar";
-            btnExportar.Size = new Size(206, 62);
+            btnExportar.Size = new Size(206, 71);
             btnExportar.TabIndex = 13;
             btnExportar.Text = "Exportar Excel";
             btnExportar.UseVisualStyleBackColor = true;
@@ -111,17 +99,17 @@
             // txtFunciones
             // 
             txtFunciones.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtFunciones.Location = new Point(124, 9);
+            txtFunciones.Location = new Point(124, 32);
             txtFunciones.Multiline = true;
             txtFunciones.Name = "txtFunciones";
-            txtFunciones.Size = new Size(287, 133);
+            txtFunciones.Size = new Size(287, 206);
             txtFunciones.TabIndex = 14;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(-4, 70);
+            label2.Location = new Point(-4, 114);
             label2.Name = "label2";
             label2.Size = new Size(122, 31);
             label2.TabIndex = 15;
@@ -130,17 +118,17 @@
             // txtValoresIniciales
             // 
             txtValoresIniciales.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtValoresIniciales.Location = new Point(607, 12);
+            txtValoresIniciales.Location = new Point(607, 32);
             txtValoresIniciales.Multiline = true;
             txtValoresIniciales.Name = "txtValoresIniciales";
-            txtValoresIniciales.Size = new Size(287, 133);
+            txtValoresIniciales.Size = new Size(287, 206);
             txtValoresIniciales.TabIndex = 16;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(417, 70);
+            label3.Location = new Point(417, 114);
             label3.Name = "label3";
             label3.Size = new Size(184, 31);
             label3.TabIndex = 17;
@@ -150,14 +138,13 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1348, 474);
+            ClientSize = new Size(1806, 474);
             Controls.Add(label3);
             Controls.Add(txtValoresIniciales);
             Controls.Add(label2);
             Controls.Add(txtFunciones);
             Controls.Add(btnExportar);
             Controls.Add(dgvNoLinealNewton);
-            Controls.Add(lblRespuesta);
             Controls.Add(label1);
             Controls.Add(btnCalcular);
             Controls.Add(txtTol);
@@ -172,7 +159,6 @@
         private TextBox txtTol;
         private Button btnCalcular;
         private Label label1;
-        private Label lblRespuesta;
         private DataGridView dgvNoLinealNewton;
         private Button btnExportar;
         private TextBox txtFunciones;

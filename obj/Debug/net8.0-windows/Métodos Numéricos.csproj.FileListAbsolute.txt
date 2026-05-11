@@ -109,3 +109,6 @@ C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-window
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormNoLinealNewton.resources
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Interop.Microsoft.Office.Interop.Excel.dll
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.csproj.ResolveComReference.cache
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\WinForms.DataVisualization.Utilities.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-windows\WinForms.DataVisualization.dll
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormGraficador.resources

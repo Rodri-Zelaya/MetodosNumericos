@@ -59,5 +59,21 @@ namespace Métodos_Numéricos
                 MessageBox.Show("Algo falló al intentar mandar la tabla, bro: " + ex.Message);
             }
         }
+
+        private void btnGraficar_Click(object sender, EventArgs e)
+        {
+            // Solo asegúrate de que el TextBox se llame igual en este form
+            string funcion = txtFuncionPuntoFijo.Text;
+
+            if (string.IsNullOrWhiteSpace(funcion))
+            {
+                MessageBox.Show("Bro, escribe una función primero.");
+                return;
+            }
+
+            // Llamamos a tu obra maestra
+            FormGraficador visor = new FormGraficador(funcion);
+            visor.ShowDialog();
+        }
     }
 }
