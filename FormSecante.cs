@@ -19,29 +19,47 @@ namespace Métodos_Numéricos
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
+            // 1. Validar vacíos (Aquí usamos x0 y x1)
             if (string.IsNullOrWhiteSpace(txtFuncionSecante.Text) || string.IsNullOrWhiteSpace(txtVI.Text) ||
-        string.IsNullOrWhiteSpace(txtV2.Text) || string.IsNullOrWhiteSpace(txtTolSecante.Text))
+                string.IsNullOrWhiteSpace(txtV2.Text) || string.IsNullOrWhiteSpace(txtTolSecante.Text))
             {
-                MessageBox.Show("Llena todos los campos. Usa X0 para C0 y X1 para C1.");
+                MessageBox.Show("Llena todos los campos bro.");
                 return;
             }
 
             try
             {
-                string funcion = txtFuncionSecante.Text;
-                double c0 = double.Parse(txtVI.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double c1 = double.Parse(txtV2.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double tol = double.Parse(txtTolSecante.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-
                 MetodosNumericos metodos = new MetodosNumericos();
+                string funcion = txtFuncionSecante.Text;
 
-                // Atrapamos la raíz y la mandamos al Label
-                string raizEncontrada = metodos.Secante(funcion, c0, c1, tol, dgvSecante);
+                // 2. Traductor universal
+                double x0 = metodos.ConvertirADouble(txtVI.Text);
+                double x1 = metodos.ConvertirADouble(txtV2.Text);
+                double tol = metodos.ConvertirADouble(txtTolSecante.Text);
+
+                // 🛡️ 3. REGLA MATEMÁTICA: SECANTE HORIZONTAL 🛡️
+                double f0 = metodos.EvaluarFuncion(funcion, x0);
+                double f1 = metodos.EvaluarFuncion(funcion, x1);
+
+                if (Math.Abs(f0 - f1) < 1e-12) // Si dan el mismo resultado
+                {
+                    MessageBox.Show(
+                        "Bro, la función evaluada en x0 y x1 da el mismo resultado (f(x) = " + f0.ToString("G4") + ").\n\n" +
+                        "Esto crea una recta secante horizontal que nunca cruzará el eje X, provocando una división entre cero.\n\n" +
+                        "Ingresa valores iniciales diferentes.",
+                        "Falla de Secante (Recta Horizontal)",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 4. Si hay inclinación, arrancamos el motor
+                string raizEncontrada = metodos.Secante(funcion, x0, x1, tol, dgvSecante);
                 lblRaiz.Text = "Raíz: " + raizEncontrada;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error en los datos bro: " + ex.Message);
+                MessageBox.Show("Error de cálculo: " + ex.Message);
             }
         }
 

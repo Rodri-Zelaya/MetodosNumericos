@@ -32,7 +32,7 @@
             label3 = new Label();
             label4 = new Label();
             txtFuncionNewton = new TextBox();
-            txtVI = new TextBox();
+            txtVl = new TextBox();
             txtTolNewton = new TextBox();
             btnCalcular = new Button();
             dgvNewton = new DataGridView();
@@ -82,14 +82,14 @@
             txtFuncionNewton.Size = new Size(414, 34);
             txtFuncionNewton.TabIndex = 5;
             // 
-            // txtVI
+            // txtVl
             // 
-            txtVI.Anchor = AnchorStyles.Top;
-            txtVI.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtVI.Location = new Point(757, 70);
-            txtVI.Name = "txtVI";
-            txtVI.Size = new Size(185, 34);
-            txtVI.TabIndex = 7;
+            txtVl.Anchor = AnchorStyles.Top;
+            txtVl.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtVl.Location = new Point(757, 70);
+            txtVl.Name = "txtVl";
+            txtVl.Size = new Size(185, 34);
+            txtVl.TabIndex = 7;
             // 
             // txtTolNewton
             // 
@@ -170,7 +170,7 @@
             Controls.Add(dgvNewton);
             Controls.Add(btnCalcular);
             Controls.Add(txtTolNewton);
-            Controls.Add(txtVI);
+            Controls.Add(txtVl);
             Controls.Add(txtFuncionNewton);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -188,7 +188,7 @@
         private Label label3;
         private Label label4;
         private TextBox txtFuncionNewton;
-        private TextBox txtVI;
+        private TextBox txtVl;
         private TextBox txtTolNewton;
         private Button btnCalcular;
         private DataGridView dgvNewton;

@@ -24,29 +24,68 @@ namespace Métodos_Numéricos
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
+            // 1. Validación de campos vacíos
             if (string.IsNullOrWhiteSpace(txtFuncionReglaFalsa.Text) || string.IsNullOrWhiteSpace(txtA.Text) ||
-       string.IsNullOrWhiteSpace(txtB.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
+                string.IsNullOrWhiteSpace(txtB.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
             {
-                MessageBox.Show("Llena todos los campos bro.");
+                MessageBox.Show("Por favor, llena todos los campos bro.");
                 return;
             }
 
             try
             {
-                string funcion = txtFuncionReglaFalsa.Text;
-                double a = double.Parse(txtA.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double b = double.Parse(txtB.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double tol = double.Parse(txtTolerancia.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-
+                // 2. Instanciamos tu clase cerebro ANTES para poder usar el traductor
                 MetodosNumericos metodos = new MetodosNumericos();
 
-                // Atrapamos la raíz y la mandamos al Label
+                string funcion = txtFuncionReglaFalsa.Text;
+
+                // 3. Usamos el traductor universal (¡Adiós a los Replace y CultureInfo aquí!)
+                double a = metodos.ConvertirADouble(txtA.Text);
+                double b = metodos.ConvertirADouble(txtB.Text);
+                double tol = metodos.ConvertirADouble(txtTolerancia.Text);
+
+                // 4. Preparamos mXparser para el Teorema de Bolzano
+                org.mariuszgromada.math.mxparser.Argument argX = new org.mariuszgromada.math.mxparser.Argument("x");
+                org.mariuszgromada.math.mxparser.Expression expr = new org.mariuszgromada.math.mxparser.Expression(funcion, argX);
+
+                argX.setArgumentValue(a);
+                double fa = expr.calculate();
+
+                argX.setArgumentValue(b);
+                double fb = expr.calculate();
+
+                // 🛡️ 5. REGLA DE BOLZANO (El Cadenero) 🛡️
+                if (fa * fb > 0)
+                {
+                    MessageBox.Show(
+                        "Bro, la función no cambia de signo en el intervalo [" + a + ", " + b + "].\n\n" +
+                        "f(" + a + ") = " + fa + "\n" +
+                        "f(" + b + ") = " + fb + "\n\n" +
+                        "Revisa la gráfica y elige un intervalo donde la curva cruce el eje X.",
+                        "Error de Intervalo (Bolzano)",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return; // Bloquea el paso, no se hace la tabla
+                }
+                else if (fa == 0 || fb == 0)
+                {
+                    MessageBox.Show(
+                        "¡Bro, uno de los límites ya es la raíz exacta! No hay necesidad de hacer iteraciones.",
+                        "Raíz Encontrada",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    return;
+                }
+
+                // 6. Si Bolzano da luz verde, llamamos al motor matemático
                 string raizEncontrada = metodos.ReglaFalsa(funcion, a, b, tol, dgvReglaFalsa);
                 lblRaiz.Text = "Raíz: " + raizEncontrada;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error en los datos o en la función: " + ex.Message);
+                MessageBox.Show("Error de cálculo: " + ex.Message);
             }
 
         }

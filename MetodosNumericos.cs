@@ -28,6 +28,15 @@ public class MetodosNumericos
         catch { return 0; }
     }
 
+    // 🛡️ EL TRADUCTOR UNIVERSAL (NUEVO) 🛡️
+    // Convierte cualquier texto a double respetando el punto decimal, sin importar la PC
+    public double ConvertirADouble(string numeroTexto)
+    {
+        if (string.IsNullOrWhiteSpace(numeroTexto)) return 0;
+        string textoLimpio = numeroTexto.Replace(',', '.');
+        return double.Parse(textoLimpio, System.Globalization.CultureInfo.InvariantCulture);
+    }
+
     // Nueva función para calcular la derivada automáticamente
     public double CalcularDerivada(string expresion, double x)
     {

@@ -47,7 +47,7 @@
             // txtFuncionBiseccion
             // 
             txtFuncionBiseccion.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtFuncionBiseccion.Location = new Point(106, 97);
+            txtFuncionBiseccion.Location = new Point(118, 96);
             txtFuncionBiseccion.Name = "txtFuncionBiseccion";
             txtFuncionBiseccion.Size = new Size(474, 34);
             txtFuncionBiseccion.TabIndex = 0;

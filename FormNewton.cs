@@ -19,27 +19,45 @@ namespace Métodos_Numéricos
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtFuncionNewton.Text) || string.IsNullOrWhiteSpace(txtVI.Text) || string.IsNullOrWhiteSpace(txtTolNewton.Text))
+            // 1. Validar vacíos
+            if (string.IsNullOrWhiteSpace(txtFuncionNewton.Text) || string.IsNullOrWhiteSpace(txtVl.Text) || string.IsNullOrWhiteSpace(txtTolNewton.Text))
             {
-                MessageBox.Show("Por favor, llena todos los campos de Newton-Raphson.");
+                MessageBox.Show("Llena todos los campos bro.");
                 return;
             }
 
             try
             {
-                string funcion = txtFuncionNewton.Text;
-                double x0 = double.Parse(txtVI.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double tol = double.Parse(txtTolNewton.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-
                 MetodosNumericos metodos = new MetodosNumericos();
+                string funcion = txtFuncionNewton.Text;
 
-                // Atrapamos la raíz y la mandamos al Label
+                // 2. Traductor universal
+                double x0 = metodos.ConvertirADouble(txtVl.Text);
+                double tol = metodos.ConvertirADouble(txtTolNewton.Text);
+
+                // 🛡️ 3. REGLA MATEMÁTICA: DERIVADA CERO 🛡️
+                double derivadaX0 = metodos.CalcularDerivada(funcion, x0);
+
+                if (Math.Abs(derivadaX0) < 1e-12) // Si es prácticamente 0
+                {
+                    MessageBox.Show(
+                        "Bro, la derivada en el punto inicial x0 = " + x0 + " es cero (o casi cero).\n\n" +
+                        "Geométricamente, esto significa que la recta tangente es completamente horizontal y jamás cruzará el eje X. " +
+                        "El método fallará por división entre cero.\n\n" +
+                        "Revisa la gráfica y elige un punto inicial diferente.",
+                        "Falla de Newton-Raphson (Derivada 0)",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 4. Si la tangente está bien, arrancamos el motor
                 string raizEncontrada = metodos.NewtonRaphson(funcion, x0, tol, dgvNewton);
                 lblRaiz.Text = "Raíz: " + raizEncontrada;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Revisa la sintaxis de la función o los valores: " + ex.Message);
+                MessageBox.Show("Error de cálculo: " + ex.Message);
             }
         }
 

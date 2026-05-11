@@ -19,27 +19,51 @@ namespace Métodos_Numéricos
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
+            // 1. Validar vacíos (Asegúrate de que los nombres de los txt coincidan con tu diseño)
             if (string.IsNullOrWhiteSpace(txtFuncionPuntoFijo.Text) || string.IsNullOrWhiteSpace(txtX0PuntoFijo.Text) || string.IsNullOrWhiteSpace(txtTolPuntoFijo.Text))
             {
-                MessageBox.Show("Por favor, llena todos los campos.");
+                MessageBox.Show("Llena todos los campos bro.");
                 return;
             }
 
             try
             {
-                string g_x = txtFuncionPuntoFijo.Text;
-                double x0 = double.Parse(txtX0PuntoFijo.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-                double tol = double.Parse(txtTolPuntoFijo.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-
                 MetodosNumericos metodos = new MetodosNumericos();
+                string funcionG = txtFuncionPuntoFijo.Text;
 
-                // Atrapamos la raíz y la mandamos al Label
-                string raizEncontrada = metodos.PuntoFijo(g_x, x0, tol, dgvPuntoFijo);
+                // 2. Usamos tu traductor universal
+                double x0 = metodos.ConvertirADouble(txtX0PuntoFijo.Text);
+                double tol = metodos.ConvertirADouble(txtTolPuntoFijo.Text);
+
+                // 🛡️ 3. REGLA MATEMÁTICA: CRITERIO DE CONVERGENCIA 🛡️
+                // Calculamos la derivada de g(x) en el punto inicial x0
+                double derivadaG = metodos.CalcularDerivada(funcionG, x0);
+
+                if (Math.Abs(derivadaG) >= 1)
+                {
+                    // Usamos un MessageBox con botones Yes/No para darle la opción al usuario
+                    DialogResult respuesta = MessageBox.Show(
+                        "Bro, la derivada de tu g(x) en el punto inicial es mayor o igual a 1 (|g'(x0)| = " + Math.Abs(derivadaG).ToString("F4") + ").\n\n" +
+                        "Matemáticamente, esto significa que el método probablemente va a DIVERGER (los números se alejarán de la raíz).\n" +
+                        "Lo ideal es despejar la 'x' de tu ecuación original de una forma distinta para obtener otra g(x).\n\n" +
+                        "¿Quieres intentar calcular la tabla de todas formas (bajo tu propio riesgo)?",
+                        "Alerta de Divergencia (Punto Fijo)",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    if (respuesta == DialogResult.No)
+                    {
+                        return; // Freno de mano si el usuario decide hacer caso a las matemáticas
+                    }
+                }
+
+                // 4. Arrancamos el motor (ya sea porque la derivada era < 1, o porque el usuario le dio a "Yes")
+                string raizEncontrada = metodos.PuntoFijo(funcionG, x0, tol, dgvPuntoFijo);
                 lblRaiz.Text = "Raíz: " + raizEncontrada;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Error de cálculo: " + ex.Message);
             }
         }
 
