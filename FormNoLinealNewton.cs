@@ -26,13 +26,24 @@ namespace Métodos_Numéricos
                 return;
             }
 
+            MetodosNumericos metodos = new MetodosNumericos();
+
+            // 1. Partimos las funciones para revisarlas una por una
+            string[] funciones = txtFunciones.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            // 🛡️ ESCUDO DE FUNCIONES (Para que no metan basura como "sdfw35356")
+            if (!metodos.EsSistemaNoLinealValido(funciones)) return;
+
+            // 🛡️ ESCUDO DE VALORES INICIALES (Para que no metan letras en X0, Y0, etc.)
+            if (!metodos.SonNumerosValidos(txtValoresIniciales.Text, "los Valores Iniciales")) return;
+
+            if (!metodos.SonNumerosValidos(txtTol.Text, "la Tolerancia")) return;
+
+            // Añade esta línea justo debajo de tus otros escudos:
+            if (!metodos.EsToleranciaValida(txtTol.Text)) return;
+
             try
             {
-                // Instanciamos el cerebro PRIMERO para usar tu traductor universal
-                MetodosNumericos metodos = new MetodosNumericos();
-
-                // 2. Leemos las funciones línea por línea ignorando las vacías
-                string[] funciones = txtFunciones.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
                 // 3. Leemos los valores iniciales (uno por línea según tu diseño)
                 string[] strValores = txtValoresIniciales.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);

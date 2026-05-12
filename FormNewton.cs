@@ -26,9 +26,20 @@ namespace Métodos_Numéricos
                 return;
             }
 
+            MetodosNumericos metodos = new MetodosNumericos();
+
+            // 🛡️ Validamos Función y en Punto Fijo validamos también g(x)
+            if (!metodos.EsFuncionValida(txtFuncionNewton.Text)) return;
+
+            // 🛡️ Validamos que el punto inicial y la tolerancia no tengan letras
+            if (!metodos.SonNumerosValidos(txtVl.Text, "el Valor Inicial (x0)")) return;
+            if (!metodos.SonNumerosValidos(txtTolNewton.Text, "la Tolerancia")) return;
+
+            // Añade esta línea justo debajo de tus otros escudos:
+            if (!metodos.EsToleranciaValida(txtTolNewton.Text)) return;
+
             try
             {
-                MetodosNumericos metodos = new MetodosNumericos();
                 string funcion = txtFuncionNewton.Text;
 
                 // 2. Traductor universal

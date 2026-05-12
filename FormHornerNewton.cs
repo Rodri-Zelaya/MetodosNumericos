@@ -26,10 +26,19 @@ namespace Métodos_Numéricos
                 return;
             }
 
+            MetodosNumericos metodos = new MetodosNumericos();
+
+            // Validamos que los coeficientes sean solo números
+            if (!metodos.SonNumerosValidos(txtCoeficientes.Text, "los Coeficientes")) return;
+
+            // Validamos el punto inicial (r0)
+            if (!metodos.SonNumerosValidos(txtR0.Text, "el Valor Inicial")) return;
+
+            // Añade esta línea justo debajo de tus otros escudos:
+            if (!metodos.EsToleranciaValida(txtTolerancia.Text)) return;
+
             try
             {
-                // Instanciamos tu clase cerebro PRIMERO para poder usar el traductor
-                MetodosNumericos metodos = new MetodosNumericos();
 
                 // 2. Usamos el traductor universal (adiós a los Replace raros)
                 double r0 = metodos.ConvertirADouble(txtR0.Text);

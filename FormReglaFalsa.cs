@@ -32,11 +32,21 @@ namespace Métodos_Numéricos
                 return;
             }
 
+            MetodosNumericos metodos = new MetodosNumericos();
+
+            // 🛡️ CAPA 1: Validamos la Función (que no sea basura)
+            if (!metodos.EsFuncionValida(txtFuncionReglaFalsa.Text)) return;
+
+            // 🛡️ CAPA 2: Validamos los Valores Numéricos (a, b y tolerancia)
+            if (!metodos.SonNumerosValidos(txtA.Text, "el Valor A")) return;
+            if (!metodos.SonNumerosValidos(txtB.Text, "el Valor B")) return;
+            if (!metodos.SonNumerosValidos(txtTolerancia.Text, "la Tolerancia")) return;
+
+            // Añade esta línea justo debajo de tus otros escudos:
+            if (!metodos.EsToleranciaValida(txtTolerancia.Text)) return;
+
             try
             {
-                // 2. Instanciamos tu clase cerebro ANTES para poder usar el traductor
-                MetodosNumericos metodos = new MetodosNumericos();
-
                 string funcion = txtFuncionReglaFalsa.Text;
 
                 // 3. Usamos el traductor universal (¡Adiós a los Replace y CultureInfo aquí!)

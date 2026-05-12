@@ -25,6 +25,14 @@ namespace Métodos_Numéricos
                 return;
             }
 
+            MetodosNumericos metodos = new MetodosNumericos();
+
+            // Validamos que los coeficientes sean solo números
+            if (!metodos.SonNumerosValidos(txtCoeficientes.Text, "los Coeficientes")) return;
+
+            // Añade esta línea justo debajo de tus otros escudos:
+            if (!metodos.EsToleranciaValida(txtTolerancia.Text)) return;
+
             try
             {
                 // 1. Preparamos los datos
@@ -52,8 +60,6 @@ namespace Métodos_Numéricos
                 }
 
                 double tol = double.Parse(txtTolerancia.Text.Replace(',', '.'), System.Globalization.CultureInfo.InvariantCulture);
-
-                MetodosNumericos metodos = new MetodosNumericos();
 
                 // 2. Preparamos variables vacías para atrapar r0 y s0
                 double r0_calculado, s0_calculado;

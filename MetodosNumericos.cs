@@ -101,6 +101,7 @@ public class MetodosNumericos
 
     public string ReglaFalsa(string funcion, double a, double b, double tol, DataGridView dgv)
     {
+
         dgv.Columns.Clear();
         dgv.Columns.Add("Iter", "Iteración");
         dgv.Columns.Add("A", "a");
@@ -183,6 +184,7 @@ public class MetodosNumericos
 
     public string Secante(string funcion, double c0, double c1, double tol, DataGridView dgv)
     {
+
         dgv.Columns.Clear();
         dgv.Columns.Add("Iter", "Iteración");
         dgv.Columns.Add("Ci", "Ci");
@@ -804,6 +806,111 @@ public class MetodosNumericos
                     lbl.Text = "";
                 }
             }
+        }
+    }
+
+    // 🛡️ EL ESCUDO SINTÁCTICO DEFINITIVO
+    public bool EsFuncionValida(string funcionStr)
+    {
+        // 1. Que no esté vacía
+        if (string.IsNullOrWhiteSpace(funcionStr))
+        {
+            MessageBox.Show("Bro, la función no puede estar vacía.", "Campo Vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
+        }
+
+        // 2. Usamos el motor de mXparser para validar si es matemática real
+        Function f = new Function("f(x) = " + funcionStr);
+
+        // checkSyntax() devuelve 'true' si es válida, y 'false' si es basura como "sdfw"
+        if (!f.checkSyntax())
+        {
+            MessageBox.Show($"La doña no aprobaría esto bro. El sistema no reconoce '{funcionStr}' como una función matemática válida.\n\nVerifica que uses la variable 'x' y símbolos correctos (ej. x^2 + sin(x) - 4).",
+                            "Sintaxis Matemática Inválida", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return false;
+        }
+
+        return true;
+    }
+
+    // 🛡️ ESCUDO 2: PARA COEFICIENTES Y VALORES INICIALES (Solo números)
+    public bool SonNumerosValidos(string texto, string nombreCampo)
+    {
+        if (string.IsNullOrWhiteSpace(texto)) return false; // Ya lo validamos antes de llamar
+
+        // Partimos el texto por espacios o saltos de línea
+        string[] partes = texto.Split(new char[] { ' ', '\r', '\n', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (string parte in partes)
+        {
+            try
+            {
+                // Intentamos usar tu traductor universal
+                ConvertirADouble(parte);
+            }
+            catch
+            {
+                // Si falla, es porque metió letras o basura
+                MessageBox.Show(
+                    $"¡Basura detectada en {nombreCampo} bro!\n\nEl valor '{parte}' no es un número válido. Recuerda que aquí solo van números puros separados por espacios.",
+                    "Sintaxis Inválida (No es número)",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 🛡️ ESCUDO 3: PARA SISTEMAS NO LINEALES (Múltiples variables)
+    public bool EsSistemaNoLinealValido(string[] funciones)
+    {
+        foreach (string func in funciones)
+        {
+            if (string.IsNullOrWhiteSpace(func)) continue;
+
+            // TRUCO PRO DE mXparser: Declaramos una función fantasma con las variables 
+            // más comunes (x, y, z, x1, x2, x3) para que no nos marque error de sintaxis si el usuario las usa.
+            org.mariuszgromada.math.mxparser.Function f =
+                new org.mariuszgromada.math.mxparser.Function($"f(x, y, z, w, x1, x2, x3) = {func}");
+
+            if (!f.checkSyntax())
+            {
+                MessageBox.Show(
+                    $"La doña no perdonaría esto bro. La ecuación '{func}' tiene basura o una sintaxis incorrecta.\n\nRevisa los operadores matemáticos y asegúrate de usar variables válidas (ej. x, y, x1, x2).",
+                    "Ecuación Inválida en Sistema",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 🛡️ ESCUDO 4: TOLERANCIA POSITIVA
+    public bool EsToleranciaValida(string textoTol)
+    {
+        try
+        {
+            // Usamos tu traductor universal para convertir el texto
+            double tol = ConvertirADouble(textoTol);
+
+            // La tolerancia no puede ser menor o igual a cero
+            if (tol <= 0)
+            {
+                MessageBox.Show("¡Bro, la tolerancia no puede ser negativa ni cero!\n\nTiene que ser un valor positivo (ej. 0.001 o 1E-05).",
+                                "Tolerancia Inválida",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
+        }
+        catch
+        {
+            // Si llega a fallar la conversión aquí, significa que metió letras, 
+            // pero el escudo de SonNumerosValidos ya lo atrapó antes.
+            return false;
         }
     }
 

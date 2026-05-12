@@ -27,9 +27,21 @@ namespace Métodos_Numéricos
                 return;
             }
 
+            MetodosNumericos metodos = new MetodosNumericos();
+
+            // Validamos que los coeficientes sean solo números
+            if (!metodos.SonNumerosValidos(txtCoeficientes.Text, "los Coeficientes")) return;
+
+            // Validamos el punto inicial (r0)
+            if (!metodos.SonNumerosValidos(txtX0.Text, "el Valor Inicial X0")) return;
+            if (!metodos.SonNumerosValidos(txtX1.Text, "el Valor Inicial X1")) return;
+            if (!metodos.SonNumerosValidos(txtX2.Text, "el Valor Inicial X2")) return;
+
+            // Añade esta línea justo debajo de tus otros escudos:
+            if (!metodos.EsToleranciaValida(txtTolerancia.Text)) return;
+
             try
             {
-                MetodosNumericos metodos = new MetodosNumericos();
 
                 // 2. Leemos puntos y tolerancia con el traductor universal
                 double x0 = metodos.ConvertirADouble(txtX0.Text);
