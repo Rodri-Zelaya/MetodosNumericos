@@ -21,7 +21,7 @@ namespace Métodos_Numéricos
         {
             if (string.IsNullOrWhiteSpace(txtCoeficientes.Text))
             {
-                MessageBox.Show("Pon los coeficientes bro, separados por espacios.");
+                MessageBox.Show("Pon los coeficientes, separados por espacios.");
                 return;
             }
 
@@ -42,7 +42,7 @@ namespace Métodos_Numéricos
                 // 🛡️ REGLA MATEMÁTICA 1: Grado del polinomio
                 if (n < 3)
                 {
-                    MessageBox.Show("Bro, matemáticamente Bairstow es para ligas mayores. Solo funciona para polinomios de grado 3 o superior. Si tienes uno de grado 2, usa la fórmula cuadrática.", "Error de Grado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Matemáticamente Bairstow es para ligas mayores. Solo funciona para polinomios de grado 3 o superior. Si tienes uno de grado 2, usa la fórmula cuadrática.", "Error de Grado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -76,7 +76,7 @@ namespace Métodos_Numéricos
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error bro. Revisa la sintaxis: " + ex.Message);
+                MessageBox.Show("Error. Revisa la sintaxis: " + ex.Message);
             }
         }
 
@@ -93,7 +93,7 @@ namespace Métodos_Numéricos
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Algo falló al intentar mandar la tabla, bro: " + ex.Message);
+                MessageBox.Show("Algo falló al intentar mandar la tabla: " + ex.Message);
             }
         }
 

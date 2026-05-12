@@ -22,7 +22,7 @@ namespace Métodos_Numéricos
             // 1. Verificamos que no haya campos vacíos
             if (string.IsNullOrWhiteSpace(txtCoeficientes.Text) || string.IsNullOrWhiteSpace(txtR0.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
             {
-                MessageBox.Show("Pon los coeficientes bro, separados por espacios, y llena todos los campos.");
+                MessageBox.Show("Pon los coeficientes, separados por espacios, y llena todos los campos.");
                 return;
             }
 
@@ -51,7 +51,7 @@ namespace Métodos_Numéricos
                 // 🛡️ REGLA MATEMÁTICA 1: Grado mínimo
                 if (n < 1)
                 {
-                    MessageBox.Show("Necesitas al menos un polinomio de grado 1 bro.");
+                    MessageBox.Show("Necesitas al menos un polinomio de grado 1.");
                     return;
                 }
 
@@ -65,7 +65,7 @@ namespace Métodos_Numéricos
                 // 🛡️ REGLA MATEMÁTICA 2: Coeficiente principal no nulo
                 if (a[n] == 0)
                 {
-                    MessageBox.Show("El primer coeficiente no puede ser cero bro.");
+                    MessageBox.Show("El primer coeficiente no puede ser cero.");
                     return;
                 }
 
@@ -83,7 +83,7 @@ namespace Métodos_Numéricos
                 if (Math.Abs(c[1]) < 1e-12)
                 {
                     MessageBox.Show(
-                        "Bro, la derivada del polinomio en el punto inicial r0 = " + r0 + " es cero.\n\n" +
+                        "La derivada del polinomio en el punto inicial r0 = " + r0 + " es cero.\n\n" +
                         "Geométricamente, la tangente es horizontal y causará una división entre cero en la primera iteración.\n" +
                         "Intenta con un punto inicial diferente.",
                         "Falla (Tangente Horizontal)",
@@ -115,7 +115,7 @@ namespace Métodos_Numéricos
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Algo falló al intentar mandar la tabla, bro: " + ex.Message);
+                MessageBox.Show("Algo falló al intentar mandar la tabla: " + ex.Message);
             }
         }
 

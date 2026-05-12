@@ -815,7 +815,7 @@ public class MetodosNumericos
         // 1. Que no esté vacía
         if (string.IsNullOrWhiteSpace(funcionStr))
         {
-            MessageBox.Show("Bro, la función no puede estar vacía.", "Campo Vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show("La función no puede estar vacía.", "Campo Vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return false;
         }
 
@@ -825,7 +825,7 @@ public class MetodosNumericos
         // checkSyntax() devuelve 'true' si es válida, y 'false' si es basura como "sdfw"
         if (!f.checkSyntax())
         {
-            MessageBox.Show($"La doña no aprobaría esto bro. El sistema no reconoce '{funcionStr}' como una función matemática válida.\n\nVerifica que uses la variable 'x' y símbolos correctos (ej. x^2 + sin(x) - 4).",
+            MessageBox.Show($"El sistema no reconoce '{funcionStr}' como una función matemática válida.\n\nVerifica que uses la variable 'x' y símbolos correctos (ej. x^2 + sin(x) - 4).",
                             "Sintaxis Matemática Inválida", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return false;
         }
@@ -852,7 +852,7 @@ public class MetodosNumericos
             {
                 // Si falla, es porque metió letras o basura
                 MessageBox.Show(
-                    $"¡Basura detectada en {nombreCampo} bro!\n\nEl valor '{parte}' no es un número válido. Recuerda que aquí solo van números puros separados por espacios.",
+                    $"¡Error detectado en {nombreCampo}!\n\nEl valor '{parte}' no es un número válido. Recuerda que aquí solo van números puros separados por espacios.",
                     "Sintaxis Inválida (No es número)",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -877,7 +877,7 @@ public class MetodosNumericos
             if (!f.checkSyntax())
             {
                 MessageBox.Show(
-                    $"La doña no perdonaría esto bro. La ecuación '{func}' tiene basura o una sintaxis incorrecta.\n\nRevisa los operadores matemáticos y asegúrate de usar variables válidas (ej. x, y, x1, x2).",
+                    $"La ecuación '{func}' tiene errores o una sintaxis incorrecta.\n\nRevisa los operadores matemáticos y asegúrate de usar variables válidas (ej. x, y, x1, x2).",
                     "Ecuación Inválida en Sistema",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -898,7 +898,7 @@ public class MetodosNumericos
             // La tolerancia no puede ser menor o igual a cero
             if (tol <= 0)
             {
-                MessageBox.Show("¡Bro, la tolerancia no puede ser negativa ni cero!\n\nTiene que ser un valor positivo (ej. 0.001 o 1E-05).",
+                MessageBox.Show("¡La tolerancia no puede ser negativa ni cero!\n\nTiene que ser un valor positivo (ej. 0.001 o 1E-05).",
                                 "Tolerancia Inválida",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);

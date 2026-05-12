@@ -22,7 +22,7 @@ namespace Métodos_Numéricos
             // 1. Validar vacíos
             if (string.IsNullOrWhiteSpace(txtFuncionNewton.Text) || string.IsNullOrWhiteSpace(txtVl.Text) || string.IsNullOrWhiteSpace(txtTolNewton.Text))
             {
-                MessageBox.Show("Llena todos los campos bro.");
+                MessageBox.Show("Llena todos los campos.");
                 return;
             }
 
@@ -52,7 +52,7 @@ namespace Métodos_Numéricos
                 if (Math.Abs(derivadaX0) < 1e-12) // Si es prácticamente 0
                 {
                     MessageBox.Show(
-                        "Bro, la derivada en el punto inicial x0 = " + x0 + " es cero (o casi cero).\n\n" +
+                        "La derivada en el punto inicial x0 = " + x0 + " es cero (o casi cero).\n\n" +
                         "Geométricamente, esto significa que la recta tangente es completamente horizontal y jamás cruzará el eje X. " +
                         "El método fallará por división entre cero.\n\n" +
                         "Revisa la gráfica y elige un punto inicial diferente.",
@@ -85,7 +85,7 @@ namespace Métodos_Numéricos
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Algo falló al intentar mandar la tabla, bro: " + ex.Message);
+                MessageBox.Show("Algo falló al intentar mandar la tabla: " + ex.Message);
             }
         }
 
@@ -96,7 +96,7 @@ namespace Métodos_Numéricos
 
             if (string.IsNullOrWhiteSpace(funcion))
             {
-                MessageBox.Show("Bro, escribe una función primero.");
+                MessageBox.Show("Escribe una función primero.");
                 return;
             }
 

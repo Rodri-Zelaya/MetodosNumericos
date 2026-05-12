@@ -22,7 +22,7 @@ namespace Métodos_Numéricos
             // 1. Verificamos que no haya campos vacíos
             if (string.IsNullOrWhiteSpace(txtFunciones.Text) || string.IsNullOrWhiteSpace(txtValoresIniciales.Text) || string.IsNullOrWhiteSpace(txtTol.Text))
             {
-                MessageBox.Show("Llena todos los campos bro.");
+                MessageBox.Show("Llena todos los campos.");
                 return;
             }
 
@@ -51,7 +51,7 @@ namespace Métodos_Numéricos
                 // 🛡️ REGLA MATEMÁTICA 1: SISTEMA CUADRADO (NxN)
                 if (funciones.Length != strValores.Length)
                 {
-                    MessageBox.Show($"Bro, pusiste {funciones.Length} funciones pero {strValores.Length} valores iniciales.\n\nMatemáticamente el sistema debe ser cuadrado (NxN). La cantidad debe ser igual.", "Error de Dimensión", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Pusiste {funciones.Length} funciones pero {strValores.Length} valores iniciales.\n\nMatemáticamente el sistema debe ser cuadrado (NxN). La cantidad debe ser igual.", "Error de Dimensión", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -77,14 +77,14 @@ namespace Métodos_Numéricos
                 if (ex.Message.Contains("Matriz singular"))
                 {
                     MessageBox.Show(
-                        "El método falló matemáticamente bro.\n\nMotivo: " + ex.Message + "\n\nIntenta con otros valores iniciales para evitar que la matriz Jacobiana se vuelva cero (divisiones por cero en el espacio multidimensional).",
+                        "El método falló matemáticamente.\n\nMotivo: " + ex.Message + "\n\nIntenta con otros valores iniciales para evitar que la matriz Jacobiana se vuelva cero (divisiones por cero en el espacio multidimensional).",
                         "Alerta de Sistema (Jacobiano)",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
                 else
                 {
-                    MessageBox.Show("Verifica la sintaxis bro. Recuerda escribir cada función en una línea nueva: " + ex.Message);
+                    MessageBox.Show("Verifica la sintaxis. Recuerda escribir cada función en una línea nueva: " + ex.Message);
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace Métodos_Numéricos
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Algo falló al intentar mandar la tabla, bro: " + ex.Message);
+                MessageBox.Show("Algo falló al intentar mandar la tabla: " + ex.Message);
             }
         }
 

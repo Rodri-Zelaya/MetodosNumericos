@@ -57,7 +57,7 @@
             panel1.Controls.Add(btnBiseccion);
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1352, 64);
+            panel1.Size = new Size(1611, 64);
             panel1.TabIndex = 0;
             // 
             // btnNewtonNL
@@ -175,14 +175,14 @@
             panelContenedor.BackColor = SystemColors.ActiveCaption;
             panelContenedor.Location = new Point(0, 64);
             panelContenedor.Name = "panelContenedor";
-            panelContenedor.Size = new Size(1352, 445);
+            panelContenedor.Size = new Size(1611, 445);
             panelContenedor.TabIndex = 1;
             // 
             // FormPrincipal
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1352, 509);
+            ClientSize = new Size(1611, 509);
             Controls.Add(panelContenedor);
             Controls.Add(panel1);
             MaximizeBox = false;

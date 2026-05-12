@@ -23,7 +23,7 @@ namespace Métodos_Numéricos
             if (string.IsNullOrWhiteSpace(txtCoeficientes.Text) || string.IsNullOrWhiteSpace(txtX0.Text) ||
                 string.IsNullOrWhiteSpace(txtX1.Text) || string.IsNullOrWhiteSpace(txtX2.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
             {
-                MessageBox.Show("Llena todos los campos bro (Recuerda los coeficientes separados por espacios).");
+                MessageBox.Show("Llena todos los campos (Recuerda los coeficientes separados por espacios).");
                 return;
             }
 
@@ -62,7 +62,7 @@ namespace Métodos_Numéricos
 
                 if (n < 2)
                 {
-                    MessageBox.Show("Bro, Müller necesita al menos un polinomio de grado 2 (3 coeficientes).");
+                    MessageBox.Show("Müller necesita al menos un polinomio de grado 2 (3 coeficientes).");
                     return;
                 }
 
@@ -79,7 +79,7 @@ namespace Métodos_Numéricos
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Verifica los datos bro: " + ex.Message);
+                MessageBox.Show("Verifica los datos: " + ex.Message);
             }
         }
 
@@ -96,7 +96,7 @@ namespace Métodos_Numéricos
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Algo falló al intentar mandar la tabla, bro: " + ex.Message);
+                MessageBox.Show("Algo falló al intentar mandar la tabla: " + ex.Message);
             }
         }
 

@@ -100,7 +100,7 @@
             // txtFunciones
             // 
             txtFunciones.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtFunciones.Location = new Point(124, 32);
+            txtFunciones.Location = new Point(133, 32);
             txtFunciones.Multiline = true;
             txtFunciones.Name = "txtFunciones";
             txtFunciones.Size = new Size(287, 206);
@@ -112,14 +112,14 @@
             label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.Location = new Point(-4, 114);
             label2.Name = "label2";
-            label2.Size = new Size(122, 31);
+            label2.Size = new Size(131, 31);
             label2.TabIndex = 15;
-            label2.Text = "Funciones";
+            label2.Text = "Ecuaciones";
             // 
             // txtValoresIniciales
             // 
             txtValoresIniciales.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtValoresIniciales.Location = new Point(607, 32);
+            txtValoresIniciales.Location = new Point(616, 32);
             txtValoresIniciales.Multiline = true;
             txtValoresIniciales.Name = "txtValoresIniciales";
             txtValoresIniciales.Size = new Size(287, 206);
@@ -129,7 +129,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(417, 114);
+            label3.Location = new Point(426, 114);
             label3.Name = "label3";
             label3.Size = new Size(184, 31);
             label3.TabIndex = 17;

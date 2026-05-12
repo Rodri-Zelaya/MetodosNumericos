@@ -22,7 +22,7 @@ namespace Métodos_Numéricos
             // 1. Validar vacíos (Asegúrate de que los nombres de los txt coincidan con tu diseño)
             if (string.IsNullOrWhiteSpace(txtFuncionPuntoFijo.Text) || string.IsNullOrWhiteSpace(txtX0PuntoFijo.Text) || string.IsNullOrWhiteSpace(txtTolPuntoFijo.Text))
             {
-                MessageBox.Show("Llena todos los campos bro.");
+                MessageBox.Show("Llena todos los campos.");
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace Métodos_Numéricos
                 {
                     // Freno automático con mensaje directo
                     MessageBox.Show(
-                        "¡Alto ahí, bro! La derivada de tu g(x) en el punto inicial es mayor o igual a 1 (|g'(x0)| = " + Math.Abs(derivadaG).ToString("F4") + ").\n\n" +
+                        "La derivada de tu g(x) en el punto inicial es mayor o igual a 1 (|g'(x0)| = " + Math.Abs(derivadaG).ToString("F4") + ").\n\n" +
                         "Matemáticamente, esto garantiza que el método va a DIVERGER (los valores explotarán y se alejarán de la raíz).\n\n" +
                         "Para solucionar esto, despeja la 'x' de tu ecuación original de una forma distinta para obtener una nueva g(x) y vuelve a intentar.",
                         "Divergencia Detectada (Punto Fijo)",
@@ -98,7 +98,7 @@ namespace Métodos_Numéricos
 
             if (string.IsNullOrWhiteSpace(funcion))
             {
-                MessageBox.Show("Bro, escribe una función primero.");
+                MessageBox.Show("Escribe una función primero.");
                 return;
             }
 

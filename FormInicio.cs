@@ -26,7 +26,7 @@ namespace Métodos_Numéricos
                 btnEntrar.FlatStyle = FlatStyle.Flat;
                 btnEntrar.FlatAppearance.BorderSize = 0;
                 // Un azul marino/pizarra oscuro y elegante
-                btnEntrar.BackColor = Color.FromArgb(30, 41, 59);
+                btnEntrar.BackColor = Color.FromArgb(30, 40, 60);
                 btnEntrar.ForeColor = Color.White;
                 btnEntrar.Font = new Font("Segoe UI", 32, FontStyle.Bold);
                 btnEntrar.Size = new Size(400, 100);
@@ -144,8 +144,8 @@ namespace Métodos_Numéricos
                 g.DrawString("MÉTODOS NUMÉRICOS", titleFont, darkTextBrush, rectTitulo, centrado);
 
                 // Imprimir Subtítulo
-                g.DrawString("SISTEMA DE ANÁLISIS COMPUTACIONAL", subFont, whiteHighlightBrush, rectSubLuz, centrado);
-                g.DrawString("SISTEMA DE ANÁLISIS COMPUTACIONAL", subFont, darkTextBrush, rectSub, centrado);
+                g.DrawString("SISTEMA PARA EL CÁLCULO DE RAÍCES LINEALES Y NO LINEALES", subFont, whiteHighlightBrush, rectSubLuz, centrado);
+                g.DrawString("SISTEMA PARA EL CÁLCULO DE RAÍCES LINEALES Y NO LINEALES", subFont, darkTextBrush, rectSub, centrado);
 
                 // Imprimir Desarrolladores
                 g.DrawString("Desarrollado por: Rodrigo Zelaya, Hillary Ordoñez e Ismaurily Pichardo", devFont, darkTextBrush, rectDev, centrado);

@@ -23,7 +23,7 @@ namespace Métodos_Numéricos
             if (string.IsNullOrWhiteSpace(txtFuncionSecante.Text) || string.IsNullOrWhiteSpace(txtVI.Text) ||
                 string.IsNullOrWhiteSpace(txtV2.Text) || string.IsNullOrWhiteSpace(txtTolSecante.Text))
             {
-                MessageBox.Show("Llena todos los campos bro.");
+                MessageBox.Show("Llena todos los campos.");
                 return;
             }
 
@@ -56,7 +56,7 @@ namespace Métodos_Numéricos
                 if (Math.Abs(f0 - f1) < 1e-12) // Si dan el mismo resultado
                 {
                     MessageBox.Show(
-                        "Bro, la función evaluada en x0 y x1 da el mismo resultado (f(x) = " + f0.ToString("G4") + ").\n\n" +
+                        "La función evaluada en x0 y x1 da el mismo resultado (f(x) = " + f0.ToString("G4") + ").\n\n" +
                         "Esto crea una recta secante horizontal que nunca cruzará el eje X, provocando una división entre cero.\n\n" +
                         "Ingresa valores iniciales diferentes.",
                         "Falla de Secante (Recta Horizontal)",
@@ -88,7 +88,7 @@ namespace Métodos_Numéricos
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Algo falló al intentar mandar la tabla, bro: " + ex.Message);
+                MessageBox.Show("Algo falló al intentar mandar la tabla: " + ex.Message);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Métodos_Numéricos
 
             if (string.IsNullOrWhiteSpace(funcion))
             {
-                MessageBox.Show("Bro, escribe una función primero.");
+                MessageBox.Show("Escribe una función primero.");
                 return;
             }
 

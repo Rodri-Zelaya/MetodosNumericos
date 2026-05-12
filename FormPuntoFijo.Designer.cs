@@ -49,9 +49,9 @@
             label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(22, 88);
             label1.Name = "label1";
-            label1.Size = new Size(100, 31);
+            label1.Size = new Size(109, 31);
             label1.TabIndex = 0;
-            label1.Text = "Función";
+            label1.Text = "Ecuación";
             // 
             // label2
             // 

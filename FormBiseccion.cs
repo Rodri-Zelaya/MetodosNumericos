@@ -63,7 +63,7 @@ namespace Métodos_Numéricos
                 if (fa * fb > 0)
                 {
                     MessageBox.Show(
-                        "Bro, la función no cambia de signo en el intervalo [" + a + ", " + b + "].\n\n" +
+                        "La función no cambia de signo en el intervalo [" + a + ", " + b + "].\n\n" +
                         "f(" + a + ") = " + fa + "\n" +
                         "f(" + b + ") = " + fb + "\n\n" +
                         "Revisa la gráfica y elige un intervalo donde la curva cruce el eje X.",
@@ -76,7 +76,7 @@ namespace Métodos_Numéricos
                 else if (fa == 0 || fb == 0)
                 {
                     MessageBox.Show(
-                        "¡Bro, uno de los límites ya es la raíz exacta! No hay necesidad de hacer iteraciones.",
+                        "¡Uno de los límites ya es la raíz exacta! No hay necesidad de hacer iteraciones.",
                         "Raíz Encontrada",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
@@ -107,7 +107,7 @@ namespace Métodos_Numéricos
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Algo falló al intentar mandar la tabla, bro: " + ex.Message);
+                MessageBox.Show("Algo falló al intentar mandar la tabla: " + ex.Message);
             }
         }
 
@@ -117,7 +117,7 @@ namespace Métodos_Numéricos
 
             if (string.IsNullOrWhiteSpace(funcion))
             {
-                MessageBox.Show("Bro, escribe una función primero.");
+                MessageBox.Show("Escribe una función primero.");
                 return;
             }
 
