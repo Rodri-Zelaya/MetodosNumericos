@@ -66,6 +66,9 @@ public class MetodosNumericos
         dgv.Columns.Add("Ea", "E. Absoluto");
         dgv.Columns.Add("Er", "E. Relativo %");
 
+        // 🎨 LLAMAMOS A LA BROCHA AQUÍ:
+        FormatearTabla(dgv);
+
         dgv.Rows.Clear();
         double c = 0, c_ant, errorRelativo = 100, ea = 0;// Iniciamos error alto para que entre al ciclo
         int i = 1;
@@ -109,6 +112,9 @@ public class MetodosNumericos
         dgv.Columns.Add("FaFc", "f(a)*f(c)");
         dgv.Columns.Add("Er", "Er%");
 
+        // 🎨 LLAMAMOS A LA BROCHA AQUÍ:
+        FormatearTabla(dgv);
+
         dgv.Rows.Clear();
         double c = 0, c_ant, errorRelativo = 100;
         int i = 1;
@@ -143,6 +149,9 @@ public class MetodosNumericos
         dgv.Columns.Add("Ci1", "ci+1");
         dgv.Columns.Add("Ea", "Ea");
         dgv.Columns.Add("Er", "Er%");
+
+        // 🎨 LLAMAMOS A LA BROCHA AQUÍ:
+        FormatearTabla(dgv);
 
         dgv.Rows.Clear();
         double ci = x0, ci_ant = 0, errorRelativo = 100, ea = 0;
@@ -180,6 +189,9 @@ public class MetodosNumericos
         dgv.Columns.Add("FCi", "f(ci)");
         dgv.Columns.Add("Er", "Er%");
         dgv.Columns.Add("Decision", "Decisión");
+        
+        // 🎨 LLAMAMOS A LA BROCHA AQUÍ:
+        FormatearTabla(dgv);
 
         dgv.Rows.Clear();
 
@@ -226,6 +238,9 @@ public class MetodosNumericos
         dgv.Columns.Add("Er", "Er%");
         dgv.Columns.Add("Decision", "Decisión");
 
+        // 🎨 LLAMAMOS A LA BROCHA AQUÍ:
+        FormatearTabla(dgv);
+
         dgv.Rows.Clear();
 
         double ci = x0;
@@ -271,6 +286,9 @@ public class MetodosNumericos
         dgv.Columns.Add("BMinus", "b-√");
         dgv.Columns.Add("Er", "Error %");
         dgv.Columns.Add("Decision", "Continuar");
+
+        // 🎨 LLAMAMOS A LA BROCHA AQUÍ:
+        FormatearTabla(dgv);
 
         dgv.Rows.Clear();
 
@@ -371,6 +389,9 @@ public class MetodosNumericos
         dgv.Columns.Add("ErrR", "Er(r)%"); dgv.Columns.Add("ErrS", "Er(s)%");
         dgv.Columns.Add("X1", "X1"); dgv.Columns.Add("X2", "X2");
         dgv.Columns.Add("Cond", "Condición");
+
+        // 🎨 LLAMAMOS A LA BROCHA AQUÍ:
+        FormatearTabla(dgv);
 
         dgv.Rows.Clear();
 
@@ -502,6 +523,9 @@ public class MetodosNumericos
         dgv.Columns.Add("r", "r");
         dgv.Columns.Add("Er", "Er");
 
+        // 🎨 LLAMAMOS A LA BROCHA AQUÍ:
+        FormatearTabla(dgv);
+
         dgv.Rows.Clear();
 
         double r = r0;
@@ -631,6 +655,9 @@ public class MetodosNumericos
         dgv.Columns.Add("Delta", "[J(X)]^-1 * F(X)");
         dgv.Columns.Add("Er", "Er");
 
+        // 🎨 LLAMAMOS A LA BROCHA AQUÍ:
+        FormatearTabla(dgv);
+
         dgv.Rows.Clear();
 
         double[] X = (double[])X0.Clone();
@@ -704,6 +731,41 @@ public class MetodosNumericos
 
             X = (double[])X_next.Clone();
             iter++;
+        }
+    }
+
+    // 🎨 LA BROCHA MÁGICA PARA EL DISEÑO DE LAS TABLAS
+    public void FormatearTabla(DataGridView dgv)
+    {
+        // 1. Encabezados
+        dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+        dgv.ColumnHeadersDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+        dgv.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.LightGray;
+
+        // 2. Colores del fondo (Verde Pastel)
+        dgv.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(220, 245, 220);
+        dgv.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+        dgv.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+
+        // 🪄 EL CAMUFLAJE: Hacemos que la selección sea del mismo color que el fondo (Adiós al Azul)
+        dgv.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(220, 245, 220);
+        dgv.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
+
+        // 3. Filas alternas (Verde un poquito más oscuro)
+        dgv.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(200, 235, 200);
+        // Camuflaje para las filas alternas también
+        dgv.AlternatingRowsDefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(200, 235, 200);
+        dgv.AlternatingRowsDefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
+
+        dgv.EnableHeadersVisualStyles = false;
+        dgv.RowHeadersVisible = false; // Quita la flechita fea de la izquierda
+
+        // ❌ ELIMINADA LA LÍNEA DEL FullRowSelect QUE CAUSABA EL AZUL GIGANTE
+
+        // 🛡️ EL BLOQUEO DE LA FLECHITA: Evita que el usuario invierta la tabla por error
+        foreach (DataGridViewColumn columna in dgv.Columns)
+        {
+            columna.SortMode = DataGridViewColumnSortMode.NotSortable;
         }
     }
 

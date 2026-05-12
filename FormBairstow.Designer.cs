@@ -44,7 +44,7 @@
             // txtCoeficientes
             // 
             txtCoeficientes.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtCoeficientes.Location = new Point(153, 123);
+            txtCoeficientes.Location = new Point(164, 123);
             txtCoeficientes.Name = "txtCoeficientes";
             txtCoeficientes.Size = new Size(255, 34);
             txtCoeficientes.TabIndex = 0;
