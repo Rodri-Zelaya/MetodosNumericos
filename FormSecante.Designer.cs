@@ -48,7 +48,7 @@
             // txtFuncionSecante
             // 
             txtFuncionSecante.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtFuncionSecante.Location = new Point(111, 99);
+            txtFuncionSecante.Location = new Point(127, 99);
             txtFuncionSecante.Name = "txtFuncionSecante";
             txtFuncionSecante.Size = new Size(458, 34);
             txtFuncionSecante.TabIndex = 0;
@@ -86,9 +86,9 @@
             label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(12, 102);
             label1.Name = "label1";
-            label1.Size = new Size(100, 31);
+            label1.Size = new Size(109, 31);
             label1.TabIndex = 5;
-            label1.Text = "Función";
+            label1.Text = "Ecuación";
             // 
             // label2
             // 
@@ -180,6 +180,7 @@
             btnGraficar.TabIndex = 14;
             btnGraficar.Text = "Graficar";
             btnGraficar.UseVisualStyleBackColor = true;
+            btnGraficar.Click += btnGraficar_Click;
             // 
             // btnLimpiar
             // 

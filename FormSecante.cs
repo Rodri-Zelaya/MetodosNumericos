@@ -101,5 +101,21 @@ namespace Métodos_Numéricos
                 new Label[] { lblRaiz } // 3. (Opcional) Tus labels de resultado
             );
         }
+
+        private void btnGraficar_Click(object sender, EventArgs e)
+        {
+            // Solo asegúrate de que el TextBox se llame igual en este form
+            string funcion = txtFuncionSecante.Text;
+
+            if (string.IsNullOrWhiteSpace(funcion))
+            {
+                MessageBox.Show("Bro, escribe una función primero.");
+                return;
+            }
+
+            // Llamamos a tu obra maestra
+            FormGraficador visor = new FormGraficador(funcion);
+            visor.ShowDialog();
+        }
     }
 }

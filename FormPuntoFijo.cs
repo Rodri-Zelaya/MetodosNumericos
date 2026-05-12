@@ -52,23 +52,19 @@ namespace Métodos_Numéricos
 
                 if (Math.Abs(derivadaG) >= 1)
                 {
-                    // Usamos un MessageBox con botones Yes/No para darle la opción al usuario
-                    DialogResult respuesta = MessageBox.Show(
-                        "Bro, la derivada de tu g(x) en el punto inicial es mayor o igual a 1 (|g'(x0)| = " + Math.Abs(derivadaG).ToString("F4") + ").\n\n" +
-                        "Matemáticamente, esto significa que el método probablemente va a DIVERGER (los números se alejarán de la raíz).\n" +
-                        "Lo ideal es despejar la 'x' de tu ecuación original de una forma distinta para obtener otra g(x).\n\n" +
-                        "¿Quieres intentar calcular la tabla de todas formas (bajo tu propio riesgo)?",
-                        "Alerta de Divergencia (Punto Fijo)",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning);
+                    // Freno automático con mensaje directo
+                    MessageBox.Show(
+                        "¡Alto ahí, bro! La derivada de tu g(x) en el punto inicial es mayor o igual a 1 (|g'(x0)| = " + Math.Abs(derivadaG).ToString("F4") + ").\n\n" +
+                        "Matemáticamente, esto garantiza que el método va a DIVERGER (los valores explotarán y se alejarán de la raíz).\n\n" +
+                        "Para solucionar esto, despeja la 'x' de tu ecuación original de una forma distinta para obtener una nueva g(x) y vuelve a intentar.",
+                        "Divergencia Detectada (Punto Fijo)",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error); // Cambiado a ícono de Error porque no lo vamos a dejar pasar
 
-                    if (respuesta == DialogResult.No)
-                    {
-                        return; // Freno de mano si el usuario decide hacer caso a las matemáticas
-                    }
+                    return; // Freno de mano absoluto, no sigue calculando nada
                 }
 
-                // 4. Arrancamos el motor (ya sea porque la derivada era < 1, o porque el usuario le dio a "Yes")
+                // 4. Arrancamos el motor (Solo llegará aquí si la derivada es < 1)
                 string raizEncontrada = metodos.PuntoFijo(funcionG, x0, tol, dgvPuntoFijo);
                 lblRaiz.Text = "Raíz: " + raizEncontrada;
             }
