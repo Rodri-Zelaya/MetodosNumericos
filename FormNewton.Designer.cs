@@ -39,6 +39,7 @@
             lblRaiz = new Label();
             btnExportar = new Button();
             btnGraficar = new Button();
+            btnLimpiar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvNewton).BeginInit();
             SuspendLayout();
             // 
@@ -104,7 +105,7 @@
             // 
             btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCalcular.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCalcular.Location = new Point(1158, 30);
+            btnCalcular.Location = new Point(1148, 30);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(172, 78);
             btnCalcular.TabIndex = 10;
@@ -139,7 +140,7 @@
             // 
             btnExportar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnExportar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportar.Location = new Point(1486, 30);
+            btnExportar.Location = new Point(1326, 30);
             btnExportar.Name = "btnExportar";
             btnExportar.Size = new Size(188, 78);
             btnExportar.TabIndex = 13;
@@ -151,19 +152,32 @@
             // 
             btnGraficar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnGraficar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnGraficar.Location = new Point(1336, 30);
+            btnGraficar.Location = new Point(1520, 30);
             btnGraficar.Name = "btnGraficar";
-            btnGraficar.Size = new Size(144, 78);
+            btnGraficar.Size = new Size(154, 78);
             btnGraficar.TabIndex = 14;
             btnGraficar.Text = "Graficar";
             btnGraficar.UseVisualStyleBackColor = true;
             btnGraficar.Click += btnGraficar_Click;
+            // 
+            // btnLimpiar
+            // 
+            btnLimpiar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnLimpiar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLimpiar.Location = new Point(1520, 115);
+            btnLimpiar.Name = "btnLimpiar";
+            btnLimpiar.Size = new Size(154, 71);
+            btnLimpiar.TabIndex = 15;
+            btnLimpiar.Text = "Limpiar";
+            btnLimpiar.UseVisualStyleBackColor = true;
+            btnLimpiar.Click += btnLimpiar_Click;
             // 
             // FormNewton
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1686, 450);
+            Controls.Add(btnLimpiar);
             Controls.Add(btnGraficar);
             Controls.Add(btnExportar);
             Controls.Add(lblRaiz);
@@ -195,5 +209,6 @@
         private Label lblRaiz;
         private Button btnExportar;
         private Button btnGraficar;
+        private Button btnLimpiar;
     }
 }

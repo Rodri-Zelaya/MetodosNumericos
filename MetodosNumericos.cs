@@ -769,6 +769,44 @@ public class MetodosNumericos
         }
     }
 
+    // 🧹 LA ESCOBA MÁGICA (VERSIÓN INTELIGENTE)
+    public void LimpiarPantalla(DataGridView tabla, TextBox[] cajasDeTexto, Label[] etiquetasResultados = null)
+    {
+        // 1. Limpiamos la tabla
+        if (tabla != null)
+        {
+            tabla.Rows.Clear();
+        }
+
+        // 2. Vaciamos las cajas de texto y regresamos el cursor
+        if (cajasDeTexto != null && cajasDeTexto.Length > 0)
+        {
+            foreach (TextBox txt in cajasDeTexto)
+            {
+                txt.Clear();
+            }
+            cajasDeTexto[0].Focus();
+        }
+
+        // 3. 🪄 TRUCO PRO: Restauramos los Labels usando el corte inteligente
+        if (etiquetasResultados != null)
+        {
+            foreach (Label lbl in etiquetasResultados)
+            {
+                // Si el label tiene dos puntos (ej. "Raíz: 5.43"), cortamos el número
+                if (lbl.Text.Contains(":"))
+                {
+                    lbl.Text = lbl.Text.Substring(0, lbl.Text.IndexOf(':') + 1) + " ";
+                }
+                else
+                {
+                    // Si no tiene dos puntos, solo lo dejamos en blanco para que no salgan rayitas
+                    lbl.Text = "";
+                }
+            }
+        }
+    }
+
     public void ExportarAExcel(DataGridView dgv)
     {
         if (dgv.Rows.Count == 0) return;

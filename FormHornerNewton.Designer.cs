@@ -38,6 +38,7 @@
             btnCalcular = new Button();
             dgvHornerNewton = new DataGridView();
             btnExportar = new Button();
+            btnLimpiar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvHornerNewton).BeginInit();
             SuspendLayout();
             // 
@@ -114,7 +115,7 @@
             // 
             btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCalcular.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCalcular.Location = new Point(1403, 24);
+            btnCalcular.Location = new Point(1250, 24);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(159, 77);
             btnCalcular.TabIndex = 7;
@@ -138,7 +139,7 @@
             // 
             btnExportar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnExportar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportar.Location = new Point(1572, 24);
+            btnExportar.Location = new Point(1415, 24);
             btnExportar.Name = "btnExportar";
             btnExportar.Size = new Size(203, 77);
             btnExportar.TabIndex = 9;
@@ -146,12 +147,25 @@
             btnExportar.UseVisualStyleBackColor = true;
             btnExportar.Click += btnExportar_Click;
             // 
+            // btnLimpiar
+            // 
+            btnLimpiar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnLimpiar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLimpiar.Location = new Point(1624, 24);
+            btnLimpiar.Name = "btnLimpiar";
+            btnLimpiar.Size = new Size(144, 77);
+            btnLimpiar.TabIndex = 10;
+            btnLimpiar.Text = "Limpiar";
+            btnLimpiar.UseVisualStyleBackColor = true;
+            btnLimpiar.Click += btnLimpiar_Click;
+            // 
             // FormHornerNewton
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1787, 475);
+            Controls.Add(btnLimpiar);
             Controls.Add(btnExportar);
             Controls.Add(dgvHornerNewton);
             Controls.Add(btnCalcular);
@@ -181,5 +195,6 @@
         private Button btnCalcular;
         private DataGridView dgvHornerNewton;
         private Button btnExportar;
+        private Button btnLimpiar;
     }
 }

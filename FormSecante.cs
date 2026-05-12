@@ -79,5 +79,15 @@ namespace Métodos_Numéricos
                 MessageBox.Show("Algo falló al intentar mandar la tabla, bro: " + ex.Message);
             }
         }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            // Mandas a llamar a la Escoba Mágica (creas el objeto y lo usas en la misma línea)
+            new MetodosNumericos().LimpiarPantalla(
+                dgvSecante, // 1. Tu tabla
+                new TextBox[] { txtFuncionSecante, txtVI, txtV2, txtTolSecante }, // 2. Tus cajas de texto (pon de primera la que quieras que tome el cursor)
+                new Label[] { lblRaiz } // 3. (Opcional) Tus labels de resultado
+            );
+        }
     }
 }

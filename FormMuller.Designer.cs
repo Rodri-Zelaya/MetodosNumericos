@@ -42,6 +42,7 @@
             label5 = new Label();
             btnCalcular = new Button();
             btnExportar = new Button();
+            btnLimpiar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvMuller).BeginInit();
             SuspendLayout();
             // 
@@ -170,9 +171,9 @@
             // 
             btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCalcular.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCalcular.Location = new Point(1426, 39);
+            btnCalcular.Location = new Point(1299, 39);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(176, 66);
+            btnCalcular.Size = new Size(176, 78);
             btnCalcular.TabIndex = 12;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -182,19 +183,32 @@
             // 
             btnExportar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnExportar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportar.Location = new Point(1608, 38);
+            btnExportar.Location = new Point(1481, 38);
             btnExportar.Name = "btnExportar";
-            btnExportar.Size = new Size(187, 66);
+            btnExportar.Size = new Size(187, 79);
             btnExportar.TabIndex = 13;
             btnExportar.Text = "Exportar Excel";
             btnExportar.UseVisualStyleBackColor = true;
             btnExportar.Click += btnExportar_Click;
+            // 
+            // btnLimpiar
+            // 
+            btnLimpiar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnLimpiar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLimpiar.Location = new Point(1674, 39);
+            btnLimpiar.Name = "btnLimpiar";
+            btnLimpiar.Size = new Size(131, 78);
+            btnLimpiar.TabIndex = 14;
+            btnLimpiar.Text = "Limpiar";
+            btnLimpiar.UseVisualStyleBackColor = true;
+            btnLimpiar.Click += btnLimpiar_Click;
             // 
             // FormMuller
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1807, 467);
+            Controls.Add(btnLimpiar);
             Controls.Add(btnExportar);
             Controls.Add(btnCalcular);
             Controls.Add(label5);
@@ -232,5 +246,6 @@
         private Label label5;
         private Button btnCalcular;
         private Button btnExportar;
+        private Button btnLimpiar;
     }
 }

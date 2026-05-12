@@ -37,6 +37,7 @@
             label2 = new Label();
             txtValoresIniciales = new TextBox();
             label3 = new Label();
+            btnLimpiar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvNoLinealNewton).BeginInit();
             SuspendLayout();
             // 
@@ -53,7 +54,7 @@
             // 
             btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCalcular.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCalcular.Location = new Point(1389, 45);
+            btnCalcular.Location = new Point(1250, 45);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(193, 71);
             btnCalcular.TabIndex = 5;
@@ -88,7 +89,7 @@
             // 
             btnExportar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnExportar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportar.Location = new Point(1588, 45);
+            btnExportar.Location = new Point(1449, 45);
             btnExportar.Name = "btnExportar";
             btnExportar.Size = new Size(206, 71);
             btnExportar.TabIndex = 13;
@@ -134,11 +135,24 @@
             label3.TabIndex = 17;
             label3.Text = "Valores iniciales";
             // 
+            // btnLimpiar
+            // 
+            btnLimpiar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnLimpiar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLimpiar.Location = new Point(1661, 45);
+            btnLimpiar.Name = "btnLimpiar";
+            btnLimpiar.Size = new Size(143, 71);
+            btnLimpiar.TabIndex = 18;
+            btnLimpiar.Text = "Limpiar";
+            btnLimpiar.UseVisualStyleBackColor = true;
+            btnLimpiar.Click += btnLimpiar_Click;
+            // 
             // FormNoLinealNewton
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1806, 474);
+            Controls.Add(btnLimpiar);
             Controls.Add(label3);
             Controls.Add(txtValoresIniciales);
             Controls.Add(label2);
@@ -165,5 +179,6 @@
         private Label label2;
         private TextBox txtValoresIniciales;
         private Label label3;
+        private Button btnLimpiar;
     }
 }

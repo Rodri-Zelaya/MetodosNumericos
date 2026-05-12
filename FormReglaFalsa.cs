@@ -122,5 +122,15 @@ namespace Métodos_Numéricos
             FormGraficador visor = new FormGraficador(funcion);
             visor.ShowDialog();
         }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            // Mandas a llamar a la Escoba Mágica (creas el objeto y lo usas en la misma línea)
+            new MetodosNumericos().LimpiarPantalla(
+                dgvReglaFalsa, // 1. Tu tabla
+                new TextBox[] { txtFuncionReglaFalsa, txtA, txtB, txtTolerancia }, // 2. Tus cajas de texto (pon de primera la que quieras que tome el cursor)
+                new Label[] { lblRaiz } // 3. (Opcional) Tus labels de resultado
+            );
+        }
     }
 }

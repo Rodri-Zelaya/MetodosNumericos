@@ -41,6 +41,7 @@
             lblRaiz = new Label();
             btnExportar = new Button();
             btnGraficar = new Button();
+            btnLimpiar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvReglaFalsa).BeginInit();
             SuspendLayout();
             // 
@@ -161,7 +162,7 @@
             // 
             btnExportar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnExportar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportar.Location = new Point(1586, 32);
+            btnExportar.Location = new Point(1442, 35);
             btnExportar.Name = "btnExportar";
             btnExportar.Size = new Size(191, 73);
             btnExportar.TabIndex = 13;
@@ -173,7 +174,7 @@
             // 
             btnGraficar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnGraficar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnGraficar.Location = new Point(1442, 33);
+            btnGraficar.Location = new Point(1639, 33);
             btnGraficar.Name = "btnGraficar";
             btnGraficar.Size = new Size(138, 73);
             btnGraficar.TabIndex = 14;
@@ -181,11 +182,24 @@
             btnGraficar.UseVisualStyleBackColor = true;
             btnGraficar.Click += btnGraficar_Click;
             // 
+            // btnLimpiar
+            // 
+            btnLimpiar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnLimpiar.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLimpiar.Location = new Point(1639, 112);
+            btnLimpiar.Name = "btnLimpiar";
+            btnLimpiar.Size = new Size(138, 65);
+            btnLimpiar.TabIndex = 15;
+            btnLimpiar.Text = "Limpiar";
+            btnLimpiar.UseVisualStyleBackColor = true;
+            btnLimpiar.Click += btnLimpiar_Click;
+            // 
             // FormReglaFalsa
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1789, 468);
+            Controls.Add(btnLimpiar);
             Controls.Add(btnGraficar);
             Controls.Add(btnExportar);
             Controls.Add(lblRaiz);
@@ -222,5 +236,6 @@
         private Label lblRaiz;
         private Button btnExportar;
         private Button btnGraficar;
+        private Button btnLimpiar;
     }
 }
