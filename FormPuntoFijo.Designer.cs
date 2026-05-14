@@ -31,7 +31,7 @@
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
-            txtFuncionPuntoFijo = new TextBox();
+            txtFuncionOriginal = new TextBox();
             txtX0PuntoFijo = new TextBox();
             txtTolPuntoFijo = new TextBox();
             btnCalcular = new Button();
@@ -40,6 +40,8 @@
             btnExportar = new Button();
             btnGraficar = new Button();
             btnLimpiar = new Button();
+            label4 = new Label();
+            txtDespejeG = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvPuntoFijo).BeginInit();
             SuspendLayout();
             // 
@@ -47,11 +49,11 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(22, 88);
+            label1.Location = new Point(7, 54);
             label1.Name = "label1";
-            label1.Size = new Size(109, 31);
+            label1.Size = new Size(249, 31);
             label1.TabIndex = 0;
-            label1.Text = "Ecuación";
+            label1.Text = " Ecuación original f(x)";
             // 
             // label2
             // 
@@ -75,13 +77,13 @@
             label3.TabIndex = 2;
             label3.Text = "Tolerancia";
             // 
-            // txtFuncionPuntoFijo
+            // txtFuncionOriginal
             // 
-            txtFuncionPuntoFijo.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtFuncionPuntoFijo.Location = new Point(128, 88);
-            txtFuncionPuntoFijo.Name = "txtFuncionPuntoFijo";
-            txtFuncionPuntoFijo.Size = new Size(434, 34);
-            txtFuncionPuntoFijo.TabIndex = 5;
+            txtFuncionOriginal.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtFuncionOriginal.Location = new Point(262, 51);
+            txtFuncionOriginal.Name = "txtFuncionOriginal";
+            txtFuncionOriginal.Size = new Size(413, 34);
+            txtFuncionOriginal.TabIndex = 5;
             // 
             // txtX0PuntoFijo
             // 
@@ -172,11 +174,31 @@
             btnLimpiar.UseVisualStyleBackColor = true;
             btnLimpiar.Click += btnLimpiar_Click;
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.Location = new Point(7, 128);
+            label4.Name = "label4";
+            label4.Size = new Size(258, 31);
+            label4.TabIndex = 15;
+            label4.Text = "Propuesta despeje g(x)";
+            // 
+            // txtDespejeG
+            // 
+            txtDespejeG.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtDespejeG.Location = new Point(262, 128);
+            txtDespejeG.Name = "txtDespejeG";
+            txtDespejeG.Size = new Size(413, 34);
+            txtDespejeG.TabIndex = 16;
+            // 
             // FormPuntoFijo
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1652, 467);
+            Controls.Add(txtDespejeG);
+            Controls.Add(label4);
             Controls.Add(btnLimpiar);
             Controls.Add(btnGraficar);
             Controls.Add(btnExportar);
@@ -185,7 +207,7 @@
             Controls.Add(btnCalcular);
             Controls.Add(txtTolPuntoFijo);
             Controls.Add(txtX0PuntoFijo);
-            Controls.Add(txtFuncionPuntoFijo);
+            Controls.Add(txtFuncionOriginal);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -201,7 +223,7 @@
         private Label label1;
         private Label label2;
         private Label label3;
-        private TextBox txtFuncionPuntoFijo;
+        private TextBox txtFuncionOriginal;
         private TextBox txtX0PuntoFijo;
         private TextBox txtTolPuntoFijo;
         private Button btnCalcular;
@@ -210,5 +232,7 @@
         private Button btnExportar;
         private Button btnGraficar;
         private Button btnLimpiar;
+        private Label label4;
+        private TextBox txtDespejeG;
     }
 }

@@ -22,8 +22,8 @@ public class MetodosNumericos
 
             double resultado = e.calculate();
 
-            // Si el usuario mete algo ilógico (ej. dividir entre 0), mXparser devuelve "NaN"
-            return double.IsNaN(resultado) ? 0 : resultado;
+            // Si hay división por cero, devolverá NaN (Not a Number)
+            return e.calculate();
         }
         catch { return 0; }
     }
@@ -355,7 +355,7 @@ public class MetodosNumericos
         }
 
         // Devolvemos la raíz final al Label
-        return x2.ToString("0.########");
+        return x2.ToString("0.########");  
     }
 
     public string Bairstow(double[] a, double tol, DataGridView dgv, out double r0_out, out double s0_out)
@@ -912,6 +912,31 @@ public class MetodosNumericos
             // pero el escudo de SonNumerosValidos ya lo atrapó antes.
             return false;
         }
+    }
+
+    // 🛡️ ESCUDO 5: CONTINUIDAD Y DIVISIÓN POR CERO
+    public bool EsEvaluacionValida(double fa, double fb)
+    {
+        // Revisamos si f(a) o f(b) dieron "NaN" o "Infinito" (División por cero, logaritmos negativos, etc.)
+        if (double.IsNaN(fa) || double.IsInfinity(fa) || double.IsNaN(fb) || double.IsInfinity(fb))
+        {
+            MessageBox.Show("¡Alerta Matemática!\n\nLa función se indefine en uno de tus valores iniciales (ej. División por cero o asíntota).\n\nCambia tus Valores A y B por un intervalo donde la función sea continua.",
+                            "Indeterminación Detectada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return false;
+        }
+        return true;
+    }
+
+    // 🛡️ ESCUDO 5.1: CONTINUIDAD PARA UN SOLO PUNTO (Newton y Punto Fijo)
+    public bool EsPuntoValido(double fx)
+    {
+        if (double.IsNaN(fx) || double.IsInfinity(fx))
+        {
+            MessageBox.Show("¡Alerta Matemática, bro!\n\nLa función se indefine en tu Valor Inicial (ej. División por cero, raíz negativa o asíntota).\n\nCambia el punto de inicio por uno donde la curva exista de verdad.",
+                            "Indeterminación Detectada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return false;
+        }
+        return true;
     }
 
     public void ExportarAExcel(DataGridView dgv)

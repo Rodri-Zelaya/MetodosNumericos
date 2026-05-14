@@ -59,6 +59,10 @@ namespace Métodos_Numéricos
                 argX.setArgumentValue(b);
                 double fb = expr.calculate();
 
+                // 🛡️ ¡NUEVO ESCUDO!: CONTINUIDAD Y DIVISIÓN POR CERO 🛡️
+                // Lo ponemos aquí para que atrape el NaN antes de que Bolzano se confunda
+                if (!metodos.EsEvaluacionValida(fa, fb)) return;
+
                 // 🛡️ 5. REGLA DE BOLZANO (El Cadenero) 🛡️
                 if (fa * fb > 0)
                 {

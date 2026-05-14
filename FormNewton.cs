@@ -46,6 +46,11 @@ namespace Métodos_Numéricos
                 double x0 = metodos.ConvertirADouble(txtVl.Text);
                 double tol = metodos.ConvertirADouble(txtTolNewton.Text);
 
+                // 🛡️ ¡NUEVO ESCUDO 5.1!: CONTINUIDAD DEL PUNTO 🛡️
+                // Evaluamos si la función existe en ese punto x0 antes de derivar
+                double f0 = metodos.EvaluarFuncion(funcion, x0);
+                if (!metodos.EsPuntoValido(f0)) return;
+
                 // 🛡️ 3. REGLA MATEMÁTICA: DERIVADA CERO 🛡️
                 double derivadaX0 = metodos.CalcularDerivada(funcion, x0);
 

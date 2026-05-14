@@ -53,6 +53,10 @@ namespace Métodos_Numéricos
                 double f0 = metodos.EvaluarFuncion(funcion, x0);
                 double f1 = metodos.EvaluarFuncion(funcion, x1);
 
+                // 🛡️ ¡NUEVO ESCUDO 5!: CONTINUIDAD DE LOS PUNTOS 🛡️
+                // Bloquea el paso si x0 o x1 caen en una asíntota o división por cero
+                if (!metodos.EsEvaluacionValida(f0, f1)) return;
+
                 if (Math.Abs(f0 - f1) < 1e-12) // Si dan el mismo resultado
                 {
                     MessageBox.Show(
