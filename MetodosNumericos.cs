@@ -80,6 +80,16 @@ public class MetodosNumericos
             double fa = EvaluarFuncion(funcion, a);
             double fc = EvaluarFuncion(funcion, c);
             double fb = EvaluarFuncion(funcion, b);
+
+            // 🛡️ AQUÍ PEGAS EL ESCUDO (Revisando la variable 'fxr')
+            if (double.IsNaN(fa) || double.IsInfinity(fa) ||
+                double.IsNaN(fc) || double.IsInfinity(fc) ||
+                double.IsNaN(fb) || double.IsInfinity(fb))
+            {
+                MessageBox.Show("¡El método colapsó en la iteración " + i + "!\n\nEl punto chocó con una asíntota o vacío matemático.", "Colapso Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "Divergió (NaN)";
+            }
+
             double prod = fa * fc;
 
             if (i > 1)
@@ -93,6 +103,13 @@ public class MetodosNumericos
 
             if (prod < 0) b = c; else a = c;
             i++;
+        }
+
+        // 🚨 EL ESCUDO DE SEGURIDAD FINAL POR LÍMITE DE ITERACIONES
+        if (i >= 500)
+        {
+            MessageBox.Show("Se alcanzó el límite de (500 iteraciones). El método no pudo converger a la tolerancia deseada.", "Límite Alcanzado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return "No convergió";
         }
 
         // DEVOLVEMOS LA RAÍZ FINAL
@@ -127,6 +144,16 @@ public class MetodosNumericos
             c_ant = c;
             c = b - ((fb * (a - b)) / (fa - fb));
             double fc = EvaluarFuncion(funcion, c);
+
+            // 🛡️ AQUÍ PEGAS EL ESCUDO (Revisando la variable 'fxr')
+            if (double.IsNaN(fa) || double.IsInfinity(fa) ||
+                double.IsNaN(fb) || double.IsInfinity(fb) ||
+                double.IsNaN(fc) || double.IsInfinity(fc))
+            {
+                MessageBox.Show("¡El método colapsó en la iteración " + i + "!\n\nEl punto chocó con una asíntota o vacío matemático.", "Colapso Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "Divergió (NaN)";
+            }
+
             double prod = fa * fc;
 
             if (i > 1) errorRelativo = Math.Abs((c - c_ant) / c) * 100;
@@ -137,6 +164,14 @@ public class MetodosNumericos
             if (prod < 0) b = c; else a = c;
             i++;
         }
+
+        // 🚨 EL ESCUDO DE SEGURIDAD FINAL POR LÍMITE DE ITERACIONES
+        if (i >= 500)
+        {
+            MessageBox.Show("Se alcanzó el límite de (500 iteraciones). El método no pudo converger a la tolerancia deseada.", "Límite Alcanzado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return "No convergió";
+        }
+
         return c.ToString("0.########");
     }
 
@@ -162,9 +197,21 @@ public class MetodosNumericos
         {
             double f = EvaluarFuncion(funcion, ci);
             double df = CalcularDerivada(funcion, ci);
-            if (Math.Abs(df) < 1e-12) break;
+            if (Math.Abs(df) < 1e-12)
+            {
+                MessageBox.Show("¡La derivada se hizo cero en la iteración " + i + "!\n\nEsto genera una tangente horizontal. El método falló.", "Falla de Newton", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return "Falla (Derivada 0)";
+            }
 
             double ci_siguiente = ci - (f / df);
+
+            // 🛡️ TU ESCUDO (¡Excelente posición!)
+            if (double.IsNaN(ci_siguiente) || double.IsInfinity(ci_siguiente))
+            {
+                // Ajustamos el texto para que sea más preciso matemáticamente
+                MessageBox.Show("¡El método colapsó en la iteración " + i + "!\n\nEl cálculo intentó resolver una raíz imaginaria, logaritmo inválido o divergencia al infinito.", "Colapso Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "Divergió (NaN)";
+            }
 
             if (i > 1)
             {
@@ -178,6 +225,12 @@ public class MetodosNumericos
             ci_ant = ci;
             ci = ci_siguiente;
             i++;
+        }
+        // 🚨 CORRECCIÓN 2: El escudo anti-ciclos infinitos por si llega a 500
+        if (i >= 500)
+        {
+            MessageBox.Show("Se alcanzó el límite (500 iteraciones). El método osciló y no pudo converger.", "Límite Alcanzado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return "No convergió";
         }
         return ci.ToString("0.########");
     }
@@ -210,6 +263,15 @@ public class MetodosNumericos
             ci = x1 - ((f1 * (x0 - x1)) / (f0 - f1));
             double f_ci = EvaluarFuncion(funcion, ci);
 
+            // 🛡️ AQUÍ PEGAS EL ESCUDO (Revisando la variable 'x2')
+            if (double.IsNaN(f0) || double.IsInfinity(f0) ||
+                double.IsNaN(f1) || double.IsInfinity(f1) ||
+                double.IsNaN(f_ci) || double.IsInfinity(f_ci))
+            {
+                MessageBox.Show("¡El método colapsó en la iteración " + i + "!\n\nSe formó una recta horizontal causando división por cero.", "Colapso Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "Divergió (NaN)";
+            }
+
             if (i > 1) errorRelativo = Math.Abs((ci - last_ci) / ci) * 100;
 
             string decision = (errorRelativo < tol && i > 1) ? "Finalizar" : "Continuar";
@@ -226,6 +288,12 @@ public class MetodosNumericos
 
             last_ci = ci;
             i++;
+        }
+        // 🚨 EL ESCUDO DE SEGURIDAD FINAL POR LÍMITE DE ITERACIONES
+        if (i >= 500)
+        {
+            MessageBox.Show("Se alcanzó el límite de (500 iteraciones). El método no pudo converger a la tolerancia deseada.", "Límite Alcanzado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return "No convergió";
         }
         return ci.ToString("0.########");
     }
@@ -252,7 +320,15 @@ public class MetodosNumericos
         while (i < 500) // Usamos break interno para respetar tu formato de i=0
         {
             double g = EvaluarFuncion(funcionG, ci);
-            if (i > 0) errorRelativo = Math.Abs((ci - last_ci) / ci);
+
+            // 🛡️ AQUÍ PEGAS EL ESCUDO (Revisando la variable 'g')
+            if (double.IsNaN(g) || double.IsInfinity(g))
+            {
+                MessageBox.Show("¡El método colapsó en la iteración " + i + "!\n\nEl cálculo generó un error matemático (raíz imaginaria o división por cero).", "Colapso Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "Divergió (NaN)";
+            }
+
+            if (i > 0) errorRelativo = Math.Abs((ci - last_ci) / ci)*100;
 
             string decision = (errorRelativo < tol && i > 0) ? "Finalizar" : "Continuar";
 
@@ -264,6 +340,12 @@ public class MetodosNumericos
             last_ci = ci;
             ci = g;
             i++;
+        }
+        // 🚨 EL ESCUDO DE SEGURIDAD FINAL POR LÍMITE DE ITERACIONES
+        if (i >= 500)
+        {
+            MessageBox.Show("Se alcanzó el límite de (500 iteraciones). El método no pudo converger a la tolerancia deseada.", "Límite Alcanzado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return "No convergió";
         }
 
         return ci.ToString("0.########");

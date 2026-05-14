@@ -127,7 +127,7 @@
             // 
             dgvHornerNewton.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvHornerNewton.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvHornerNewton.BackgroundColor = SystemColors.ActiveCaption;
+            dgvHornerNewton.BackgroundColor = Color.Khaki;
             dgvHornerNewton.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvHornerNewton.Location = new Point(12, 188);
             dgvHornerNewton.Name = "dgvHornerNewton";

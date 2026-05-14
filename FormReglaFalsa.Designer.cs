@@ -127,7 +127,7 @@
             // 
             dgvReglaFalsa.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvReglaFalsa.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvReglaFalsa.BackgroundColor = SystemColors.ActiveCaption;
+            dgvReglaFalsa.BackgroundColor = Color.PaleTurquoise;
             dgvReglaFalsa.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvReglaFalsa.Location = new Point(16, 193);
             dgvReglaFalsa.Name = "dgvReglaFalsa";

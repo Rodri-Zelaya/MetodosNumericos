@@ -15,6 +15,21 @@ namespace Métodos_Numéricos
         public FormPuntoFijo()
         {
             InitializeComponent();
+            // 1. Configuramos el estilo plano
+            Button[] botonesAccion = { btnCalcular, btnExportar, btnGraficar, btnLimpiar };
+            foreach (Button btn in botonesAccion)
+            {
+                btn.FlatStyle = FlatStyle.Flat;
+                btn.FlatAppearance.BorderSize = 1;
+                btn.FlatAppearance.BorderColor = Color.LightGray;
+                btn.BackColor = Color.White;
+            }
+
+            // 2. Asignamos los colores pasteles al pasar el mouse (Hover)
+            btnCalcular.FlatAppearance.MouseOverBackColor = Color.FromArgb(225, 225, 225);       // Plomito
+            btnExportar.FlatAppearance.MouseOverBackColor = Color.FromArgb(200, 245, 200);  // Verdecito
+            btnGraficar.FlatAppearance.MouseOverBackColor = Color.FromArgb(235, 220, 250);       // Moradito
+            btnLimpiar.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 210, 210);        // Rojito
         }
 
         private void btnCalcular_Click(object sender, EventArgs e)

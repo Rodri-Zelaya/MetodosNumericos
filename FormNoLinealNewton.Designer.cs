@@ -77,7 +77,7 @@
             // 
             dgvNoLinealNewton.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvNoLinealNewton.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvNoLinealNewton.BackgroundColor = SystemColors.ActiveCaption;
+            dgvNoLinealNewton.BackgroundColor = Color.MediumOrchid;
             dgvNoLinealNewton.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvNoLinealNewton.Location = new Point(9, 253);
             dgvNoLinealNewton.Name = "dgvNoLinealNewton";

@@ -117,7 +117,7 @@
             // 
             dgvNewton.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvNewton.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvNewton.BackgroundColor = SystemColors.ActiveCaption;
+            dgvNewton.BackgroundColor = Color.Orchid;
             dgvNewton.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvNewton.Location = new Point(12, 204);
             dgvNewton.Name = "dgvNewton";

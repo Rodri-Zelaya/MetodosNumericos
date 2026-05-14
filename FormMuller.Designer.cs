@@ -105,7 +105,7 @@
             // 
             dgvMuller.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvMuller.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvMuller.BackgroundColor = SystemColors.ActiveCaption;
+            dgvMuller.BackgroundColor = Color.LightPink;
             dgvMuller.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvMuller.Location = new Point(12, 215);
             dgvMuller.Name = "dgvMuller";

@@ -119,7 +119,7 @@
             // 
             dgvPuntoFijo.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvPuntoFijo.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvPuntoFijo.BackgroundColor = SystemColors.ActiveCaption;
+            dgvPuntoFijo.BackgroundColor = Color.PaleGreen;
             dgvPuntoFijo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPuntoFijo.Location = new Point(12, 203);
             dgvPuntoFijo.Name = "dgvPuntoFijo";

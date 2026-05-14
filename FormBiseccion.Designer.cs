@@ -127,7 +127,7 @@
             // 
             dgvBiseccion.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvBiseccion.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvBiseccion.BackgroundColor = SystemColors.ActiveCaption;
+            dgvBiseccion.BackgroundColor = Color.LightCoral;
             dgvBiseccion.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvBiseccion.Location = new Point(12, 203);
             dgvBiseccion.Name = "dgvBiseccion";

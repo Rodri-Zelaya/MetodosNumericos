@@ -139,7 +139,7 @@
             // 
             dgvSecante.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvSecante.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvSecante.BackgroundColor = SystemColors.ActiveCaption;
+            dgvSecante.BackgroundColor = SystemColors.AppWorkspace;
             dgvSecante.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSecante.Location = new Point(15, 187);
             dgvSecante.Name = "dgvSecante";
