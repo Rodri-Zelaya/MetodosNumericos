@@ -821,36 +821,28 @@ public class MetodosNumericos
     // 🎨 LA BROCHA MÁGICA PARA EL DISEÑO DE LAS TABLAS
     public void FormatearTabla(DataGridView dgv)
     {
-        // 1. Encabezados
-        dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-        dgv.ColumnHeadersDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-        dgv.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.LightGray;
+        // Colores del Dashboard
+        Color azulOscuro = Color.FromArgb(17, 24, 39);
+        Color azulHover = Color.FromArgb(55, 65, 81);
 
-        // 2. Colores del fondo (Verde Pastel)
-        dgv.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(220, 245, 220);
-        dgv.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
-        dgv.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+        dgv.BackgroundColor = Color.White;
+        dgv.BorderStyle = BorderStyle.None;
+        dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+        dgv.RowHeadersVisible = false;
 
-        // 🪄 EL CAMUFLAJE: Hacemos que la selección sea del mismo color que el fondo (Adiós al Azul)
-        dgv.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(220, 245, 220);
-        dgv.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
-
-        // 3. Filas alternas (Verde un poquito más oscuro)
-        dgv.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(200, 235, 200);
-        // Camuflaje para las filas alternas también
-        dgv.AlternatingRowsDefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(200, 235, 200);
-        dgv.AlternatingRowsDefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
-
+        // Apagamos el estilo feo de Windows para los encabezados
         dgv.EnableHeadersVisualStyles = false;
-        dgv.RowHeadersVisible = false; // Quita la flechita fea de la izquierda
+        dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+        dgv.ColumnHeadersDefaultCellStyle.BackColor = azulOscuro;
+        dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+        dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+        dgv.ColumnHeadersHeight = 40;
 
-        // ❌ ELIMINADA LA LÍNEA DEL FullRowSelect QUE CAUSABA EL AZUL GIGANTE
-
-        // 🛡️ EL BLOQUEO DE LA FLECHITA: Evita que el usuario invierta la tabla por error
-        foreach (DataGridViewColumn columna in dgv.Columns)
-        {
-            columna.SortMode = DataGridViewColumnSortMode.NotSortable;
-        }
+        // Estilo de las filas
+        dgv.DefaultCellStyle.SelectionBackColor = azulHover;
+        dgv.DefaultCellStyle.SelectionForeColor = Color.White;
+        dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+        dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 242, 255); // Azul hielo muy suave (reemplaza al verde)
     }
 
     // 🧹 LA ESCOBA MÁGICA (VERSIÓN INTELIGENTE)

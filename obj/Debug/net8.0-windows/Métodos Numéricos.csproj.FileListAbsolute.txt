@@ -87,7 +87,6 @@ C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-window
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos Numéricos.csproj.AssemblyReference.cache
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormBiseccion.resources
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormNewton.resources
-C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormPrincipal.resources
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormPuntoFijo.resources
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormReglaFalsa.resources
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormSecante.resources
@@ -114,3 +113,4 @@ C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\bin\Debug\net8.0-window
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormGraficador.resources
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormInicio.resources
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.Properties.Resources.resources
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormDash.resources

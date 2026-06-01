@@ -155,7 +155,7 @@ namespace Métodos_Numéricos
         private void btnEntrar_Click(object sender, EventArgs e)
         {
             this.Hide();
-            FormPrincipal principal = new FormPrincipal();
+            FormDash principal = new FormDash();
             principal.ShowDialog();
             this.Close();
         }

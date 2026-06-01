@@ -7,6 +7,9 @@
     <Compile Update="FormBiseccion.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormDash.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FormGraficador.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -23,9 +26,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FormNoLinealNewton.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="FormPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FormPuntoFijo.cs">
