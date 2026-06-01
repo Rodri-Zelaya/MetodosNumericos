@@ -15,21 +15,7 @@ namespace Métodos_Numéricos
         public FormReglaFalsa()
         {
             InitializeComponent();
-            // 1. Configuramos el estilo plano
-            Button[] botonesAccion = { btnCalcular, btnExportar, btnGraficar, btnLimpiar };
-            foreach (Button btn in botonesAccion)
-            {
-                btn.FlatStyle = FlatStyle.Flat;
-                btn.FlatAppearance.BorderSize = 1;
-                btn.FlatAppearance.BorderColor = Color.LightGray;
-                btn.BackColor = Color.White;
-            }
-
-            // 2. Asignamos los colores pasteles al pasar el mouse (Hover)
-            btnCalcular.FlatAppearance.MouseOverBackColor = Color.FromArgb(225, 225, 225);       // Plomito
-            btnExportar.FlatAppearance.MouseOverBackColor = Color.FromArgb(200, 245, 200);  // Verdecito
-            btnGraficar.FlatAppearance.MouseOverBackColor = Color.FromArgb(235, 220, 250);       // Moradito
-            btnLimpiar.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 210, 210);        // Rojito
+            AplicarEstiloTuani(this.Controls);
         }
 
         private void FormReglaFalsa_Load(object sender, EventArgs e)
@@ -160,6 +146,47 @@ namespace Métodos_Numéricos
                 new TextBox[] { txtFuncionReglaFalsa, txtA, txtB, txtTolerancia }, // 2. Tus cajas de texto (pon de primera la que quieras que tome el cursor)
                 new Label[] { lblRaiz } // 3. (Opcional) Tus labels de resultado
             );
+        }
+
+        private void AplicarEstiloTuani(Control.ControlCollection controles)
+        {
+            this.BackColor = Color.FromArgb(243, 244, 246);
+            Color azulOscuro = Color.FromArgb(17, 24, 39);
+            Color azulHover = Color.FromArgb(55, 65, 81);
+
+            foreach (Control control in controles)
+            {
+                if (control is Button btn)
+                {
+                    // 🛡️ EL FIX: Apagamos el estilo nativo de Windows
+                    btn.UseVisualStyleBackColor = false;
+
+                    btn.FlatStyle = FlatStyle.Flat;
+                    btn.FlatAppearance.BorderSize = 0;
+                    btn.BackColor = azulOscuro;
+                    btn.ForeColor = Color.White;
+                    btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                    btn.Cursor = Cursors.Hand;
+                    btn.FlatAppearance.MouseOverBackColor = azulHover;
+                    btn.Height = 40;
+                }
+                else if (control is Label lbl)
+                {
+                    lbl.ForeColor = Color.Black;
+                    lbl.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                }
+                else if (control is TextBox txt)
+                {
+                    txt.Font = new Font("Segoe UI", 11, FontStyle.Regular);
+                    txt.BorderStyle = BorderStyle.FixedSingle;
+                }
+
+                // Magia recursiva para encontrar controles anidados
+                if (control.HasChildren)
+                {
+                    AplicarEstiloTuani(control.Controls);
+                }
+            }
         }
     }
 }
