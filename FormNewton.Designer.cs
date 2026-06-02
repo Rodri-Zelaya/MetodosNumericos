@@ -124,6 +124,7 @@
             dgvNewton.RowHeadersWidth = 51;
             dgvNewton.Size = new Size(1662, 234);
             dgvNewton.TabIndex = 11;
+            dgvNewton.Visible = false;
             // 
             // lblRaiz
             // 

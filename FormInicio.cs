@@ -20,17 +20,20 @@ namespace Métodos_Numéricos
 
         private void EstilarBotones()
         {
-            // --- BOTÓN ENTRAR (Contraste oscuro para resaltar en el fondo pastel) ---
+            // --- BOTÓN ENTRAR (Estilo Dashboard Premium) ---
             if (btnEntrar != null)
             {
                 btnEntrar.FlatStyle = FlatStyle.Flat;
                 btnEntrar.FlatAppearance.BorderSize = 0;
-                // Un azul marino/pizarra oscuro y elegante
-                btnEntrar.BackColor = Color.FromArgb(30, 40, 60);
+                // El morado vibrante que usamos en las tarjetas del sistema
+                btnEntrar.BackColor = Color.FromArgb(79, 70, 229);
                 btnEntrar.ForeColor = Color.White;
-                btnEntrar.Font = new Font("Segoe UI", 32, FontStyle.Bold);
-                btnEntrar.Size = new Size(400, 100);
+                btnEntrar.Font = new Font("Segoe UI", 28, FontStyle.Bold);
+                btnEntrar.Size = new Size(350, 90);
                 btnEntrar.Cursor = Cursors.Hand;
+
+                // Efecto Hover sencillo
+                btnEntrar.FlatAppearance.MouseOverBackColor = Color.FromArgb(99, 90, 255);
             }
 
             // --- BOTÓN SALIR (La 'X' roja) ---
@@ -39,12 +42,14 @@ namespace Métodos_Numéricos
                 btnSalir.Text = "X";
                 btnSalir.FlatStyle = FlatStyle.Flat;
                 btnSalir.FlatAppearance.BorderSize = 0;
-                // Rojo un poco más suave para que no desentone con lo pastel
-                btnSalir.BackColor = Color.FromArgb(239, 68, 68);
+                // Rojo elegante
+                btnSalir.BackColor = Color.FromArgb(220, 38, 38);
                 btnSalir.ForeColor = Color.White;
                 btnSalir.Font = new Font("Segoe UI", 16, FontStyle.Bold);
                 btnSalir.Size = new Size(50, 50);
                 btnSalir.Cursor = Cursors.Hand;
+
+                btnSalir.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 68, 68);
 
                 btnSalir.Click -= btnSalir_Click;
                 btnSalir.Click += btnSalir_Click;
@@ -62,8 +67,8 @@ namespace Métodos_Numéricos
 
             if (btnEntrar != null)
             {
-                // Botón exactamente en el centro
-                btnEntrar.Location = new Point((this.Width - btnEntrar.Width) / 2, (this.Height / 2));
+                // Botón exactamente en el centro, un poco más abajo de los textos
+                btnEntrar.Location = new Point((this.Width - btnEntrar.Width) / 2, (this.Height / 2) + 20);
             }
             if (btnSalir != null)
             {
@@ -80,30 +85,35 @@ namespace Métodos_Numéricos
 
             if (this.Width <= 0 || this.Height <= 0) return;
 
-            // 1. DEGRADADO PASTEL (De Celestito a Verde Tiernito)
+            // 🚀 1. DEGRADADO DARK MODE (Integrado con el menú del sistema)
             Rectangle rect = new Rectangle(0, 0, this.Width, this.Height);
             using (LinearGradientBrush brush = new LinearGradientBrush(rect,
-                Color.FromArgb(199, 233, 255), // Celestito pastel
-                Color.FromArgb(220, 245, 220), // Verde tiernito pastel
+                Color.FromArgb(17, 24, 39), // El Azul oscuro de tu menú lateral
+                Color.FromArgb(8, 12, 20),  // Un tono casi negro para dar profundidad
                 45F))
             {
                 g.FillRectangle(brush, rect);
             }
 
-            // 2. Líneas y Nodos (Color oscuro semi-transparente para contrastar el fondo claro)
-            using (Pen pen = new Pen(Color.FromArgb(40, 30, 41, 59), 2f))
+            // 🚀 2. LÍNEAS Y NODOS TECNOLÓGICOS (Constelación más visible)
+            // 🛠️ FIX: Subimos la opacidad de 30 a 120 para que las líneas blancas destaquen más
+            using (Pen pen = new Pen(Color.FromArgb(120, 255, 255, 255), 2f))
             {
                 g.DrawLine(pen, 0, this.Height / 3, this.Width / 3, this.Height / 2);
                 g.DrawLine(pen, this.Width / 3, this.Height / 2, this.Width, 100);
                 g.DrawLine(pen, this.Width / 2, this.Height, this.Width - 200, this.Height / 3);
 
-                g.FillEllipse(Brushes.MediumAquamarine, (this.Width / 3) - 5, (this.Height / 2) - 5, 10, 10);
-                g.FillEllipse(Brushes.MediumAquamarine, (this.Width - 200) - 5, (this.Height / 3) - 5, 10, 10);
+                // Nodos color morado a juego con el botón
+                SolidBrush nodeBrush = new SolidBrush(Color.FromArgb(129, 140, 248));
+                g.FillEllipse(nodeBrush, (this.Width / 3) - 5, (this.Height / 2) - 5, 10, 10);
+                g.FillEllipse(nodeBrush, (this.Width - 200) - 5, (this.Height / 3) - 5, 10, 10);
+                nodeBrush.Dispose();
             }
 
-            // 3. Símbolos Matemáticos (Oscuros transparentes)
+            // 🚀 3. SÍMBOLOS MATEMÁTICOS (Más interactivos y presentes)
             using (Font mathFont = new Font("Cambria", 70, FontStyle.Italic))
-            using (SolidBrush textBrush = new SolidBrush(Color.FromArgb(25, 30, 41, 59)))
+            // 🛠️ FIX: Subimos la opacidad de 15 a 90 para que no parezcan fantasmas
+            using (SolidBrush textBrush = new SolidBrush(Color.FromArgb(90, 255, 255, 255)))
             {
                 g.DrawString("∑", mathFont, textBrush, this.Width - 250, 150);
                 g.DrawString("π", mathFont, textBrush, 150, this.Height - 300);
@@ -111,44 +121,39 @@ namespace Métodos_Numéricos
                 g.DrawString("x²", mathFont, textBrush, this.Width - 400, this.Height - 250);
             }
 
-            // 4. TEXTOS (Dinámicamente centrados arriba del botón)
+            // 🚀 4. TEXTOS DE ALTO IMPACTO (Centrados)
             using (Font titleFont = new Font("Segoe UI", 60, FontStyle.Bold))
-            using (Font subFont = new Font("Segoe UI", 30, FontStyle.Regular)) // Un pelín más pequeño para balance
-            using (Font devFont = new Font("Segoe UI", 20, FontStyle.Italic))
-            // Pizarra Oscuro para el texto principal
-            using (SolidBrush darkTextBrush = new SolidBrush(Color.FromArgb(30, 41, 59)))
-            // Blanco para el efecto de luz/grabado debajo de las letras
-            using (SolidBrush whiteHighlightBrush = new SolidBrush(Color.FromArgb(180, 255, 255, 255)))
+            using (Font subFont = new Font("Segoe UI", 24, FontStyle.Regular))
+            using (Font devFont = new Font("Segoe UI", 16, FontStyle.Italic))
+            using (SolidBrush whiteTextBrush = new SolidBrush(Color.White))
+            using (SolidBrush accentTextBrush = new SolidBrush(Color.FromArgb(165, 180, 252))) // Morado pastel claro
+            using (SolidBrush shadowBrush = new SolidBrush(Color.FromArgb(150, 0, 0, 0))) // Sombra negra
+            // 🛠️ FIX: Ahora usamos blanco puro (Color.White) en lugar del gris apagado
+            using (SolidBrush footerBrush = new SolidBrush(Color.White))
             {
                 StringFormat centrado = new StringFormat();
                 centrado.Alignment = StringAlignment.Center;
                 centrado.LineAlignment = StringAlignment.Center;
 
-                // 📐 MATEMÁTICA PARA CENTRAR: Tomamos la altura de la mitad de la pantalla
                 float centroY = this.Height / 2;
 
-                // Cajas virtuales agrupadas justo arriba del botón "ENTRAR"
-                // El título empieza 250 pixeles arriba del centro
-                RectangleF rectTitulo = new RectangleF(0, centroY - 260, this.Width, 150);
-                RectangleF rectTituloLuz = new RectangleF(2, centroY - 258, this.Width, 150);
+                // Coordenadas
+                RectangleF rectTitulo = new RectangleF(0, centroY - 250, this.Width, 150);
+                RectangleF rectTituloSombra = new RectangleF(4, centroY - 246, this.Width, 150);
 
-                // El subtítulo va 120 pixeles arriba del centro
-                RectangleF rectSub = new RectangleF(0, centroY - 120, this.Width, 60);
-                RectangleF rectSubLuz = new RectangleF(2, centroY - 118, this.Width, 60);
+                RectangleF rectSub = new RectangleF(0, centroY - 100, this.Width, 60);
 
-                // Desarrolladores se queda abajo
-                RectangleF rectDev = new RectangleF(0, this.Height - 70, this.Width, 50);
+                RectangleF rectDev = new RectangleF(0, this.Height - 60, this.Width, 50);
 
-                // Imprimir Título (Primero la luz blanca, luego el texto oscuro encima)
-                g.DrawString("MÉTODOS NUMÉRICOS", titleFont, whiteHighlightBrush, rectTituloLuz, centrado);
-                g.DrawString("MÉTODOS NUMÉRICOS", titleFont, darkTextBrush, rectTitulo, centrado);
+                // TÍTULO (Primero dibujamos la sombra para dar efecto 3D, luego el texto blanco)
+                g.DrawString("MÉTODOS NUMÉRICOS", titleFont, shadowBrush, rectTituloSombra, centrado);
+                g.DrawString("MÉTODOS NUMÉRICOS", titleFont, whiteTextBrush, rectTitulo, centrado);
 
-                // Imprimir Subtítulo
-                g.DrawString("SISTEMA PARA EL CÁLCULO DE RAÍCES LINEALES Y NO LINEALES", subFont, whiteHighlightBrush, rectSubLuz, centrado);
-                g.DrawString("SISTEMA PARA EL CÁLCULO DE RAÍCES LINEALES Y NO LINEALES", subFont, darkTextBrush, rectSub, centrado);
+                // SUBTÍTULO (Color de acento para contrastar)
+                g.DrawString("SISTEMA PARA EL CÁLCULO DE RAÍCES LINEALES Y NO LINEALES", subFont, accentTextBrush, rectSub, centrado);
 
-                // Imprimir Desarrolladores
-                g.DrawString("Desarrollado por: Rodrigo Zelaya, Hillary Ordoñez e Ismaurily Pichardo", devFont, darkTextBrush, rectDev, centrado);
+                // DESARROLLADORES (Footer resaltado en blanco)
+                g.DrawString("Desarrollado por: Rodrigo Zelaya, Hillary Ordoñez e Ismaurily Pichardo", devFont, footerBrush, rectDev, centrado);
             }
         }
 

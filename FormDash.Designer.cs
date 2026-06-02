@@ -73,16 +73,16 @@
             PanelMenuLateral.Dock = DockStyle.Left;
             PanelMenuLateral.Location = new Point(0, 0);
             PanelMenuLateral.Name = "PanelMenuLateral";
-            PanelMenuLateral.Size = new Size(231, 753);
+            PanelMenuLateral.Size = new Size(253, 753);
             PanelMenuLateral.TabIndex = 0;
             // 
             // panelSubMenuNoLineales
             // 
             panelSubMenuNoLineales.Controls.Add(btnNewtonNoLineal);
             panelSubMenuNoLineales.Dock = DockStyle.Top;
-            panelSubMenuNoLineales.Location = new Point(0, 532);
+            panelSubMenuNoLineales.Location = new Point(0, 540);
             panelSubMenuNoLineales.Name = "panelSubMenuNoLineales";
-            panelSubMenuNoLineales.Size = new Size(231, 31);
+            panelSubMenuNoLineales.Size = new Size(253, 31);
             panelSubMenuNoLineales.TabIndex = 0;
             // 
             // btnNewtonNoLineal
@@ -90,7 +90,7 @@
             btnNewtonNoLineal.Dock = DockStyle.Top;
             btnNewtonNoLineal.Location = new Point(0, 0);
             btnNewtonNoLineal.Name = "btnNewtonNoLineal";
-            btnNewtonNoLineal.Size = new Size(231, 29);
+            btnNewtonNoLineal.Size = new Size(253, 31);
             btnNewtonNoLineal.TabIndex = 0;
             btnNewtonNoLineal.Text = "Newton Raphson No Lineal";
             btnNewtonNoLineal.UseVisualStyleBackColor = true;
@@ -99,9 +99,9 @@
             // btnMétodosNoLineales
             // 
             btnMétodosNoLineales.Dock = DockStyle.Top;
-            btnMétodosNoLineales.Location = new Point(0, 485);
+            btnMétodosNoLineales.Location = new Point(0, 493);
             btnMétodosNoLineales.Name = "btnMétodosNoLineales";
-            btnMétodosNoLineales.Size = new Size(231, 47);
+            btnMétodosNoLineales.Size = new Size(253, 47);
             btnMétodosNoLineales.TabIndex = 0;
             btnMétodosNoLineales.Text = "Métodos No Lineales";
             btnMétodosNoLineales.UseVisualStyleBackColor = true;
@@ -113,9 +113,9 @@
             panelSubMenuPolinomios.Controls.Add(button7);
             panelSubMenuPolinomios.Controls.Add(btnMuller);
             panelSubMenuPolinomios.Dock = DockStyle.Top;
-            panelSubMenuPolinomios.Location = new Point(0, 395);
+            panelSubMenuPolinomios.Location = new Point(0, 403);
             panelSubMenuPolinomios.Name = "panelSubMenuPolinomios";
-            panelSubMenuPolinomios.Size = new Size(231, 90);
+            panelSubMenuPolinomios.Size = new Size(253, 90);
             panelSubMenuPolinomios.TabIndex = 0;
             // 
             // button8
@@ -123,7 +123,7 @@
             button8.Dock = DockStyle.Top;
             button8.Location = new Point(0, 58);
             button8.Name = "button8";
-            button8.Size = new Size(231, 29);
+            button8.Size = new Size(253, 29);
             button8.TabIndex = 0;
             button8.Text = "Bairstow";
             button8.UseVisualStyleBackColor = true;
@@ -134,7 +134,7 @@
             button7.Dock = DockStyle.Top;
             button7.Location = new Point(0, 29);
             button7.Name = "button7";
-            button7.Size = new Size(231, 29);
+            button7.Size = new Size(253, 29);
             button7.TabIndex = 0;
             button7.Text = "Horner Newton";
             button7.UseVisualStyleBackColor = true;
@@ -145,7 +145,7 @@
             btnMuller.Dock = DockStyle.Top;
             btnMuller.Location = new Point(0, 0);
             btnMuller.Name = "btnMuller";
-            btnMuller.Size = new Size(231, 29);
+            btnMuller.Size = new Size(253, 29);
             btnMuller.TabIndex = 0;
             btnMuller.Text = "Muller";
             btnMuller.UseVisualStyleBackColor = true;
@@ -154,9 +154,9 @@
             // btnPolinomios
             // 
             btnPolinomios.Dock = DockStyle.Top;
-            btnPolinomios.Location = new Point(0, 347);
+            btnPolinomios.Location = new Point(0, 355);
             btnPolinomios.Name = "btnPolinomios";
-            btnPolinomios.Size = new Size(231, 48);
+            btnPolinomios.Size = new Size(253, 48);
             btnPolinomios.TabIndex = 0;
             btnPolinomios.Text = "Polinomios";
             btnPolinomios.UseVisualStyleBackColor = true;
@@ -168,9 +168,9 @@
             panelSubMenuAbiertos.Controls.Add(button1);
             panelSubMenuAbiertos.Controls.Add(button2);
             panelSubMenuAbiertos.Dock = DockStyle.Top;
-            panelSubMenuAbiertos.Location = new Point(0, 260);
+            panelSubMenuAbiertos.Location = new Point(0, 268);
             panelSubMenuAbiertos.Name = "panelSubMenuAbiertos";
-            panelSubMenuAbiertos.Size = new Size(231, 87);
+            panelSubMenuAbiertos.Size = new Size(253, 87);
             panelSubMenuAbiertos.TabIndex = 0;
             // 
             // button3
@@ -178,7 +178,7 @@
             button3.Dock = DockStyle.Top;
             button3.Location = new Point(0, 58);
             button3.Name = "button3";
-            button3.Size = new Size(231, 29);
+            button3.Size = new Size(253, 29);
             button3.TabIndex = 2;
             button3.Text = "Punto Fijo";
             button3.UseVisualStyleBackColor = true;
@@ -189,7 +189,7 @@
             button1.Dock = DockStyle.Top;
             button1.Location = new Point(0, 29);
             button1.Name = "button1";
-            button1.Size = new Size(231, 29);
+            button1.Size = new Size(253, 29);
             button1.TabIndex = 0;
             button1.Text = "Secante";
             button1.UseVisualStyleBackColor = true;
@@ -200,7 +200,7 @@
             button2.Dock = DockStyle.Top;
             button2.Location = new Point(0, 0);
             button2.Name = "button2";
-            button2.Size = new Size(231, 29);
+            button2.Size = new Size(253, 29);
             button2.TabIndex = 1;
             button2.Text = "Newton Raphson";
             button2.UseVisualStyleBackColor = true;
@@ -209,9 +209,9 @@
             // btnMétodoAbiertos
             // 
             btnMétodoAbiertos.Dock = DockStyle.Top;
-            btnMétodoAbiertos.Location = new Point(0, 217);
+            btnMétodoAbiertos.Location = new Point(0, 225);
             btnMétodoAbiertos.Name = "btnMétodoAbiertos";
-            btnMétodoAbiertos.Size = new Size(231, 43);
+            btnMétodoAbiertos.Size = new Size(253, 43);
             btnMétodoAbiertos.TabIndex = 0;
             btnMétodoAbiertos.Text = "Métodos Abiertos";
             btnMétodoAbiertos.UseVisualStyleBackColor = true;
@@ -222,9 +222,9 @@
             panelSubMenuCerrados.Controls.Add(button5);
             panelSubMenuCerrados.Controls.Add(button4);
             panelSubMenuCerrados.Dock = DockStyle.Top;
-            panelSubMenuCerrados.Location = new Point(0, 157);
+            panelSubMenuCerrados.Location = new Point(0, 165);
             panelSubMenuCerrados.Name = "panelSubMenuCerrados";
-            panelSubMenuCerrados.Size = new Size(231, 60);
+            panelSubMenuCerrados.Size = new Size(253, 60);
             panelSubMenuCerrados.TabIndex = 0;
             // 
             // button5
@@ -232,7 +232,7 @@
             button5.Dock = DockStyle.Top;
             button5.Location = new Point(0, 29);
             button5.Name = "button5";
-            button5.Size = new Size(231, 29);
+            button5.Size = new Size(253, 29);
             button5.TabIndex = 1;
             button5.Text = "Regla Falsa";
             button5.UseVisualStyleBackColor = true;
@@ -243,7 +243,7 @@
             button4.Dock = DockStyle.Top;
             button4.Location = new Point(0, 0);
             button4.Name = "button4";
-            button4.Size = new Size(231, 29);
+            button4.Size = new Size(253, 29);
             button4.TabIndex = 0;
             button4.Text = "Bisección";
             button4.UseVisualStyleBackColor = true;
@@ -252,9 +252,9 @@
             // btnMétodosCerrados
             // 
             btnMétodosCerrados.Dock = DockStyle.Top;
-            btnMétodosCerrados.Location = new Point(0, 114);
+            btnMétodosCerrados.Location = new Point(0, 122);
             btnMétodosCerrados.Name = "btnMétodosCerrados";
-            btnMétodosCerrados.Size = new Size(231, 43);
+            btnMétodosCerrados.Size = new Size(253, 43);
             btnMétodosCerrados.TabIndex = 0;
             btnMétodosCerrados.Text = "Métodos Cerrados";
             btnMétodosCerrados.UseVisualStyleBackColor = true;
@@ -266,7 +266,7 @@
             PanelLogo.Dock = DockStyle.Top;
             PanelLogo.Location = new Point(0, 0);
             PanelLogo.Name = "PanelLogo";
-            PanelLogo.Size = new Size(231, 114);
+            PanelLogo.Size = new Size(253, 122);
             PanelLogo.TabIndex = 0;
             // 
             // pictureBox1
@@ -275,7 +275,7 @@
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(231, 114);
+            pictureBox1.Size = new Size(253, 122);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
@@ -283,9 +283,9 @@
             // panelContenedorPrincipal
             // 
             panelContenedorPrincipal.Dock = DockStyle.Fill;
-            panelContenedorPrincipal.Location = new Point(231, 0);
+            panelContenedorPrincipal.Location = new Point(253, 0);
             panelContenedorPrincipal.Name = "panelContenedorPrincipal";
-            panelContenedorPrincipal.Size = new Size(569, 753);
+            panelContenedorPrincipal.Size = new Size(547, 753);
             panelContenedorPrincipal.TabIndex = 1;
             // 
             // FormDash
@@ -297,6 +297,7 @@
             Controls.Add(PanelMenuLateral);
             Name = "FormDash";
             Text = "FormDash";
+            WindowState = FormWindowState.Maximized;
             PanelMenuLateral.ResumeLayout(false);
             panelSubMenuNoLineales.ResumeLayout(false);
             panelSubMenuPolinomios.ResumeLayout(false);

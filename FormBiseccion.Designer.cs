@@ -134,6 +134,7 @@
             dgvBiseccion.RowHeadersWidth = 51;
             dgvBiseccion.Size = new Size(1780, 467);
             dgvBiseccion.TabIndex = 10;
+            dgvBiseccion.Visible = false;
             // 
             // btnCalcular
             // 

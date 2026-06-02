@@ -112,6 +112,7 @@
             dgvMuller.RowHeadersWidth = 51;
             dgvMuller.Size = new Size(1783, 225);
             dgvMuller.TabIndex = 6;
+            dgvMuller.Visible = false;
             // 
             // label1
             // 

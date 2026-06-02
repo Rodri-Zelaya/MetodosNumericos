@@ -126,6 +126,7 @@
             dgvPuntoFijo.RowHeadersWidth = 51;
             dgvPuntoFijo.Size = new Size(1628, 252);
             dgvPuntoFijo.TabIndex = 10;
+            dgvPuntoFijo.Visible = false;
             // 
             // lblRaiz
             // 

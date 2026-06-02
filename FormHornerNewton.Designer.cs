@@ -134,6 +134,7 @@
             dgvHornerNewton.RowHeadersWidth = 51;
             dgvHornerNewton.Size = new Size(1763, 258);
             dgvHornerNewton.TabIndex = 8;
+            dgvHornerNewton.Visible = false;
             // 
             // btnExportar
             // 

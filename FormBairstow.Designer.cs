@@ -71,7 +71,6 @@
             // dgvBairstow
             // 
             dgvBairstow.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvBairstow.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvBairstow.BackgroundColor = SystemColors.ActiveCaption;
             dgvBairstow.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvBairstow.Location = new Point(12, 193);

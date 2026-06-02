@@ -146,6 +146,7 @@
             dgvSecante.RowHeadersWidth = 51;
             dgvSecante.Size = new Size(1779, 273);
             dgvSecante.TabIndex = 11;
+            dgvSecante.Visible = false;
             // 
             // lblRaiz
             // 
