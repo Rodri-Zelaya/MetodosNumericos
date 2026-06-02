@@ -20,6 +20,9 @@ namespace Métodos_Numéricos
             AplicarEstiloTuani(this.Controls);
             // 🚀 Inyectamos el panel de espera con su descripción
             ConfigurarEmptyState("Método de Regla Falsa", "Método cerrado que aproxima la raíz uniendo los puntos extremos del intervalo con una línea recta en lugar de cortar a la mitad de forma estricta.");
+            // 🚀 INYECTAR EL ACOMODADOR AUTOMÁTICO AQUÍ
+            this.Resize += (s, e) => AcomodarControles();
+            AcomodarControles();
         }
 
         private void FormReglaFalsa_Load(object sender, EventArgs e)
@@ -388,6 +391,95 @@ namespace Métodos_Numéricos
             penEjes.Dispose();
             penCurve1.Dispose();
             penCurve2.Dispose();
+        }
+
+        // =====================================================================
+        // 🚀 MOTOR DE ALINEACIÓN AUTOMÁTICA DE INTERFAZ (REGLA FALSA)
+        // =====================================================================
+        private void AcomodarControles()
+        {
+            if (this.ClientSize.Width == 0) return; // Evita errores si se minimiza
+
+            int startX = 40;
+            int boxY = 75;       // Altura con buen respiro desde el techo
+            int espaciado = 40;  // Espaciado horizontal entre cajas
+
+            // 1. Alineación de Entradas de Texto (Izquierda a Derecha)
+            MoverLabelPorTexto("Ecuación", startX, boxY - 30);
+            txtFuncionReglaFalsa.Location = new Point(startX, boxY);
+            txtFuncionReglaFalsa.Size = new Size(280, 35); // Caja larga para la función
+
+            int nextX = startX + txtFuncionReglaFalsa.Width + espaciado;
+            MoverLabelPorTexto("Valor A", nextX, boxY - 30);
+            txtA.Location = new Point(nextX, boxY);
+            txtA.Size = new Size(80, 35); // Cajita pequeña para el número
+
+            nextX += txtA.Width + espaciado;
+            MoverLabelPorTexto("Valor B", nextX, boxY - 30);
+            txtB.Location = new Point(nextX, boxY);
+            txtB.Size = new Size(80, 35); // Cajita pequeña para el número
+
+            nextX += txtB.Width + espaciado;
+            MoverLabelPorTexto("Tolerancia", nextX, boxY - 30);
+            txtTolerancia.Location = new Point(nextX, boxY);
+            txtTolerancia.Size = new Size(120, 35);
+
+            // 2. Alineación de Botones (Derecha a Izquierda)
+            int btnAncho = 130;
+            int btnAlto = 40;
+            int separacionBtn = 15;
+
+            int btnX = this.ClientSize.Width - 40 - btnAncho;
+
+            // De derecha a izquierda: Limpiar -> Graficar -> Exportar -> Calcular
+            btnLimpiar.Size = new Size(btnAncho, btnAlto);
+            btnLimpiar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnGraficar.Size = new Size(btnAncho, btnAlto);
+            btnGraficar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnExportar.Size = new Size(btnAncho, btnAlto);
+            btnExportar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnCalcular.Size = new Size(btnAncho, btnAlto);
+            btnCalcular.Location = new Point(btnX, boxY);
+
+            // 3. Resultado (Raíz)
+            int filaRaiz_Y = boxY + 70; // Fila inferior espaciosa
+
+            MoverLabelPorTexto("Raiz", startX, filaRaiz_Y);
+            if (lblRaiz != null)
+            {
+                lblRaiz.Location = new Point(startX, filaRaiz_Y);
+            }
+
+            // 4. Empujar la Tabla y el Panel de Espera hacia abajo
+            int tablaY = filaRaiz_Y + 40; // Aire debajo del resultado
+            dgvReglaFalsa.Location = new Point(40, tablaY);
+            dgvReglaFalsa.Size = new Size(this.ClientSize.Width - 80, this.ClientSize.Height - tablaY - 40);
+
+            if (pnlEspera != null)
+            {
+                pnlEspera.Location = dgvReglaFalsa.Location;
+                pnlEspera.Size = dgvReglaFalsa.Size;
+            }
+        }
+
+        // Función inteligente para rastrear y mover etiquetas por su texto
+        private void MoverLabelPorTexto(string palabraClave, int x, int y)
+        {
+            foreach (Control ctrl in this.Controls)
+            {
+                // Ignoramos el lblRaiz dinámico porque lo movemos manualmente arriba
+                if (ctrl is Label lbl && lbl.Text.ToLower().Contains(palabraClave.ToLower()) && ctrl.Name != "lblRaiz")
+                {
+                    lbl.Location = new Point(x, y);
+                    break;
+                }
+            }
         }
     }
 }

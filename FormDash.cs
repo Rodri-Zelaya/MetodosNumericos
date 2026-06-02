@@ -26,6 +26,7 @@ namespace Métodos_Numéricos
             panelSubMenuAbiertos.Visible = false;
             panelSubMenuPolinomios.Visible = false;
             panelSubMenuNoLineales.Visible = false;
+            panelSubMenuIterativos.Visible = false;
             // Si agregas más submenús en el futuro, los ocultas aquí también
         }
 
@@ -40,6 +41,8 @@ namespace Métodos_Numéricos
                 panelSubMenuPolinomios.Visible = false;
             if (panelSubMenuNoLineales.Visible == true)
                 panelSubMenuNoLineales.Visible = false;
+            if (panelSubMenuIterativos.Visible == true)
+                panelSubMenuIterativos.Visible = false;
         }
 
         // 3. El motor del Acordeón: Abre el que pediste y cierra los demás
@@ -74,6 +77,12 @@ namespace Métodos_Numéricos
         private void btnMétodosNoLineales_Click(object sender, EventArgs e)
         {
             MostrarSubMenu(panelSubMenuNoLineales);
+        }
+
+        private void btnMetodosIterativos_Click(object sender, EventArgs e)
+        {
+            // Abre y cierra el submenú de forma fluida
+            MostrarSubMenu(panelSubMenuIterativos);
         }
 
         // Variable para recordar qué formulario está abierto actualmente
@@ -171,6 +180,20 @@ namespace Métodos_Numéricos
         private void btnNewtonNoLineal_Click(object sender, EventArgs e)
         {
             AbrirFormularioHijo(new FormNoLinealNewton());
+            ActivarBoton(sender);
+        }
+
+        private void btnGaussSeidel_Click(object sender, EventArgs e)
+        {
+            // Recordá verificar si tu panel central se llama 'pnlContenedor' o similar
+            AbrirFormularioHijo(new FormGaussSeidel());
+            ActivarBoton(sender);
+        }
+
+        // 2. Conexión para el método de Jacobi (El hermano de Seidel)
+        private void btnJacobi_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormJacobi());
             ActivarBoton(sender);
         }
 

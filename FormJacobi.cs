@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,15 +11,14 @@ using System.Windows.Forms;
 
 namespace Métodos_Numéricos
 {
-    public partial class FormSecante : Form
+    public partial class FormJacobi : Form
     {
         private Panel pnlEspera;
-        public FormSecante()
+        public FormJacobi()
         {
             InitializeComponent();
             AplicarEstiloTuani(this.Controls);
-            // 🚀 Inyectamos el panel de espera con su descripción
-            ConfigurarEmptyState("Método de la Secante", "Método abierto que imita el comportamiento de Newton-Raphson, pero aproxima la derivada usando dos puntos iniciales sin requerir la ecuación diferencial analítica.");
+            ConfigurarEmptyState("Método de Jacobi", "Método iterativo clásico para resolver sistemas lineales. Calcula las nuevas aproximaciones basándose estrictamente en los valores de la iteración anterior.");
             // 🚀 INYECTAR EL ACOMODADOR AUTOMÁTICO AQUÍ
             this.Resize += (s, e) => AcomodarControles();
             AcomodarControles();
@@ -26,66 +26,87 @@ namespace Métodos_Numéricos
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
-            // 1. Validar vacíos (Aquí usamos x0 y x1)
-            if (string.IsNullOrWhiteSpace(txtFuncionSecante.Text) || string.IsNullOrWhiteSpace(txtVI.Text) ||
-                string.IsNullOrWhiteSpace(txtV2.Text) || string.IsNullOrWhiteSpace(txtTolSecante.Text))
+            if (string.IsNullOrWhiteSpace(txtMatrizA.Text) || string.IsNullOrWhiteSpace(txtVectorB.Text) ||
+                string.IsNullOrWhiteSpace(txtValoresIniciales.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
             {
-                MessageBox.Show("Llena todos los campos.");
+                MessageBox.Show("Por favor, llena todos los campos de matrices, valores iniciales y tolerancia.");
                 return;
             }
 
             MetodosNumericos metodos = new MetodosNumericos();
 
-            // 🛡️ Validamos Función y en Punto Fijo validamos también g(x)
-            if (!metodos.EsFuncionValida(txtFuncionSecante.Text)) return;
+            if (!metodos.EsToleranciaValida(txtTolerancia.Text)) return;
 
-            // 🛡️ Validamos que el punto inicial y la tolerancia no tengan letras
-            if (!metodos.SonNumerosValidos(txtVI.Text, "el Valor Inicial (x0)")) return;
-            if (!metodos.SonNumerosValidos(txtV2.Text, "el Segundo Valor (x1)")) return;
-            if (!metodos.SonNumerosValidos(txtTolSecante.Text, "la Tolerancia")) return;
-
-            // Añade esta línea justo debajo de tus otros escudos:
-            if (!metodos.EsToleranciaValida(txtTolSecante.Text)) return;
+            // 🚀 FIJADO DESDE CÓDIGO: Límite de seguridad
+            int maxIter = 100;
 
             try
             {
-                string funcion = txtFuncionSecante.Text;
+                // 1. Parsear Matriz A
+                string[] lineasA = txtMatrizA.Text.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                int n = lineasA.Length;
+                double[,] A = new double[n, n];
 
-                // 2. Traductor universal
-                double x0 = metodos.ConvertirADouble(txtVI.Text);
-                double x1 = metodos.ConvertirADouble(txtV2.Text);
-                double tol = metodos.ConvertirADouble(txtTolSecante.Text);
-
-                // 🛡️ 3. REGLA MATEMÁTICA: SECANTE HORIZONTAL 🛡️
-                double f0 = metodos.EvaluarFuncion(funcion, x0);
-                double f1 = metodos.EvaluarFuncion(funcion, x1);
-
-                // 🛡️ ¡NUEVO ESCUDO 5!: CONTINUIDAD DE LOS PUNTOS 🛡️
-                // Bloquea el paso si x0 o x1 caen en una asíntota o división por cero
-                if (!metodos.EsEvaluacionValida(f0, f1)) return;
-
-                if (Math.Abs(f0 - f1) < 1e-12) // Si dan el mismo resultado
+                for (int i = 0; i < n; i++)
                 {
-                    MessageBox.Show(
-                        "La función evaluada en x0 y x1 da el mismo resultado (f(x) = " + f0.ToString("G4") + ").\n\n" +
-                        "Esto crea una recta secante horizontal que nunca cruzará el eje X, provocando una división entre cero.\n\n" +
-                        "Ingresa valores iniciales diferentes.",
-                        "Falla de Secante (Recta Horizontal)",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                    return;
+                    string[] elementos = lineasA[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (elementos.Length != n)
+                    {
+                        MessageBox.Show($"La Matriz A debe ser cuadrada ({n}x{n}). Fila {i + 1} tiene {elementos.Length} elementos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    for (int j = 0; j < n; j++) A[i, j] = metodos.ConvertirADouble(elementos[j]);
                 }
 
-                // 4. Si hay inclinación, arrancamos el motor
-                string raizEncontrada = metodos.Secante(funcion, x0, x1, tol, dgvSecante);
-                lblRaiz.Text = "Raíz: " + raizEncontrada;
-                // 🚀 EL CAMBIAZO: Mostramos la tabla con datos y ocultamos la bienvenida
+                // 2. Parsear Vector B
+                string[] lineasB = txtVectorB.Text.Split(new string[] { "\r\n", "\n", " " }, StringSplitOptions.RemoveEmptyEntries);
+                if (lineasB.Length != n)
+                {
+                    MessageBox.Show($"El vector b debe tener exactamente {n} términos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                double[] b = new double[n];
+                for (int i = 0; i < n; i++) b[i] = metodos.ConvertirADouble(lineasB[i]);
+
+                // 3. Parsear Valores Iniciales (X0)
+                string[] lineasX0 = txtValoresIniciales.Text.Split(new string[] { "\r\n", "\n", " " }, StringSplitOptions.RemoveEmptyEntries);
+                if (lineasX0.Length != n)
+                {
+                    MessageBox.Show($"Debes proporcionar {n} valores iniciales (uno por cada variable del sistema).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                double[] X0 = new double[n];
+                for (int i = 0; i < n; i++) X0[i] = metodos.ConvertirADouble(lineasX0[i]);
+
+                // 4. Tolerancia
+                double tol = metodos.ConvertirADouble(txtTolerancia.Text);
+
+                // 🚀 ARRANCAR MOTOR DE JACOBI
+                metodos.Jacobi(A, b, X0, tol, maxIter, dgvJacobi);
+
+                // 🚀 EL REMEDIO SANTO: Forzamos el color aquí, ya con las columnas creadas en pantalla
+                dgvJacobi.EnableHeadersVisualStyles = false;
+                dgvJacobi.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(17, 24, 39); // Azul oscuro
+                dgvJacobi.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;                // Texto blanco
+                dgvJacobi.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+                // Quitemos también la columna gris extra de la izquierda que no hace nada
+                dgvJacobi.RowHeadersVisible = false;
+                // 🚀 EL FIX PARA LAS FILAS INTERCALADAS (Estilo "Hielo")
+                dgvJacobi.DefaultCellStyle.BackColor = Color.White;
+                dgvJacobi.DefaultCellStyle.ForeColor = Color.Black;
+                dgvJacobi.DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                dgvJacobi.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(235, 238, 245); // El color hielo
+                dgvJacobi.DefaultCellStyle.SelectionBackColor = Color.FromArgb(79, 70, 229); // Morado al seleccionar
+                dgvJacobi.DefaultCellStyle.SelectionForeColor = Color.White;
+
+                // Ocultar bienvenida, mostrar tabla
                 pnlEspera.Visible = false;
-                dgvSecante.Visible = true;
+                dgvJacobi.Visible = true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error de cálculo: " + ex.Message);
+                MessageBox.Show("Falla en el proceso: " + ex.Message, "Error Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -93,46 +114,24 @@ namespace Métodos_Numéricos
         {
             try
             {
-                // 1. Instanciamos tu clase cerebro donde metimos el código universal
-                MetodosNumericos metodos = new MetodosNumericos();
-
-                // 2. Llamamos al método y le mandamos la tabla de esta ventana
-                // OJO: Si tu tabla se llama distinto (ej. dgvNewton o dgvBairstow), cámbiale el nombre aquí
-                metodos.ExportarAExcel(dgvSecante);
+                new MetodosNumericos().ExportarAExcel(dgvJacobi);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Algo falló al intentar mandar la tabla:  " + ex.Message);
+                MessageBox.Show("Ocurrió un inconveniente al exportar: " + ex.Message);
             }
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            // Mandas a llamar a la Escoba Mágica (creas el objeto y lo usas en la misma línea)
             new MetodosNumericos().LimpiarPantalla(
-                dgvSecante, // 1. Tu tabla
-                new TextBox[] { txtFuncionSecante, txtVI, txtV2, txtTolSecante }, // 2. Tus cajas de texto (pon de primera la que quieras que tome el cursor)
-                new Label[] { lblRaiz } // 3. (Opcional) Tus labels de resultado
+                dgvJacobi,
+                new TextBox[] { txtMatrizA, txtVectorB, txtValoresIniciales, txtTolerancia },
+                new Label[] { }
             );
-            // 🚀 REGRESAR AL ESTADO VACÍO
-            dgvSecante.Visible = false;
+
+            dgvJacobi.Visible = false;
             pnlEspera.Visible = true;
-        }
-
-        private void btnGraficar_Click(object sender, EventArgs e)
-        {
-            // Solo asegúrate de que el TextBox se llame igual en este form
-            string funcion = txtFuncionSecante.Text;
-
-            if (string.IsNullOrWhiteSpace(funcion))
-            {
-                MessageBox.Show("Escribe una función primero.");
-                return;
-            }
-
-            // Llamamos a tu obra maestra
-            FormGraficador visor = new FormGraficador(funcion);
-            visor.ShowDialog();
         }
 
         private void AplicarEstiloTuani(Control.ControlCollection controles)
@@ -145,9 +144,7 @@ namespace Métodos_Numéricos
             {
                 if (control is Button btn)
                 {
-                    // 🛡️ EL FIX: Apagamos el estilo nativo de Windows
                     btn.UseVisualStyleBackColor = false;
-
                     btn.FlatStyle = FlatStyle.Flat;
                     btn.FlatAppearance.BorderSize = 0;
                     btn.BackColor = azulOscuro;
@@ -167,44 +164,44 @@ namespace Métodos_Numéricos
                     txt.Font = new Font("Segoe UI", 11, FontStyle.Regular);
                     txt.BorderStyle = BorderStyle.FixedSingle;
                 }
+                else if (control is DataGridView dgv)
+                {
+                    dgv.BackgroundColor = Color.FromArgb(243, 244, 246);
+                    dgv.BorderStyle = BorderStyle.None;
+                    dgv.EnableHeadersVisualStyles = false;
+                    dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(17, 24, 39);
+                    dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                }
 
-                // Magia recursiva para encontrar controles anidados
                 if (control.HasChildren)
                 {
                     AplicarEstiloTuani(control.Controls);
                 }
             }
         }
-        // 🚀 MOTOR DEL EMPTY STATE (SPLIT CARD)
-        // =====================================================================
+
         private void ConfigurarEmptyState(string nombreMetodo, string descripcion)
         {
-            dgvSecante.Visible = false;
+            dgvJacobi.Visible = false;
 
-            // 1. El Panel Base (Fondo de ondas)
             pnlEspera = new Panel();
-            pnlEspera.Location = dgvSecante.Location;
-            pnlEspera.Size = dgvSecante.Size;
+            pnlEspera.Location = dgvJacobi.Location;
+            pnlEspera.Size = dgvJacobi.Size;
             pnlEspera.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlEspera.BackColor = Color.FromArgb(243, 244, 246);
             pnlEspera.Paint += PnlEspera_Paint;
 
-            // 🚀 2. LA TARJETA BLINDADA
             Panel pnlTarjeta = new Panel();
             pnlTarjeta.Size = new Size(960, 480);
             pnlTarjeta.BackColor = Color.White;
             pnlTarjeta.BorderStyle = BorderStyle.FixedSingle;
 
-            // Barra superior de acento
             Panel pnlHeaderBar = new Panel();
             pnlHeaderBar.Dock = DockStyle.Top;
             pnlHeaderBar.Height = 5;
             pnlHeaderBar.BackColor = Color.FromArgb(79, 70, 229);
             pnlTarjeta.Controls.Add(pnlHeaderBar);
 
-            // ---------------------------------------------------
-            // COLUMNA DERECHA (Oscura)
-            // ---------------------------------------------------
             Panel pnlDerecha = new Panel();
             pnlDerecha.Width = 380;
             pnlDerecha.Height = pnlTarjeta.Height;
@@ -220,8 +217,8 @@ namespace Métodos_Numéricos
             lblMotor.Location = new Point(25, 40);
 
             Label lblFormula = new Label();
-            lblFormula.Text = "f'(x) ≈ (f(xi) - f(xi-1)) / (xi - xi-1)"; // 🛠️ Fórmula de la Secante
-            lblFormula.Font = new Font("Consolas", 11, FontStyle.Bold);
+            lblFormula.Text = "xi^(k+1) = (bi - Σ aij·xj^(k)) / aii";
+            lblFormula.Font = new Font("Consolas", 10, FontStyle.Bold);
             lblFormula.ForeColor = Color.FromArgb(165, 180, 252);
             lblFormula.AutoSize = true;
             lblFormula.MaximumSize = new Size(340, 0);
@@ -239,7 +236,7 @@ namespace Métodos_Numéricos
             pnlNotaOscura.Controls.Add(bordeNotaOscura);
 
             Label lblNotaOscura = new Label();
-            lblNotaOscura.Text = "💡 Nota Técnica:\n\nIdeal cuando calcular la derivada analítica de la función es muy complejo o costoso a nivel de CPU.\n\nSu velocidad de convergencia es superlineal (aproximadamente 1.618), siendo casi tan rápido como Newton-Raphson.";
+            lblNotaOscura.Text = "💡 Nota Técnica:\n\nA diferencia de Gauss-Seidel, Jacobi NO actualiza las variables en tiempo real dentro de la misma iteración.\n\nSuele requerir más iteraciones para converger, pero es matemáticamente más fácil de paralelizar en programación.";
             lblNotaOscura.Font = new Font("Segoe UI", 10, FontStyle.Regular);
             lblNotaOscura.ForeColor = Color.FromArgb(209, 213, 219);
             lblNotaOscura.AutoSize = true;
@@ -251,14 +248,12 @@ namespace Métodos_Numéricos
             pnlDerecha.Controls.Add(lblFormula);
             pnlDerecha.Controls.Add(pnlNotaOscura);
 
-            // ---------------------------------------------------
-            // COLUMNA IZQUIERDA (Blanca)
-            // ---------------------------------------------------
             Label lblTitulo = new Label();
             lblTitulo.Text = "⚡ " + nombreMetodo;
-            lblTitulo.Font = new Font("Segoe UI", 23, FontStyle.Bold);
+            lblTitulo.Font = new Font("Segoe UI", 22, FontStyle.Bold);
             lblTitulo.ForeColor = Color.FromArgb(17, 24, 39);
             lblTitulo.AutoSize = true;
+            lblTitulo.MaximumSize = new Size(490, 0);
             lblTitulo.Location = new Point(40, 30);
 
             Label lblDesc = new Label();
@@ -282,17 +277,14 @@ namespace Métodos_Numéricos
             lblPasosTitulo.Location = new Point(45, 200);
 
             Label lblPasos = new Label();
-            lblPasos.Text = "[ 1 ]  Ingresa la ecuación (ej. x^3 - 2*x - 5).\n\n" +
-                            "[ 2 ]  Define los dos valores iniciales (x0 y x1).\n\n" +
-                            "[ 3 ]  Establece la tolerancia esperada y dale a 'Calcular'.";
-            lblPasos.Font = new Font("Segoe UI", 11, FontStyle.Regular);
+            lblPasos.Text = "[ 1 ]  Ingresa la Matriz A y el Vector b.\n\n" +
+                            "[ 2 ]  Ingresa los Valores Iniciales (X0) para arrancar (ej. puros ceros).\n\n" +
+                            "[ 3 ]  Define el límite de tolerancia esperada y dale a 'Calcular'.";
+            lblPasos.Font = new Font("Segoe UI", 10, FontStyle.Regular);
             lblPasos.ForeColor = Color.FromArgb(71, 85, 105);
             lblPasos.AutoSize = true;
             lblPasos.Location = new Point(45, 245);
 
-            // ---------------------------------------------------
-            // ENSAMBLAJE FINAL
-            // ---------------------------------------------------
             pnlTarjeta.Controls.Add(lblTitulo);
             pnlTarjeta.Controls.Add(lblDesc);
             pnlTarjeta.Controls.Add(pnlDivisor);
@@ -304,7 +296,6 @@ namespace Métodos_Numéricos
             this.Controls.Add(pnlEspera);
             pnlEspera.BringToFront();
 
-            // Centrado dinámico
             pnlTarjeta.Location = new Point((pnlEspera.Width - pnlTarjeta.Width) / 2, (pnlEspera.Height - pnlTarjeta.Height) / 2);
             pnlEspera.Resize += (s, e) => {
                 pnlTarjeta.Location = new Point((pnlEspera.Width - pnlTarjeta.Width) / 2, (pnlEspera.Height - pnlTarjeta.Height) / 2);
@@ -315,42 +306,31 @@ namespace Métodos_Numéricos
         private void PnlEspera_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
 
             int ancho = pnlEspera.Width;
             int alto = pnlEspera.Height;
             int centroY = alto / 2;
 
-            // 1. Dibujar cuadrícula sutil
             Pen penGrid = new Pen(Color.FromArgb(225, 230, 235), 1);
-            for (int i = 0; i < ancho; i += 40)
-                g.DrawLine(penGrid, i, 0, i, alto);
-            for (int j = 0; j < alto; j += 40)
-                g.DrawLine(penGrid, 0, j, ancho, j);
+            for (int i = 0; i < ancho; i += 40) g.DrawLine(penGrid, i, 0, i, alto);
+            for (int j = 0; j < alto; j += 40) g.DrawLine(penGrid, 0, j, ancho, j);
 
-            // 2. Resaltar el Eje X y Eje Y central 
             Pen penEjes = new Pen(Color.FromArgb(200, 205, 215), 2);
-            g.DrawLine(penEjes, 0, centroY, ancho, centroY); // Eje X
-            g.DrawLine(penEjes, ancho / 2, 0, ancho / 2, alto); // Eje Y
+            g.DrawLine(penEjes, 0, centroY, ancho, centroY);
+            g.DrawLine(penEjes, ancho / 2, 0, ancho / 2, alto);
 
-            // 3. Dibujar Curva Principal (Azul)
             Pen penCurve1 = new Pen(Color.FromArgb(165, 180, 252), 3);
             PointF[] puntos1 = new PointF[ancho / 5];
-
-            // 4. Dibujar Curva Secundaria (Gris clara)
             Pen penCurve2 = new Pen(Color.FromArgb(209, 213, 219), 2);
-            penCurve2.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            penCurve2.DashStyle = DashStyle.Dash;
             PointF[] puntos2 = new PointF[ancho / 5];
 
             for (int i = 0; i < puntos1.Length; i++)
             {
                 float x = i * 5;
-
-                // Onda principal
                 float y1 = (float)(centroY + Math.Sin(x * 0.012) * 90 + Math.Cos(x * 0.004) * 30);
                 puntos1[i] = new PointF(x, y1);
-
-                // Onda secundaria desfasada
                 float y2 = (float)(centroY + Math.Cos(x * 0.015) * 60 - Math.Sin(x * 0.008) * 40);
                 puntos2[i] = new PointF(x, y2);
             }
@@ -367,48 +347,42 @@ namespace Métodos_Numéricos
             penCurve2.Dispose();
         }
 
-        // =====================================================================
-        // 🚀 MOTOR DE ALINEACIÓN AUTOMÁTICA (SECANTE - POSICIONES FIJAS)
+        // 🚀 MOTOR DE ALINEACIÓN AUTOMÁTICA DE INTERFAZ (JACOBI)
         // =====================================================================
         private void AcomodarControles()
         {
-            if (this.ClientSize.Width == 0) return;
+            if (this.ClientSize.Width == 0) return; // Evita errores si se minimiza
 
             int startX = 40;
-            int boxY = 80;
+            int boxY = 80;       // Altura con buen respiro desde el techo
+            int espaciado = 30;  // Espaciado horizontal
+            int boxAlto = 150;   // 🛠️ Altura especial para las cajas multilínea
 
-            // 1. Alineación con distancias fijas (Calculadas por el ancho de la etiqueta)
-            MoverLabelPorTexto("Ecuación", startX, boxY - 30);
-            txtFuncionSecante.Location = new Point(startX, boxY);
-            txtFuncionSecante.Size = new Size(250, 35);
+            // 1. Alineación de Entradas de Texto (Izquierda a Derecha)
+            MoverLabelPorTexto("Matri", startX, boxY - 30); // Atrapa Matriz o Matrix
+            txtMatrizA.Location = new Point(startX, boxY);
+            txtMatrizA.Size = new Size(220, boxAlto); // Caja ancha para la matriz
 
-            int xV1 = startX + 280; // Brinco largo
-            MoverLabelPorTexto("Inicial", xV1, boxY - 30);
-            txtVI.Location = new Point(xV1, boxY);
-            txtVI.Size = new Size(80, 35);
+            int nextX = startX + txtMatrizA.Width + espaciado;
+            MoverLabelPorTexto("Vector", nextX, boxY - 30);
+            txtVectorB.Location = new Point(nextX, boxY);
+            txtVectorB.Size = new Size(80, boxAlto); // Caja delgada y alta para el vector
 
-            int xV2 = xV1 + 120; // Brinco para que quepa "Segundo Valor"
-            MoverLabelPorTexto("Segundo", xV2, boxY - 30);
-            txtV2.Location = new Point(xV2, boxY);
-            txtV2.Size = new Size(80, 35);
+            nextX += txtVectorB.Width + espaciado;
+            MoverLabelPorTexto("Inicial", nextX, boxY - 30);
+            txtValoresIniciales.Location = new Point(nextX, boxY);
+            txtValoresIniciales.Size = new Size(80, boxAlto); // Caja delgada y alta para X0
 
-            int xTol = xV2 + 140; // Brinco extra largo
-            MoverLabelPorTexto("Tolerancia", xTol, boxY - 30);
-            txtTolSecante.Location = new Point(xTol, boxY);
-            txtTolSecante.Size = new Size(100, 35);
-
-            // 2. Alineación de Botones
+            // 2. Alineación de Botones (Derecha a Izquierda, en una fila nítida)
             int btnAncho = 130;
             int btnAlto = 40;
             int separacionBtn = 15;
+
             int btnX = this.ClientSize.Width - 40 - btnAncho;
 
+            // De derecha a izquierda: Limpiar -> Exportar -> Calcular
             btnLimpiar.Size = new Size(btnAncho, btnAlto);
             btnLimpiar.Location = new Point(btnX, boxY);
-
-            btnX -= (btnAncho + separacionBtn);
-            btnGraficar.Size = new Size(btnAncho, btnAlto);
-            btnGraficar.Location = new Point(btnX, boxY);
 
             btnX -= (btnAncho + separacionBtn);
             btnExportar.Size = new Size(btnAncho, btnAlto);
@@ -418,38 +392,26 @@ namespace Métodos_Numéricos
             btnCalcular.Size = new Size(btnAncho, btnAlto);
             btnCalcular.Location = new Point(btnX, boxY);
 
-            // 3. Resultado 
-            int filaRaiz_Y = boxY + 70;
-            MoverLabelPorTexto("Raiz", startX, filaRaiz_Y); // Esto oculta la estática
-            if (lblRaiz != null) lblRaiz.Location = new Point(startX, filaRaiz_Y);
-
-            // 4. Empujar Tabla
-            int tablaY = filaRaiz_Y + 40;
-            dgvSecante.Location = new Point(40, tablaY);
-            dgvSecante.Size = new Size(this.ClientSize.Width - 80, this.ClientSize.Height - tablaY - 40);
+            // 3. Empujar la Tabla y el Panel de Espera hacia abajo
+            int tablaY = boxY + boxAlto + 40; // 🛠️ Damos aire debajo de las cajas altas
+            dgvJacobi.Location = new Point(40, tablaY);
+            dgvJacobi.Size = new Size(this.ClientSize.Width - 80, this.ClientSize.Height - tablaY - 40);
 
             if (pnlEspera != null)
             {
-                pnlEspera.Location = dgvSecante.Location;
-                pnlEspera.Size = dgvSecante.Size;
+                pnlEspera.Location = dgvJacobi.Location;
+                pnlEspera.Size = dgvJacobi.Size;
             }
         }
 
-        // Función inteligente mejorada
+        // Función inteligente para rastrear y mover etiquetas por su texto
         private void MoverLabelPorTexto(string palabraClave, int x, int y)
         {
             foreach (Control ctrl in this.Controls)
             {
-                if (ctrl is Label lbl && lbl.Text.ToLower().Contains(palabraClave.ToLower()) && ctrl.Name != "lblRaiz")
+                if (ctrl is Label lbl && lbl.Text.ToLower().Contains(palabraClave.ToLower()))
                 {
-                    if (palabraClave.ToLower() == "raiz")
-                    {
-                        lbl.Visible = false;
-                    }
-                    else
-                    {
-                        lbl.Location = new Point(x, y);
-                    }
+                    lbl.Location = new Point(x, y);
                     break;
                 }
             }

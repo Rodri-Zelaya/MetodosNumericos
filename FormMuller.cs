@@ -20,6 +20,9 @@ namespace Métodos_Numéricos
             AplicarEstiloTuani(this.Controls);
             // 🚀 Inyectamos el panel de espera con su descripción
             ConfigurarEmptyState("Método de Müller", "Método abierto que utiliza tres puntos iniciales para trazar una parábola que se aproxima a la curva, permitiendo localizar raíces reales e imaginarias complejas.");
+            // 🚀 INYECTAR EL ACOMODADOR AUTOMÁTICO AQUÍ
+            this.Resize += (s, e) => AcomodarControles();
+            AcomodarControles();
         }
 
         private void btnCalcular_Click(object sender, EventArgs e)
@@ -353,6 +356,95 @@ namespace Métodos_Numéricos
             penEjes.Dispose();
             penCurve1.Dispose();
             penCurve2.Dispose();
+        }
+
+        // =====================================================================
+        // 🚀 MOTOR DE ALINEACIÓN AUTOMÁTICA DE INTERFAZ (MÜLLER)
+        // =====================================================================
+        private void AcomodarControles()
+        {
+            if (this.ClientSize.Width == 0) return; // Evita errores si se minimiza
+
+            int startX = 40;
+            int boxY = 75;       // Altura con buen respiro desde el techo
+            int espaciado = 30;  // Espacio horizontal
+
+            // 1. Alineación de Entradas de Texto (Izquierda a Derecha)
+            MoverLabelPorTexto("Coeficiente", startX, boxY - 30);
+            txtCoeficientes.Location = new Point(startX, boxY);
+            txtCoeficientes.Size = new Size(250, 35); // Caja larga para los coeficientes
+
+            int nextX = startX + txtCoeficientes.Width + espaciado;
+            MoverLabelPorTexto("X0", nextX, boxY - 30);
+            txtX0.Location = new Point(nextX, boxY);
+            txtX0.Size = new Size(60, 35); // Cajita pequeña
+
+            nextX += txtX0.Width + espaciado;
+            MoverLabelPorTexto("X1", nextX, boxY - 30);
+            txtX1.Location = new Point(nextX, boxY);
+            txtX1.Size = new Size(60, 35); // Cajita pequeña
+
+            nextX += txtX1.Width + espaciado;
+            MoverLabelPorTexto("X2", nextX, boxY - 30);
+            txtX2.Location = new Point(nextX, boxY);
+            txtX2.Size = new Size(60, 35); // Cajita pequeña
+
+            nextX += txtX2.Width + espaciado;
+            MoverLabelPorTexto("Tolerancia", nextX, boxY - 30);
+            txtTolerancia.Location = new Point(nextX, boxY);
+            txtTolerancia.Size = new Size(100, 35);
+
+            // 2. Alineación de Botones (Derecha a Izquierda, en una fila nítida)
+            int btnAncho = 130;
+            int btnAlto = 40;
+            int separacionBtn = 15;
+
+            int btnX = this.ClientSize.Width - 40 - btnAncho;
+
+            // De derecha a izquierda: Limpiar -> Exportar -> Calcular (Müller no tiene graficar en tu código actual)
+            btnLimpiar.Size = new Size(btnAncho, btnAlto);
+            btnLimpiar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnExportar.Size = new Size(btnAncho, btnAlto);
+            btnExportar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnCalcular.Size = new Size(btnAncho, btnAlto);
+            btnCalcular.Location = new Point(btnX, boxY);
+
+            // 3. Resultado (Raíz)
+            int filaRaiz_Y = boxY + 70; // Fila inferior espaciosa
+
+            MoverLabelPorTexto("Raiz", startX, filaRaiz_Y);
+            if (lblRaiz != null)
+            {
+                lblRaiz.Location = new Point(startX, filaRaiz_Y);
+            }
+
+            // 4. Empujar la Tabla y el Panel de Espera hacia abajo
+            int tablaY = filaRaiz_Y + 40; // Aire debajo del resultado
+            dgvMuller.Location = new Point(40, tablaY);
+            dgvMuller.Size = new Size(this.ClientSize.Width - 80, this.ClientSize.Height - tablaY - 40);
+
+            if (pnlEspera != null)
+            {
+                pnlEspera.Location = dgvMuller.Location;
+                pnlEspera.Size = dgvMuller.Size;
+            }
+        }
+
+        // Función inteligente para rastrear y mover etiquetas por su texto
+        private void MoverLabelPorTexto(string palabraClave, int x, int y)
+        {
+            foreach (Control ctrl in this.Controls)
+            {
+                if (ctrl is Label lbl && lbl.Text.ToLower().Contains(palabraClave.ToLower()) && ctrl.Name != "lblRaiz")
+                {
+                    lbl.Location = new Point(x, y);
+                    break;
+                }
+            }
         }
     }
 }

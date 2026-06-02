@@ -17,6 +17,8 @@ namespace Métodos_Numéricos
             InitializeComponent();
             AplicarEstiloTuani(this.Controls);
             ConfigurarEmptyState("Método de Bairstow", "Este método avanzado extrae factores cuadráticos de un polinomio, \npermitiendo encontrar todas sus raíces paso a paso.");
+            this.Resize += (s, e) => AcomodarControles();
+            AcomodarControles();
         }
 
         private void btnCalcular_Click(object sender, EventArgs e)
@@ -349,6 +351,86 @@ namespace Métodos_Numéricos
             penEjes.Dispose();
             penCurve1.Dispose();
             penCurve2.Dispose();
+        }
+
+        private void AcomodarControles()
+        {
+            if (this.ClientSize.Width == 0) return; // Evita errores si se minimiza la ventana
+
+            int startX = 40;
+            int boxY = 75;       // 🛠️ Bajé todo un poco desde el techo para dar aire
+            int espaciado = 50;  // 🛠️ Más espacio horizontal entre los bloques
+
+            // 1. Alineación de Entradas de Texto (Izquierda)
+            MoverLabelPorTexto("Coeficiente", startX, boxY - 30); // 🛠️ Separamos el título de la caja
+            txtCoeficientes.Location = new Point(startX, boxY);
+            txtCoeficientes.Size = new Size(350, 35);
+
+            int nextX = startX + txtCoeficientes.Width + espaciado;
+            MoverLabelPorTexto("Tolerancia", nextX, boxY - 30);
+            txtTolerancia.Location = new Point(nextX, boxY);
+            txtTolerancia.Size = new Size(120, 35);
+
+            // 2. Alineación de Botones (Derecha)
+            int btnAncho = 150;
+            int btnAlto = 40;
+            int separacionBtn = 20; // 🛠️ Botones con más distancia entre ellos
+
+            int btnX = this.ClientSize.Width - 40 - btnAncho;
+
+            btnLimpiar.Size = new Size(btnAncho, btnAlto);
+            btnLimpiar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnExportar.Size = new Size(btnAncho, btnAlto);
+            btnExportar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnCalcular.Size = new Size(btnAncho, btnAlto);
+            btnCalcular.Location = new Point(btnX, boxY);
+
+            // 3. Resultados (🚀 EL FIX: Dando respiro vertical y horizontal)
+            int filaR0S0_Y = boxY + 70; // 🛠️ Los empujamos mucho más abajo de las cajas
+            int filaRaiz_Y = filaR0S0_Y + 40; // 🛠️ Separamos la raíz de r0 y s0
+
+            if (lblR0 != null)
+            {
+                lblR0.Location = new Point(startX, filaR0S0_Y);
+            }
+
+            if (lblS0 != null)
+            {
+                // 🛠️ Lo empujamos más a la derecha para que no se pegue con el texto de r0
+                lblS0.Location = new Point(startX + 350, filaR0S0_Y);
+            }
+
+            if (lblRaiz != null)
+            {
+                lblRaiz.Location = new Point(startX, filaRaiz_Y);
+            }
+
+            // 4. Empujar la Tabla y el Panel de Espera hacia abajo
+            int tablaY = filaRaiz_Y + 50; // 🛠️ Mucho más aire antes de que empiece la cuadrícula
+            dgvBairstow.Location = new Point(40, tablaY);
+            dgvBairstow.Size = new Size(this.ClientSize.Width - 80, this.ClientSize.Height - tablaY - 40);
+
+            if (pnlEspera != null)
+            {
+                pnlEspera.Location = dgvBairstow.Location;
+                pnlEspera.Size = dgvBairstow.Size;
+            }
+        }
+        // Función inteligente para mover etiquetas sin importar cómo se llamen (label1, label2, etc.)
+        private void MoverLabelPorTexto(string palabraClave, int x, int y)
+        {
+            foreach (Control ctrl in this.Controls)
+            {
+                if (ctrl is Label lbl && lbl.Text.ToLower().Contains(palabraClave.ToLower()))
+                {
+                    lbl.Location = new Point(x, y);
+                    break;
+                }
+            }
         }
     }
 }

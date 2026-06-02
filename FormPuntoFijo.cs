@@ -20,6 +20,9 @@ namespace Métodos_Numéricos
             AplicarEstiloTuani(this.Controls);
             // 🚀 Inyectamos el panel de espera con su descripción
             ConfigurarEmptyState("Método de Punto Fijo", "Método abierto que transforma la ecuación original f(x) = 0 en una forma equivalente x = g(x) para iterar sucesivas aproximaciones.");
+            // 🚀 INYECTAR EL ACOMODADOR AUTOMÁTICO AQUÍ
+            this.Resize += (s, e) => AcomodarControles();
+            AcomodarControles();
         }
 
         private void btnCalcular_Click(object sender, EventArgs e)
@@ -372,6 +375,92 @@ namespace Métodos_Numéricos
             penEjes.Dispose();
             penCurve1.Dispose();
             penCurve2.Dispose();
+        }
+
+        // =====================================================================
+        // 🚀 MOTOR DE ALINEACIÓN AUTOMÁTICA DE INTERFAZ (PUNTO FIJO - FIX)
+        // =====================================================================
+        private void AcomodarControles()
+        {
+            if (this.ClientSize.Width == 0) return;
+
+            int startX = 40;
+            int boxY = 75;
+            int espaciado = 30;
+
+            // 1. Alineación de Entradas de Texto 
+            MoverLabelPorTexto("original", startX, boxY - 30);
+            txtFuncionOriginal.Location = new Point(startX, boxY);
+            txtFuncionOriginal.Size = new Size(220, 35);
+
+            int nextX = startX + txtFuncionOriginal.Width + espaciado;
+            MoverLabelPorTexto("despeje", nextX, boxY - 30);
+            txtDespejeG.Location = new Point(nextX, boxY);
+            txtDespejeG.Size = new Size(220, 35);
+
+            nextX += txtDespejeG.Width + espaciado;
+            MoverLabelPorTexto("x0", nextX, boxY - 30); // 🛠️ FIX: Ahora busca "x0" exactamente
+            txtX0PuntoFijo.Location = new Point(nextX, boxY);
+            txtX0PuntoFijo.Size = new Size(80, 35);
+
+            nextX += txtX0PuntoFijo.Width + espaciado;
+            MoverLabelPorTexto("Tolerancia", nextX, boxY - 30);
+            txtTolPuntoFijo.Location = new Point(nextX, boxY);
+            txtTolPuntoFijo.Size = new Size(100, 35);
+
+            // 2. Alineación de Botones
+            int btnAncho = 130;
+            int btnAlto = 40;
+            int separacionBtn = 15;
+
+            int btnX = this.ClientSize.Width - 40 - btnAncho;
+
+            btnLimpiar.Size = new Size(btnAncho, btnAlto);
+            btnLimpiar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnGraficar.Size = new Size(btnAncho, btnAlto);
+            btnGraficar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnExportar.Size = new Size(btnAncho, btnAlto);
+            btnExportar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnCalcular.Size = new Size(btnAncho, btnAlto);
+            btnCalcular.Location = new Point(btnX, boxY);
+
+            // 3. Resultado 
+            int filaRaiz_Y = boxY + 70;
+
+            MoverLabelPorTexto("Raiz", startX, filaRaiz_Y);
+            if (lblRaiz != null)
+            {
+                lblRaiz.Location = new Point(startX, filaRaiz_Y);
+            }
+
+            // 4. Empujar Tabla
+            int tablaY = filaRaiz_Y + 40;
+            dgvPuntoFijo.Location = new Point(40, tablaY);
+            dgvPuntoFijo.Size = new Size(this.ClientSize.Width - 80, this.ClientSize.Height - tablaY - 40);
+
+            if (pnlEspera != null)
+            {
+                pnlEspera.Location = dgvPuntoFijo.Location;
+                pnlEspera.Size = dgvPuntoFijo.Size;
+            }
+        }
+
+        private void MoverLabelPorTexto(string palabraClave, int x, int y)
+        {
+            foreach (Control ctrl in this.Controls)
+            {
+                if (ctrl is Label lbl && lbl.Text.ToLower().Contains(palabraClave.ToLower()) && ctrl.Name != "lblRaiz")
+                {
+                    lbl.Location = new Point(x, y);
+                    break;
+                }
+            }
         }
     }
 }

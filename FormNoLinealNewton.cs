@@ -20,6 +20,9 @@ namespace Métodos_Numéricos
             AplicarEstiloTuani(this.Controls);
             // 🚀 Inyectamos el panel de espera con su descripción
             ConfigurarEmptyState("Sistemas No Lineales", "Extensión multidimensional de Newton-Raphson diseñada para resolver ecuaciones complejas interconectadas simultáneamente empleando álgebra matricial.");
+            // 🚀 INYECTAR EL ACOMODADOR AUTOMÁTICO AQUÍ
+            this.Resize += (s, e) => AcomodarControles();
+            AcomodarControles();
         }
 
         private void btnCalcular_Click(object sender, EventArgs e)
@@ -356,6 +359,85 @@ namespace Métodos_Numéricos
             penEjes.Dispose();
             penCurve1.Dispose();
             penCurve2.Dispose();
+        }
+        private void AcomodarControles()
+        {
+            if (this.ClientSize.Width == 0) return; // Evita errores si se minimiza
+
+            int startX = 40;
+            int boxY = 80;       // Altura con buen respiro desde el techo
+            int espaciado = 30;  // Espaciado horizontal
+            int boxAlto = 120;   // Altura diseñada especialmente para las cajas multilínea
+
+            // 1. Alineación de Entradas de Texto (Izquierda a Derecha)
+            MoverLabelPorTexto("Ecuaciones", startX, boxY - 30);
+            txtFunciones.Location = new Point(startX, boxY);
+            txtFunciones.Size = new Size(280, boxAlto); // Caja ancha y alta
+
+            int nextX = startX + txtFunciones.Width + espaciado;
+            MoverLabelPorTexto("iniciales", nextX, boxY - 30); // Busca "Valores iniciales"
+            txtValoresIniciales.Location = new Point(nextX, boxY);
+            txtValoresIniciales.Size = new Size(120, boxAlto); // Caja más delgada pero igual de alta
+
+            nextX += txtValoresIniciales.Width + espaciado;
+            MoverLabelPorTexto("Tolerancia", nextX, boxY - 30);
+            txtTol.Location = new Point(nextX, boxY);
+            txtTol.Size = new Size(100, 35); // Este se queda normal porque solo pide un número
+
+            // 2. Alineación de Botones (Derecha a Izquierda, en fila)
+            int btnAncho = 130;
+            int btnAlto = 40;
+            int separacionBtn = 15;
+
+            int btnX = this.ClientSize.Width - 40 - btnAncho;
+
+            // De derecha a izquierda: Limpiar -> Exportar -> Calcular
+            btnLimpiar.Size = new Size(btnAncho, btnAlto);
+            btnLimpiar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnExportar.Size = new Size(btnAncho, btnAlto);
+            btnExportar.Location = new Point(btnX, boxY);
+
+            btnX -= (btnAncho + separacionBtn);
+            btnCalcular.Size = new Size(btnAncho, btnAlto);
+            btnCalcular.Location = new Point(btnX, boxY);
+
+            // OJO: Vi un botón de "Graficar" en tu captura de imagen, pero no estaba en el código que mandaste.
+            // Si lo agregaste después en el diseñador, descomenta este pedacito y listo:
+            /*
+            btnX -= (btnAncho + separacionBtn);
+            Control btnGraf = this.Controls.Find("btnGraficar", true).FirstOrDefault();
+            if (btnGraf != null)
+            {
+                btnGraf.Size = new Size(btnAncho, btnAlto);
+                btnGraf.Location = new Point(btnX, boxY);
+            }
+            */
+
+            // 4. Empujar la Tabla y el Panel de Espera hacia abajo
+            int tablaY = boxY + boxAlto + 40; // Aire debajo de las cajas multilíneas
+            dgvNoLinealNewton.Location = new Point(40, tablaY);
+            dgvNoLinealNewton.Size = new Size(this.ClientSize.Width - 80, this.ClientSize.Height - tablaY - 40);
+
+            if (pnlEspera != null)
+            {
+                pnlEspera.Location = dgvNoLinealNewton.Location;
+                pnlEspera.Size = dgvNoLinealNewton.Size;
+            }
+        }
+
+        // Función inteligente para rastrear y mover etiquetas por su texto
+        private void MoverLabelPorTexto(string palabraClave, int x, int y)
+        {
+            foreach (Control ctrl in this.Controls)
+            {
+                if (ctrl is Label lbl && lbl.Text.ToLower().Contains(palabraClave.ToLower()))
+                {
+                    lbl.Location = new Point(x, y);
+                    break;
+                }
+            }
         }
     }
 }

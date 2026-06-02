@@ -818,6 +818,215 @@ public class MetodosNumericos
         }
     }
 
+    public void GaussSeidel(double[,] A, double[] b, double[] X0, double tol, int maxIter, DataGridView dgv)
+    {
+        int n = b.Length;
+
+        // 🛡️ REGLA MATEMÁTICA: Ceros en la diagonal principal
+        for (int i = 0; i < n; i++)
+        {
+            if (Math.Abs(A[i, i]) < 1e-12)
+            {
+                throw new Exception($"El elemento en la diagonal principal A[{i + 1},{i + 1}] es cero. Gauss-Seidel requiere dividir entre la diagonal. Reordena las filas de tu sistema para evitar el cero.");
+            }
+        }
+
+        // Preparar columnas del DataGridView al estilo de tus Excels
+        dgv.Columns.Clear();
+        dgv.Columns.Add("Iter", "Iter");
+
+        // Columnas para Valores Iniciales (Viejos)
+        for (int i = 0; i < n; i++) dgv.Columns.Add($"x{i + 1}_old", $"x{i + 1} (Inicial)");
+
+        // Columnas para Valores Nuevos
+        for (int i = 0; i < n; i++) dgv.Columns.Add($"x{i + 1}_new", $"x{i + 1} (Nuevo)");
+
+        // Columnas para Errores Porcentuales
+        for (int i = 0; i < n; i++) dgv.Columns.Add($"E{i + 1}", $"Error x{i + 1} (%)");
+
+        double[] X_viejo = new double[n];
+        double[] X_nuevo = new double[n];
+
+        // Copiamos los valores iniciales
+        Array.Copy(X0, X_nuevo, n);
+
+        for (int iter = 1; iter <= maxIter; iter++)
+        {
+            Array.Copy(X_nuevo, X_viejo, n);
+            double errorMaximo = 0;
+            double[] erroresFila = new double[n];
+
+            // Fila para agregar al DGV
+            List<string> filaDatos = new List<string> { iter.ToString() };
+
+            // 1. Guardar valores viejos para la tabla
+            for (int i = 0; i < n; i++) filaDatos.Add(X_viejo[i].ToString("F8"));
+
+            // 2. Ejecutar la fórmula de Gauss-Seidel
+            for (int i = 0; i < n; i++)
+            {
+                double suma = 0;
+                for (int j = 0; j < n; j++)
+                {
+                    if (j != i)
+                    {
+                        // Usa X_nuevo porque si j < i, ya se calculó en esta misma iteración (La magia de Seidel)
+                        suma += A[i, j] * X_nuevo[j];
+                    }
+                }
+                X_nuevo[i] = (b[i] - suma) / A[i, i];
+                filaDatos.Add(X_nuevo[i].ToString("F8"));
+            }
+
+            // 3. Calcular Errores Relativos Porcentuales
+            for (int i = 0; i < n; i++)
+            {
+                if (iter == 1)
+                {
+                    // En la iteración 1 no hay error calculable válido aún
+                    filaDatos.Add("-");
+                }
+                else
+                {
+                    if (X_nuevo[i] != 0)
+                    {
+                        double errorVariable = Math.Abs((X_nuevo[i] - X_viejo[i]) / X_nuevo[i]) * 100;
+                        erroresFila[i] = errorVariable;
+                        filaDatos.Add(errorVariable.ToString("F8") + "%");
+
+                        if (errorVariable > errorMaximo) errorMaximo = errorVariable;
+                    }
+                    else
+                    {
+                        filaDatos.Add("0%");
+                    }
+                }
+            }
+
+            dgv.Rows.Add(filaDatos.ToArray());
+
+            // Condición de parada: Si el error más grande de TODAS las variables es menor a la tolerancia
+            if (iter > 1 && errorMaximo <= tol)
+            {
+                break; // Convergencia alcanzada
+            }
+        }
+    }
+
+    public void Jacobi(double[,] A, double[] b, double[] X0, double tol, int maxIter, DataGridView dgv)
+    {
+        int n = b.Length;
+
+        // 🛡️ REGLA MATEMÁTICA: Ceros en la diagonal principal
+        for (int i = 0; i < n; i++)
+        {
+            if (Math.Abs(A[i, i]) < 1e-12)
+            {
+                throw new Exception($"El elemento en la diagonal A[{i + 1},{i + 1}] es cero. Jacobi requiere dividir entre la diagonal. Reordena las filas de tu sistema.");
+            }
+        }
+
+        // Preparar columnas del DataGridView al estilo de tus Excels
+        dgv.Columns.Clear();
+        dgv.Columns.Add("Iter", "Iter");
+
+        // Columnas para Valores Iniciales (Viejos)
+        for (int i = 0; i < n; i++) dgv.Columns.Add($"x{i + 1}_old", $"x{i + 1} (Inicial)");
+
+        // Columnas para Valores Nuevos
+        for (int i = 0; i < n; i++) dgv.Columns.Add($"x{i + 1}_new", $"x{i + 1} (Nuevo)");
+
+        // Columnas para Errores Porcentuales
+        for (int i = 0; i < n; i++) dgv.Columns.Add($"E{i + 1}", $"Error x{i + 1} (%)");
+
+        // Columna Final de Decisión
+        dgv.Columns.Add("Decision", "Decisión");
+
+
+        double[] X_viejo = new double[n];
+        double[] X_nuevo = new double[n];
+
+        // Copiamos los valores iniciales al vector viejo
+        Array.Copy(X0, X_viejo, n);
+
+        for (int iter = 1; iter <= maxIter; iter++)
+        {
+            double errorMaximo = 0;
+            double[] erroresFila = new double[n];
+
+            // Fila para agregar al DGV
+            List<string> filaDatos = new List<string> { iter.ToString() };
+
+            // 1. Guardar valores viejos para la tabla
+            for (int i = 0; i < n; i++) filaDatos.Add(X_viejo[i].ToString("F8"));
+
+            // 2. Ejecutar la fórmula de JACOBI (Usando estrictamente X_viejo)
+            for (int i = 0; i < n; i++)
+            {
+                double suma = 0;
+                for (int j = 0; j < n; j++)
+                {
+                    if (j != i)
+                    {
+                        // 🚀 LA DIFERENCIA CON SEIDEL: Aquí SÓLO usamos X_viejo
+                        suma += A[i, j] * X_viejo[j];
+                    }
+                }
+                X_nuevo[i] = (b[i] - suma) / A[i, i];
+                filaDatos.Add(X_nuevo[i].ToString("F8"));
+            }
+
+            // 3. Calcular Errores Relativos Porcentuales
+            for (int i = 0; i < n; i++)
+            {
+                if (iter == 1)
+                {
+                    // Iteración 1 no tiene error previo
+                    filaDatos.Add("-");
+                }
+                else
+                {
+                    if (X_nuevo[i] != 0)
+                    {
+                        double errorVariable = Math.Abs((X_nuevo[i] - X_viejo[i]) / X_nuevo[i]) * 100;
+                        erroresFila[i] = errorVariable;
+                        filaDatos.Add(errorVariable.ToString("F8") + "%");
+
+                        if (errorVariable > errorMaximo) errorMaximo = errorVariable;
+                    }
+                    else
+                    {
+                        filaDatos.Add("0%");
+                    }
+                }
+            }
+
+            // 4. Decisión Final de la iteración
+            if (iter == 1)
+            {
+                filaDatos.Add("Continuar");
+            }
+            else if (errorMaximo <= tol)
+            {
+                filaDatos.Add("Finalizar");
+            }
+            else
+            {
+                filaDatos.Add("Continuar");
+            }
+
+            dgv.Rows.Add(filaDatos.ToArray());
+
+            // Actualizamos el vector viejo para la SIGUIENTE iteración
+            Array.Copy(X_nuevo, X_viejo, n);
+
+            // Condición de parada
+            if (iter > 1 && errorMaximo <= tol)
+            {
+                break; // Convergencia alcanzada
+            }
+        }
+    }
     // 🎨 LA BROCHA MÁGICA PARA EL DISEÑO DE LAS TABLAS
     public void FormatearTabla(DataGridView dgv)
     {

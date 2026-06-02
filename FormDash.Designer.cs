@@ -30,6 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDash));
             PanelMenuLateral = new Panel();
+            panelSubMenuIterativos = new Panel();
+            btnJacobi = new Button();
+            btnGaussSeidel = new Button();
+            btnMétodosIterativos = new Button();
             panelSubMenuNoLineales = new Panel();
             btnNewtonNoLineal = new Button();
             btnMétodosNoLineales = new Button();
@@ -51,6 +55,7 @@
             pictureBox1 = new PictureBox();
             panelContenedorPrincipal = new Panel();
             PanelMenuLateral.SuspendLayout();
+            panelSubMenuIterativos.SuspendLayout();
             panelSubMenuNoLineales.SuspendLayout();
             panelSubMenuPolinomios.SuspendLayout();
             panelSubMenuAbiertos.SuspendLayout();
@@ -61,6 +66,8 @@
             // 
             // PanelMenuLateral
             // 
+            PanelMenuLateral.Controls.Add(panelSubMenuIterativos);
+            PanelMenuLateral.Controls.Add(btnMétodosIterativos);
             PanelMenuLateral.Controls.Add(panelSubMenuNoLineales);
             PanelMenuLateral.Controls.Add(btnMétodosNoLineales);
             PanelMenuLateral.Controls.Add(panelSubMenuPolinomios);
@@ -75,6 +82,49 @@
             PanelMenuLateral.Name = "PanelMenuLateral";
             PanelMenuLateral.Size = new Size(253, 753);
             PanelMenuLateral.TabIndex = 0;
+            // 
+            // panelSubMenuIterativos
+            // 
+            panelSubMenuIterativos.Controls.Add(btnJacobi);
+            panelSubMenuIterativos.Controls.Add(btnGaussSeidel);
+            panelSubMenuIterativos.Dock = DockStyle.Top;
+            panelSubMenuIterativos.Location = new Point(0, 619);
+            panelSubMenuIterativos.Name = "panelSubMenuIterativos";
+            panelSubMenuIterativos.Size = new Size(253, 58);
+            panelSubMenuIterativos.TabIndex = 0;
+            // 
+            // btnJacobi
+            // 
+            btnJacobi.Dock = DockStyle.Top;
+            btnJacobi.Location = new Point(0, 29);
+            btnJacobi.Name = "btnJacobi";
+            btnJacobi.Size = new Size(253, 29);
+            btnJacobi.TabIndex = 0;
+            btnJacobi.Text = "Jacobi";
+            btnJacobi.UseVisualStyleBackColor = true;
+            btnJacobi.Click += btnJacobi_Click;
+            // 
+            // btnGaussSeidel
+            // 
+            btnGaussSeidel.Dock = DockStyle.Top;
+            btnGaussSeidel.Location = new Point(0, 0);
+            btnGaussSeidel.Name = "btnGaussSeidel";
+            btnGaussSeidel.Size = new Size(253, 29);
+            btnGaussSeidel.TabIndex = 0;
+            btnGaussSeidel.Text = "Gauss Seidel";
+            btnGaussSeidel.UseVisualStyleBackColor = true;
+            btnGaussSeidel.Click += btnGaussSeidel_Click;
+            // 
+            // btnMétodosIterativos
+            // 
+            btnMétodosIterativos.Dock = DockStyle.Top;
+            btnMétodosIterativos.Location = new Point(0, 571);
+            btnMétodosIterativos.Name = "btnMétodosIterativos";
+            btnMétodosIterativos.Size = new Size(253, 48);
+            btnMétodosIterativos.TabIndex = 0;
+            btnMétodosIterativos.Text = "Métodos Iterativos";
+            btnMétodosIterativos.UseVisualStyleBackColor = true;
+            btnMétodosIterativos.Click += btnMetodosIterativos_Click;
             // 
             // panelSubMenuNoLineales
             // 
@@ -299,6 +349,7 @@
             Text = "FormDash";
             WindowState = FormWindowState.Maximized;
             PanelMenuLateral.ResumeLayout(false);
+            panelSubMenuIterativos.ResumeLayout(false);
             panelSubMenuNoLineales.ResumeLayout(false);
             panelSubMenuPolinomios.ResumeLayout(false);
             panelSubMenuAbiertos.ResumeLayout(false);
@@ -331,5 +382,9 @@
         private Button btnNewtonNoLineal;
         private Button btnMétodosNoLineales;
         private PictureBox pictureBox1;
+        private Panel panelSubMenuIterativos;
+        private Button btnJacobi;
+        private Button btnGaussSeidel;
+        private Button btnMétodosIterativos;
     }
 }
