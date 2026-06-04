@@ -818,6 +818,7 @@ public class MetodosNumericos
         }
     }
 
+
     public void GaussSeidel(double[,] A, double[] b, double[] X0, double tol, int maxIter, DataGridView dgv)
     {
         int n = b.Length;
@@ -827,7 +828,7 @@ public class MetodosNumericos
         {
             if (Math.Abs(A[i, i]) < 1e-12)
             {
-                throw new Exception($"El elemento en la diagonal principal A[{i + 1},{i + 1}] es cero. Gauss-Seidel requiere dividir entre la diagonal. Reordena las filas de tu sistema para evitar el cero.");
+                throw new Exception($"El elemento en la diagonal A[{i + 1},{i + 1}] es cero. Gauss-Seidel requiere dividir entre la diagonal. Reordena las filas de tu sistema.");
             }
         }
 
@@ -844,25 +845,29 @@ public class MetodosNumericos
         // Columnas para Errores Porcentuales
         for (int i = 0; i < n; i++) dgv.Columns.Add($"E{i + 1}", $"Error x{i + 1} (%)");
 
+        // 🚀 Múltiples columnas de Decisión (Una por variable)
+        for (int i = 0; i < n; i++) dgv.Columns.Add($"Dec{i + 1}", $"Decisión x{i + 1}");
+
         double[] X_viejo = new double[n];
         double[] X_nuevo = new double[n];
 
-        // Copiamos los valores iniciales
-        Array.Copy(X0, X_nuevo, n);
+        // Copiamos los valores iniciales a ambos vectores
+        Array.Copy(X0, X_viejo, n);
+        Array.Copy(X0, X_nuevo, n); // ⚡ ¡Vital para que Gauss-Seidel pueda arrancar!
 
         for (int iter = 1; iter <= maxIter; iter++)
         {
-            Array.Copy(X_nuevo, X_viejo, n);
-            double errorMaximo = 0;
-            double[] erroresFila = new double[n];
-
             // Fila para agregar al DGV
             List<string> filaDatos = new List<string> { iter.ToString() };
+
+            // Banderas y arreglos para las decisiones
+            bool todosCumplen = true;
+            string[] decisiones = new string[n];
 
             // 1. Guardar valores viejos para la tabla
             for (int i = 0; i < n; i++) filaDatos.Add(X_viejo[i].ToString("F8"));
 
-            // 2. Ejecutar la fórmula de Gauss-Seidel
+            // 2. Ejecutar la fórmula de GAUSS-SEIDEL (Usando X_nuevo)
             for (int i = 0; i < n; i++)
             {
                 double suma = 0;
@@ -870,7 +875,7 @@ public class MetodosNumericos
                 {
                     if (j != i)
                     {
-                        // Usa X_nuevo porque si j < i, ya se calculó en esta misma iteración (La magia de Seidel)
+                        // 🚀 LA DIFERENCIA CON JACOBI: Aquí usamos X_nuevo para usar datos frescos
                         suma += A[i, j] * X_nuevo[j];
                     }
                 }
@@ -878,41 +883,59 @@ public class MetodosNumericos
                 filaDatos.Add(X_nuevo[i].ToString("F8"));
             }
 
-            // 3. Calcular Errores Relativos Porcentuales
+            // 3. Calcular Errores y Tomar Decisiones por separado
             for (int i = 0; i < n; i++)
             {
                 if (iter == 1)
                 {
-                    // En la iteración 1 no hay error calculable válido aún
+                    // Iteración 1 no tiene error previo
                     filaDatos.Add("-");
+                    decisiones[i] = "Continuar";
+                    todosCumplen = false; // Obligamos a que siga iterando
                 }
                 else
                 {
+                    double errorVariable = 0;
                     if (X_nuevo[i] != 0)
                     {
-                        double errorVariable = Math.Abs((X_nuevo[i] - X_viejo[i]) / X_nuevo[i]) * 100;
-                        erroresFila[i] = errorVariable;
+                        errorVariable = Math.Abs((X_nuevo[i] - X_viejo[i]) / X_nuevo[i]);
+                        // NOTA: Lo dejé como lo mandaste, imprimiendo el decimal directo con el símbolo %
                         filaDatos.Add(errorVariable.ToString("F8") + "%");
-
-                        if (errorVariable > errorMaximo) errorMaximo = errorVariable;
                     }
                     else
                     {
                         filaDatos.Add("0%");
                     }
+
+                    // Tomar la decisión para ESTA variable en específico comparando con tu Tolerancia
+                    if (errorVariable <= tol)
+                    {
+                        decisiones[i] = "Finalizar";
+                    }
+                    else
+                    {
+                        decisiones[i] = "Continuar";
+                        todosCumplen = false; // Con UNO que falle, el bucle general continúa
+                    }
                 }
             }
 
+            // 4. Agregar las decisiones al final de la fila
+            for (int i = 0; i < n; i++) filaDatos.Add(decisiones[i]);
+
+            // Imprimir la fila en pantalla
             dgv.Rows.Add(filaDatos.ToArray());
 
-            // Condición de parada: Si el error más grande de TODAS las variables es menor a la tolerancia
-            if (iter > 1 && errorMaximo <= tol)
+            // Actualizamos el vector viejo para la SIGUIENTE iteración
+            Array.Copy(X_nuevo, X_viejo, n);
+
+            // 5. 🛑 Condición de parada (El Freno de Mano)
+            if (iter > 1 && todosCumplen)
             {
-                break; // Convergencia alcanzada
+                break; // Todas las variables dijeron "Finalizar", ¡cortamos el bucle!
             }
         }
     }
-
     public void Jacobi(double[,] A, double[] b, double[] X0, double tol, int maxIter, DataGridView dgv)
     {
         int n = b.Length;
@@ -939,9 +962,8 @@ public class MetodosNumericos
         // Columnas para Errores Porcentuales
         for (int i = 0; i < n; i++) dgv.Columns.Add($"E{i + 1}", $"Error x{i + 1} (%)");
 
-        // Columna Final de Decisión
-        dgv.Columns.Add("Decision", "Decisión");
-
+        // 🚀 EL CAMBIO: Múltiples columnas de Decisión (Una por variable)
+        for (int i = 0; i < n; i++) dgv.Columns.Add($"Dec{i + 1}", $"Decisión x{i + 1}");
 
         double[] X_viejo = new double[n];
         double[] X_nuevo = new double[n];
@@ -951,11 +973,12 @@ public class MetodosNumericos
 
         for (int iter = 1; iter <= maxIter; iter++)
         {
-            double errorMaximo = 0;
-            double[] erroresFila = new double[n];
-
             // Fila para agregar al DGV
             List<string> filaDatos = new List<string> { iter.ToString() };
+
+            // Banderas y arreglos para las decisiones
+            bool todosCumplen = true;
+            string[] decisiones = new string[n];
 
             // 1. Guardar valores viejos para la tabla
             for (int i = 0; i < n; i++) filaDatos.Add(X_viejo[i].ToString("F8"));
@@ -968,7 +991,6 @@ public class MetodosNumericos
                 {
                     if (j != i)
                     {
-                        // 🚀 LA DIFERENCIA CON SEIDEL: Aquí SÓLO usamos X_viejo
                         suma += A[i, j] * X_viejo[j];
                     }
                 }
@@ -976,54 +998,55 @@ public class MetodosNumericos
                 filaDatos.Add(X_nuevo[i].ToString("F8"));
             }
 
-            // 3. Calcular Errores Relativos Porcentuales
+            // 3. Calcular Errores y Tomar Decisiones por separado
             for (int i = 0; i < n; i++)
             {
                 if (iter == 1)
                 {
                     // Iteración 1 no tiene error previo
                     filaDatos.Add("-");
+                    decisiones[i] = "Continuar";
+                    todosCumplen = false; // Obligamos a que siga iterando
                 }
                 else
                 {
+                    double errorVariable = 0;
                     if (X_nuevo[i] != 0)
                     {
-                        double errorVariable = Math.Abs((X_nuevo[i] - X_viejo[i]) / X_nuevo[i]) * 100;
-                        erroresFila[i] = errorVariable;
+                        errorVariable = Math.Abs((X_nuevo[i] - X_viejo[i]) / X_nuevo[i]);
                         filaDatos.Add(errorVariable.ToString("F8") + "%");
-
-                        if (errorVariable > errorMaximo) errorMaximo = errorVariable;
                     }
                     else
                     {
                         filaDatos.Add("0%");
                     }
+
+                    // Tomar la decisión para ESTA variable en específico
+                    if (errorVariable <= tol)
+                    {
+                        decisiones[i] = "Finalizar";
+                    }
+                    else
+                    {
+                        decisiones[i] = "Continuar";
+                        todosCumplen = false; // Con UNO que falle, el bucle general continúa
+                    }
                 }
             }
 
-            // 4. Decisión Final de la iteración
-            if (iter == 1)
-            {
-                filaDatos.Add("Continuar");
-            }
-            else if (errorMaximo <= tol)
-            {
-                filaDatos.Add("Finalizar");
-            }
-            else
-            {
-                filaDatos.Add("Continuar");
-            }
+            // 4. Agregar las decisiones al final de la fila
+            for (int i = 0; i < n; i++) filaDatos.Add(decisiones[i]);
 
+            // Imprimir la fila en pantalla
             dgv.Rows.Add(filaDatos.ToArray());
 
             // Actualizamos el vector viejo para la SIGUIENTE iteración
             Array.Copy(X_nuevo, X_viejo, n);
 
-            // Condición de parada
-            if (iter > 1 && errorMaximo <= tol)
+            // 5. 🛑 Condición de parada (El Freno de Mano)
+            if (iter > 1 && todosCumplen)
             {
-                break; // Convergencia alcanzada
+                break; // Todas las variables dijeron "Finalizar", ¡cortamos el bucle!
             }
         }
     }
