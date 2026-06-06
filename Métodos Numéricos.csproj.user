@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Compile Update="FormEliminaciónGaussiana.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FormBairstow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -8,6 +11,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FormDash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormFactorizacionLU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormGaussJordan.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FormGaussSeidel.cs">
@@ -25,6 +34,9 @@
     <Compile Update="FormJacobi.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormMatrizInversa.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FormMuller.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -35,6 +47,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FormPuntoFijo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormReglaCramer.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FormReglaFalsa.cs">

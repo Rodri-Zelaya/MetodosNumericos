@@ -27,6 +27,7 @@ namespace Métodos_Numéricos
             panelSubMenuPolinomios.Visible = false;
             panelSubMenuNoLineales.Visible = false;
             panelSubMenuIterativos.Visible = false;
+            panelSubMenuMetodosLineales.Visible = false;
             // Si agregas más submenús en el futuro, los ocultas aquí también
         }
 
@@ -43,6 +44,8 @@ namespace Métodos_Numéricos
                 panelSubMenuNoLineales.Visible = false;
             if (panelSubMenuIterativos.Visible == true)
                 panelSubMenuIterativos.Visible = false;
+            if (panelSubMenuMetodosLineales.Visible == true)
+                panelSubMenuMetodosLineales.Visible = false;
         }
 
         // 3. El motor del Acordeón: Abre el que pediste y cierra los demás
@@ -83,6 +86,11 @@ namespace Métodos_Numéricos
         {
             // Abre y cierra el submenú de forma fluida
             MostrarSubMenu(panelSubMenuIterativos);
+        }
+
+        private void btnMétodosLineales_Click(object sender, EventArgs e)
+        {
+            MostrarSubMenu(panelSubMenuMetodosLineales);
         }
 
         // Variable para recordar qué formulario está abierto actualmente
@@ -128,7 +136,7 @@ namespace Métodos_Numéricos
                 botonActivo.Font = new Font("Segoe UI", 10, FontStyle.Bold); // ¡Pum! Letra en negrita
             }
         }
-    
+
         private void btnBiseccion_Click(object sender, EventArgs e)
         {
             AbrirFormularioHijo(new FormBiseccion());
@@ -197,6 +205,33 @@ namespace Métodos_Numéricos
             ActivarBoton(sender);
         }
 
+        private void btnEliminacionGaussiana_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormEliminaciónGaussiana());
+            ActivarBoton(sender);
+        }
+        private void btnFactorizaciónLU_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormFactorizacionLU());
+            ActivarBoton(sender);
+        }
+        private void btnGaussJordan_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormGaussJordan());
+            ActivarBoton(sender);
+        }
+        private void btnReglaCramer_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormReglaCramer());
+            ActivarBoton(sender);
+        }
+        private void btnMatrizInversa_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormMatrizInversa());
+            ActivarBoton(sender);
+        }
+
+ 
         private void AplicarTema()
         {
             // 🎨 Paleta de colores

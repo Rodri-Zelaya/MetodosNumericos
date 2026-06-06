@@ -1050,6 +1050,380 @@ public class MetodosNumericos
             }
         }
     }
+
+    public void EliminacionGaussiana(double[,] A, double[] b, DataGridView dgv)
+    {
+        int n = b.Length;
+        double[,] aug = new double[n, n + 1];
+
+        // 1. Armar matriz aumentada [A|b]
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++) aug[i, j] = A[i, j];
+            aug[i, n] = b[i];
+        }
+
+        // 2. Eliminación hacia adelante con Pivoteo Parcial
+        for (int i = 0; i < n - 1; i++)
+        {
+            // Buscar pivote mayor
+            int p = i;
+            for (int k = i + 1; k < n; k++)
+            {
+                if (Math.Abs(aug[k, i]) > Math.Abs(aug[p, i])) p = k;
+            }
+
+            // Intercambiar filas si es necesario
+            if (p != i)
+            {
+                for (int j = i; j <= n; j++)
+                {
+                    double temp = aug[i, j];
+                    aug[i, j] = aug[p, j];
+                    aug[p, j] = temp;
+                }
+            }
+
+            if (Math.Abs(aug[i, i]) < 1e-12) throw new Exception("Matriz singular. El sistema colapsó.");
+
+            // Hacer ceros debajo del pivote
+            for (int k = i + 1; k < n; k++)
+            {
+                double m = aug[k, i] / aug[i, i];
+                for (int j = i; j <= n; j++)
+                {
+                    aug[k, j] -= m * aug[i, j];
+                }
+            }
+        }
+
+        // 3. Sustitución hacia atrás
+        double[] x = new double[n];
+        for (int i = n - 1; i >= 0; i--)
+        {
+            double suma = 0;
+            for (int j = i + 1; j < n; j++) suma += aug[i, j] * x[j];
+            x[i] = (aug[i, n] - suma) / aug[i, i];
+        }
+
+        // 4. Mostrar en el DataGridView de forma limpia
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Variable", "Variable");
+        dgv.Columns.Add("Valor", "Valor Calculado Exacto");
+
+        for (int i = 0; i < n; i++)
+        {
+            dgv.Rows.Add($"x{i + 1}", x[i].ToString("F8"));
+        }
+    }
+
+    public void FactorizacionLU(double[,] A, double[] b, DataGridView dgv)
+    {
+        int n = b.Length;
+        double[,] L = new double[n, n];
+        double[,] U = new double[n, n];
+
+        // 1. Descomposición LU (Algoritmo de Doolittle)
+        for (int i = 0; i < n; i++)
+        {
+            // Calcular la Matriz U (Triangular Superior)
+            for (int k = i; k < n; k++)
+            {
+                double sum = 0;
+                for (int j = 0; j < i; j++) sum += (L[i, j] * U[j, k]);
+                U[i, k] = A[i, k] - sum;
+            }
+
+            // Calcular la Matriz L (Triangular Inferior)
+            for (int k = i; k < n; k++)
+            {
+                if (i == k)
+                {
+                    L[i, i] = 1; // La diagonal de L siempre es 1
+                }
+                else
+                {
+                    double sum = 0;
+                    for (int j = 0; j < i; j++) sum += (L[k, j] * U[j, i]);
+
+                    if (Math.Abs(U[i, i]) < 1e-12)
+                        throw new Exception("El sistema requiere pivoteo o es singular (División por cero en U). Reordena las filas.");
+
+                    L[k, i] = (A[k, i] - sum) / U[i, i];
+                }
+            }
+        }
+
+        // 2. Sustitución hacia adelante (L * y = b)
+        double[] y = new double[n];
+        for (int i = 0; i < n; i++)
+        {
+            double sum = 0;
+            for (int j = 0; j < i; j++) sum += L[i, j] * y[j];
+            y[i] = b[i] - sum;
+        }
+
+        // 3. Sustitución hacia atrás (U * x = y)
+        double[] x = new double[n];
+        for (int i = n - 1; i >= 0; i--)
+        {
+            double sum = 0;
+            for (int j = i + 1; j < n; j++) sum += U[i, j] * x[j];
+            x[i] = (y[i] - sum) / U[i, i];
+        }
+
+        // 4. Mostrar Resultados Limpios en la Tabla
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Variable", "Variable");
+        dgv.Columns.Add("Valor", "Valor Calculado Exacto");
+
+        for (int i = 0; i < n; i++)
+        {
+            dgv.Rows.Add($"x{i + 1}", x[i].ToString("F8"));
+        }
+    }
+
+    public void GaussJordan(double[,] A, double[] b, DataGridView dgv)
+    {
+        int n = b.Length;
+        double[,] aug = new double[n, n + 1];
+
+        // 1. Armar la matriz aumentada [A|b]
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++) aug[i, j] = A[i, j];
+            aug[i, n] = b[i];
+        }
+
+        // 2. Proceso de Eliminación de Gauss-Jordan con Pivoteo Parcial
+        for (int i = 0; i < n; i++)
+        {
+            // Pivoteo Parcial: Buscar el elemento mayor en valor absoluto
+            int p = i;
+            for (int k = i + 1; k < n; k++)
+            {
+                if (Math.Abs(aug[k, i]) > Math.Abs(aug[p, i])) p = k;
+            }
+
+            // Intercambiar filas si es necesario
+            if (p != i)
+            {
+                for (int j = i; j <= n; j++)
+                {
+                    double temp = aug[i, j];
+                    aug[i, j] = aug[p, j];
+                    aug[p, j] = temp;
+                }
+            }
+
+            // Verificar si es una matriz singular
+            if (Math.Abs(aug[i, i]) < 1e-12)
+                throw new Exception("Matriz singular o con infinitas soluciones. El sistema no se puede resolver.");
+
+            // Dividir la fila actual entre el pivote para hacer un '1' en la diagonal
+            double pivote = aug[i, i];
+            for (int j = i; j <= n; j++) aug[i, j] /= pivote;
+
+            // Hacer '0' todos los elementos arriba y abajo de la diagonal en esta columna
+            for (int k = 0; k < n; k++)
+            {
+                if (k != i)
+                {
+                    double factor = aug[k, i];
+                    for (int j = i; j <= n; j++)
+                    {
+                        aug[k, j] -= factor * aug[i, j];
+                    }
+                }
+            }
+        }
+
+        // 3. Mostrar Resultados Limpios en la Tabla
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Variable", "Variable");
+        dgv.Columns.Add("Valor", "Valor Exacto (Gauss-Jordan)");
+
+        for (int i = 0; i < n; i++)
+        {
+            dgv.Rows.Add($"x{i + 1}", aug[i, n].ToString("F8"));
+        }
+    }
+
+    public void ReglaCramer(double[,] A, double[] b, DataGridView dgv)
+    {
+        int n = b.Length;
+
+        // 1. Calcular el determinante de la matriz principal A
+        double detPrincipal = CalcularDeterminante(A, n);
+
+        // 🛡️ REGLA MATEMÁTICA: Si el det es cero, el sistema no tiene solución única
+        if (Math.Abs(detPrincipal) < 1e-12)
+        {
+            throw new Exception("El determinante de la matriz principal es cero. El sistema no tiene solución única o las ecuaciones son dependientes.");
+        }
+
+        double[] x = new double[n];
+
+        // 2. Calcular los determinantes modificados para cada variable
+        for (int i = 0; i < n; i++)
+        {
+            // Crear una copia de la matriz A
+            double[,] matrizModificada = new double[n, n];
+            for (int r = 0; r < n; r++)
+            {
+                for (int c = 0; c < n; c++)
+                {
+                    // Si es la columna de la variable actual, la reemplazamos por el vector b
+                    if (c == i) matrizModificada[r, c] = b[r];
+                    else matrizModificada[r, c] = A[r, c];
+                }
+            }
+
+            // Calcular el determinante de la matriz modificada
+            double detModificado = CalcularDeterminante(matrizModificada, n);
+
+            // Aplicar la fórmula de Cramer
+            x[i] = detModificado / detPrincipal;
+        }
+
+        // 3. Mostrar Resultados Limpios en la Tabla
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Variable", "Variable");
+        dgv.Columns.Add("Valor", "Valor Exacto (Cramer)");
+
+        for (int i = 0; i < n; i++)
+        {
+            dgv.Rows.Add($"x{i + 1}", x[i].ToString("F8"));
+        }
+    }
+
+    // 🧠 HÉLPER MATEMÁTICO: Calcula el determinante usando eliminación gaussiana para máxima eficiencia
+    private double CalcularDeterminante(double[,] matriz, int n)
+    {
+        double[,] temp = new double[n, n];
+        Array.Copy(matriz, temp, matriz.Length);
+        double det = 1;
+
+        for (int i = 0; i < n; i++)
+        {
+            // Pivoteo parcial para estabilidad
+            int pivot = i;
+            for (int j = i + 1; j < n; j++)
+            {
+                if (Math.Abs(temp[j, i]) > Math.Abs(temp[pivot, i])) pivot = j;
+            }
+
+            if (pivot != i)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    double t = temp[i, j];
+                    temp[i, j] = temp[pivot, j];
+                    temp[pivot, j] = t;
+                }
+                det *= -1; // Cambia el signo del det al intercambiar filas
+            }
+
+            if (Math.Abs(temp[i, i]) < 1e-12) return 0; // Si hay un cero en la diagonal, el det es 0
+
+            det *= temp[i, i];
+
+            for (int j = i + 1; j < n; j++)
+            {
+                double factor = temp[j, i] / temp[i, i];
+                for (int k = i; k < n; k++)
+                {
+                    temp[j, k] -= factor * temp[i, k];
+                }
+            }
+        }
+        return det;
+    }
+
+    public void MatrizInversa(double[,] A, double[] b, DataGridView dgv)
+    {
+        int n = b.Length;
+
+        // 1. Crear la matriz aumentada [A | I] (Matriz original + Matriz Identidad)
+        double[,] aug = new double[n, 2 * n];
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++) aug[i, j] = A[i, j];
+            aug[i, n + i] = 1.0; // Inyectamos el 1 en la diagonal de la identidad
+        }
+
+        // 2. Gauss-Jordan sobre toda la fila extendida (2*n) para transformar la izquierda en Identidad
+        for (int i = 0; i < n; i++)
+        {
+            // Pivoteo Parcial para estabilidad numérica
+            int p = i;
+            for (int k = i + 1; k < n; k++)
+            {
+                if (Math.Abs(aug[k, i]) > Math.Abs(aug[p, i])) p = k;
+            }
+
+            if (p != i)
+            {
+                for (int j = 0; j < 2 * n; j++)
+                {
+                    double temp = aug[i, j];
+                    aug[i, j] = aug[p, j];
+                    aug[p, j] = temp;
+                }
+            }
+
+            // 🛡️ Si el pivote es cero, la matriz no tiene inversa
+            if (Math.Abs(aug[i, i]) < 1e-12)
+                throw new Exception("La matriz de coeficientes es singular y no tiene inversa. El sistema no se puede resolver por este método.");
+
+            double pivote = aug[i, i];
+            for (int j = i; j < 2 * n; j++) aug[i, j] /= pivote;
+
+            for (int k = 0; k < n; k++)
+            {
+                if (k != i)
+                {
+                    double factor = aug[k, i];
+                    for (int j = i; j < 2 * n; j++)
+                    {
+                        aug[k, j] -= factor * aug[i, j];
+                    }
+                }
+            }
+        }
+
+        // Extraer la matriz inversa A^-1 de la mitad derecha de la matriz aumentada
+        double[,] inversa = new double[n, n];
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++) inversa[i, j] = aug[i, n + j];
+        }
+
+        // 3. Multiplicar la Matriz Inversa por el Vector b (x = A^-1 * b)
+        double[] x = new double[n];
+        for (int i = 0; i < n; i++)
+        {
+            double suma = 0;
+            for (int j = 0; j < n; j++) suma += inversa[i, j] * b[j];
+            x[i] = suma;
+        }
+
+        // 4. Mostrar Resultados Limpios en la Tabla
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Variable", "Variable");
+        dgv.Columns.Add("Valor", "Valor Exacto (A^-1 · b)");
+
+        for (int i = 0; i < n; i++)
+        {
+            dgv.Rows.Add($"x{i + 1}", x[i].ToString("F8"));
+        }
+    }
+
     // 🎨 LA BROCHA MÁGICA PARA EL DISEÑO DE LAS TABLAS
     public void FormatearTabla(DataGridView dgv)
     {
