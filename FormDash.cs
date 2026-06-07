@@ -28,6 +28,7 @@ namespace Métodos_Numéricos
             panelSubMenuNoLineales.Visible = false;
             panelSubMenuIterativos.Visible = false;
             panelSubMenuMetodosLineales.Visible = false;
+            panelSubMenuAjusteCurvas.Visible = false;
             // Si agregas más submenús en el futuro, los ocultas aquí también
         }
 
@@ -46,6 +47,8 @@ namespace Métodos_Numéricos
                 panelSubMenuIterativos.Visible = false;
             if (panelSubMenuMetodosLineales.Visible == true)
                 panelSubMenuMetodosLineales.Visible = false;
+            if (panelSubMenuAjusteCurvas.Visible == true)
+                panelSubMenuAjusteCurvas.Visible = false;
         }
 
         // 3. El motor del Acordeón: Abre el que pediste y cierra los demás
@@ -91,6 +94,11 @@ namespace Métodos_Numéricos
         private void btnMétodosLineales_Click(object sender, EventArgs e)
         {
             MostrarSubMenu(panelSubMenuMetodosLineales);
+        }
+
+        private void btnAjusteCurvas_Click(object sender, EventArgs e)
+        {
+            MostrarSubMenu(panelSubMenuAjusteCurvas);
         }
 
         // Variable para recordar qué formulario está abierto actualmente
@@ -231,7 +239,12 @@ namespace Métodos_Numéricos
             ActivarBoton(sender);
         }
 
- 
+        private void btnRegresionPolinomial_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormRegresionPolinomial());
+            ActivarBoton(sender);
+        }
+
         private void AplicarTema()
         {
             // 🎨 Paleta de colores

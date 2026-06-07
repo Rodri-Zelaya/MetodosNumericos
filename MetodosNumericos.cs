@@ -1424,6 +1424,143 @@ public class MetodosNumericos
         }
     }
 
+    public void RegresionPolinomial(double[] X, double[] Y, int grado, DataGridView dgvSumatorias, DataGridView dgvResultados)
+    {
+        int n = X.Length;
+        int m = grado;
+
+        // =================================================================
+        // 1. CONSTRUIR LA TABLA DE SUMATORIAS (EL PASO A PASO)
+        // =================================================================
+        dgvSumatorias.Columns.Clear();
+        dgvSumatorias.Rows.Clear();
+
+        // Agregar columnas base
+        dgvSumatorias.Columns.Add("x", "x");
+        dgvSumatorias.Columns.Add("y", "y");
+
+        // Agregar columnas dinámicas de x^k y x^k*y según el grado
+        for (int k = 2; k <= 2 * m; k++) dgvSumatorias.Columns.Add($"x^{k}", $"x^{k}");
+        for (int k = 1; k <= m; k++) dgvSumatorias.Columns.Add($"x^{k}y", $"x^{k}y");
+
+        double[] sumX = new double[2 * m + 1];
+        double[] sumXY = new double[m + 1];
+        sumX[0] = n; // n es la sumatoria de x^0 (1)
+
+        // Llenar filas por cada punto
+        for (int i = 0; i < n; i++)
+        {
+            List<string> fila = new List<string>();
+            fila.Add(X[i].ToString("F4"));
+            fila.Add(Y[i].ToString("F4"));
+
+            sumX[1] += X[i];
+            sumXY[0] += Y[i];
+
+            for (int k = 2; k <= 2 * m; k++)
+            {
+                double val = Math.Pow(X[i], k);
+                sumX[k] += val;
+                fila.Add(val.ToString("F4"));
+            }
+            for (int k = 1; k <= m; k++)
+            {
+                double val = Math.Pow(X[i], k) * Y[i];
+                sumXY[k] += val;
+                fila.Add(val.ToString("F4"));
+            }
+            dgvSumatorias.Rows.Add(fila.ToArray());
+        }
+
+        // Fila final de Sumatorias Totales (Resaltada)
+        List<string> filaSum = new List<string>();
+        filaSum.Add("Σ=" + sumX[1].ToString("F4"));
+        filaSum.Add("Σ=" + sumXY[0].ToString("F4"));
+        for (int k = 2; k <= 2 * m; k++) filaSum.Add("Σ=" + sumX[k].ToString("F4"));
+        for (int k = 1; k <= m; k++) filaSum.Add("Σ=" + sumXY[k].ToString("F4"));
+
+        int idxSum = dgvSumatorias.Rows.Add(filaSum.ToArray());
+        dgvSumatorias.Rows[idxSum].DefaultCellStyle.BackColor = Color.FromArgb(253, 230, 138); // Amarillo para destacar
+        dgvSumatorias.Rows[idxSum].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+        // =================================================================
+        // 2. ARMAR MATRIZ DE ECUACIONES NORMALES Y RESOLVER
+        // =================================================================
+        double[,] aug = new double[m + 1, m + 2];
+        for (int i = 0; i <= m; i++)
+        {
+            for (int j = 0; j <= m; j++) aug[i, j] = sumX[i + j];
+            aug[i, m + 1] = sumXY[i];
+        }
+
+        // Gauss-Jordan Interno
+        for (int i = 0; i <= m; i++)
+        {
+            int p = i;
+            for (int k = i + 1; k <= m; k++)
+            {
+                if (Math.Abs(aug[k, i]) > Math.Abs(aug[p, i])) p = k;
+            }
+
+            if (Math.Abs(aug[p, i]) < 1e-12)
+                throw new Exception("Datos colineales o sistema singular. No se puede calcular este grado con los puntos dados.");
+
+            if (p != i)
+            {
+                for (int j = 0; j <= m + 1; j++)
+                {
+                    double temp = aug[i, j]; aug[i, j] = aug[p, j]; aug[p, j] = temp;
+                }
+            }
+
+            double pivote = aug[i, i];
+            for (int j = i; j <= m + 1; j++) aug[i, j] /= pivote;
+
+            for (int k = 0; k <= m; k++)
+            {
+                if (k != i)
+                {
+                    double factor = aug[k, i];
+                    for (int j = i; j <= m + 1; j++) aug[k, j] -= factor * aug[i, j];
+                }
+            }
+        }
+
+        double[] a = new double[m + 1];
+        for (int i = 0; i <= m; i++) a[i] = aug[i, m + 1];
+
+        // =================================================================
+        // 3. CÁLCULO DEL ERROR (R²) Y PRESENTACIÓN
+        // =================================================================
+        double mediaY = sumXY[0] / n;
+        double St = 0, Sr = 0;
+        for (int i = 0; i < n; i++)
+        {
+            St += Math.Pow(Y[i] - mediaY, 2);
+            double yCalculado = 0;
+            for (int j = 0; j <= m; j++) yCalculado += a[j] * Math.Pow(X[i], j);
+            Sr += Math.Pow(Y[i] - yCalculado, 2);
+        }
+        double r2 = (St == 0) ? 1 : (St - Sr) / St;
+
+        dgvResultados.Columns.Clear();
+        dgvResultados.Rows.Clear();
+        dgvResultados.Columns.Add("Atributo", "Parámetro del Modelo");
+        dgvResultados.Columns.Add("Valor", "Valor Obtenido");
+
+        for (int i = 0; i <= m; i++) dgvResultados.Rows.Add($"Coeficiente a{i}", a[i].ToString("F6"));
+
+        dgvResultados.Rows.Add("", "");
+        dgvResultados.Rows.Add("Precisión (R²)", (r2 * 100.0).ToString("F2") + " %");
+
+        string ecuacion = "y = " + a[0].ToString("F4");
+        for (int i = 1; i <= m; i++) ecuacion += (a[i] >= 0 ? " + " : " - ") + Math.Abs(a[i]).ToString("F4") + "x" + (i > 1 ? "^" + i : "");
+        dgvResultados.Rows.Add("Ecuación Final", ecuacion);
+
+        dgvResultados.Columns[0].Width = 150;
+        dgvResultados.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+    }
+
     // 🎨 LA BROCHA MÁGICA PARA EL DISEÑO DE LAS TABLAS
     public void FormatearTabla(DataGridView dgv)
     {
