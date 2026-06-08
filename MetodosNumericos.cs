@@ -1659,6 +1659,104 @@ public class MetodosNumericos
         dgvRes.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
     }
 
+    public void InterpolacionLagrange(double[] X, double[] Y, double xEval, DataGridView dgvBase, DataGridView dgvRes)
+    {
+        int n = X.Length;
+        double[] L = new double[n];
+        double resultadoEval = 0;
+
+        // 1. Calcular los Polinomios Base L_i y la evaluación final
+        for (int i = 0; i < n; i++)
+        {
+            double numerador = 1;
+            double denominador = 1;
+
+            for (int j = 0; j < n; j++)
+            {
+                if (j != i)
+                {
+                    numerador *= (xEval - X[j]);
+                    denominador *= (X[i] - X[j]);
+                }
+            }
+
+            // Evitar división por cero si meten puntos X repetidos
+            if (Math.Abs(denominador) < 1e-12)
+                throw new Exception($"Hay valores repetidos en X (X[{i}] = X). No se puede interpolar con puntos sobre la misma línea vertical.");
+
+            L[i] = numerador / denominador;
+            resultadoEval += Y[i] * L[i];
+        }
+
+        // =================================================================
+        // 2. CONSTRUIR LA TABLA VISUAL DE LOS POLINOMIOS BASE L_i
+        // =================================================================
+        dgvBase.Columns.Clear();
+        dgvBase.Rows.Clear();
+
+        dgvBase.Columns.Add("Indice", "Punto (i)");
+        dgvBase.Columns.Add("X", "x_i");
+        dgvBase.Columns.Add("Y", "y_i");
+        dgvBase.Columns.Add("Li", $"L_{{i}}(x) Evaluado en x={xEval}");
+
+        for (int i = 0; i < n; i++)
+        {
+            dgvBase.Rows.Add(i.ToString(), X[i].ToString("F4"), Y[i].ToString("F4"), L[i].ToString("F6"));
+        }
+
+        // Destacar la tabla con un estilo limpio de procedimiento
+        dgvBase.Columns[0].Width = 80;
+        dgvBase.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+        // =================================================================
+        // 3. ENSAMBLAR LA ECUACIÓN SIMBÓLICA ORIGINAL DE LAGRANGE
+        // =================================================================
+        string ecuacion = "";
+        for (int i = 0; i < n; i++)
+        {
+            double den = 1;
+            for (int j = 0; j < n; j++)
+            {
+                if (j != i) den *= (X[i] - X[j]);
+            }
+
+            double coef = Y[i] / den;
+            if (Math.Abs(coef) < 1e-6) continue; // Ignorar términos nulos
+
+            string signo = coef >= 0 ? (ecuacion == "" ? "" : " + ") : " - ";
+            ecuacion += signo + Math.Abs(coef).ToString("F4");
+
+            for (int j = 0; j < n; j++)
+            {
+                if (j != i)
+                {
+                    string signoX = X[j] >= 0 ? "-" : "+";
+                    ecuacion += $"(x {signoX} {Math.Abs(X[j])})";
+                }
+            }
+        }
+
+        // =================================================================
+        // 4. MOSTRAR RESULTADOS FINALES ABAJO
+        // =================================================================
+        dgvRes.Columns.Clear();
+        dgvRes.Rows.Clear();
+        dgvRes.Columns.Add("Atributo", "Métrica / Resultado");
+        dgvRes.Columns.Add("Valor", "Valor Obtenido");
+
+        dgvRes.Rows.Add("Grado del Polinomio", (n - 1).ToString());
+        dgvRes.Rows.Add("Fórmula Polinómica", ecuacion);
+        dgvRes.Rows.Add("", ""); // Separador visual
+        dgvRes.Rows.Add($"Resultado Interpolado P({xEval})", resultadoEval.ToString("F6"));
+
+        // Estilo destacado a la celda de predicción final
+        dgvRes.Rows[3].DefaultCellStyle.BackColor = Color.FromArgb(165, 180, 252); // Morado
+        dgvRes.Rows[3].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+        dgvRes.Columns[0].Width = 180;
+        dgvRes.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+    }
+
     // 🎨 LA BROCHA MÁGICA PARA EL DISEÑO DE LAS TABLAS
     public void FormatearTabla(DataGridView dgv)
     {

@@ -49,6 +49,9 @@
     <Compile Update="FormNoLinealNewton.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormPolinomioLagrange.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FormPuntoFijo.cs">
       <SubType>Form</SubType>
     </Compile>
