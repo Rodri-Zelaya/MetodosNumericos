@@ -1561,6 +1561,104 @@ public class MetodosNumericos
         dgvResultados.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
     }
 
+    public void NewtonDiferenciasDivididas(double[] X, double[] Y, double xEval, DataGridView dgvTabla, DataGridView dgvRes)
+    {
+        int n = X.Length;
+        double[,] F = new double[n, n];
+
+        // 1. Inicializar la primera columna con los valores de Y
+        for (int i = 0; i < n; i++)
+        {
+            F[i, 0] = Y[i];
+        }
+
+        // 2. Calcular las Diferencias Divididas (La escalera)
+        for (int j = 1; j < n; j++)
+        {
+            for (int i = 0; i < n - j; i++)
+            {
+                F[i, j] = (F[i + 1, j - 1] - F[i, j - 1]) / (X[i + j] - X[i]);
+            }
+        }
+
+        // =================================================================
+        // 3. CONSTRUIR LA TABLA VISUAL DE DIFERENCIAS
+        // =================================================================
+        dgvTabla.Columns.Clear();
+        dgvTabla.Rows.Clear();
+
+        dgvTabla.Columns.Add("X", "X");
+        dgvTabla.Columns.Add("Y", "Y (Orden 0)");
+
+        for (int j = 1; j < n; j++)
+        {
+            dgvTabla.Columns.Add($"Orden{j}", $"Orden {j}");
+        }
+
+        // Llenar la tabla (dejando en blanco los espacios de la escalera)
+        for (int i = 0; i < n; i++)
+        {
+            List<string> fila = new List<string>();
+            fila.Add(X[i].ToString("F4"));
+
+            for (int j = 0; j < n - i; j++)
+            {
+                fila.Add(F[i, j].ToString("F4"));
+            }
+            dgvTabla.Rows.Add(fila.ToArray());
+        }
+
+        // Resaltar la primera fila (Estos son los coeficientes b0, b1, b2... del polinomio)
+        dgvTabla.Rows[0].DefaultCellStyle.BackColor = Color.FromArgb(253, 230, 138); // Amarillo
+        dgvTabla.Rows[0].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+        // =================================================================
+        // 4. ARMAR EL POLINOMIO Y EVALUAR
+        // =================================================================
+        double resultadoEval = F[0, 0];
+        double terminoX = 1;
+
+        // Construir el texto de la ecuación de forma limpia
+        string ecuacion = F[0, 0].ToString("F4");
+
+        for (int j = 1; j < n; j++)
+        {
+            // Para la evaluación matemática
+            terminoX *= (xEval - X[j - 1]);
+            resultadoEval += (F[0, j] * terminoX);
+
+            // Para la presentación visual de la ecuación
+            string signoCoef = F[0, j] >= 0 ? " + " : " - ";
+            string textoTermino = signoCoef + Math.Abs(F[0, j]).ToString("F4");
+
+            for (int k = 0; k < j; k++)
+            {
+                string signoX = X[k] < 0 ? "+" : "-";
+                textoTermino += $"(x {signoX} {Math.Abs(X[k])})";
+            }
+            ecuacion += textoTermino;
+        }
+
+        // =================================================================
+        // 5. MOSTRAR RESULTADOS FINALES
+        // =================================================================
+        dgvRes.Columns.Clear();
+        dgvRes.Rows.Clear();
+        dgvRes.Columns.Add("Atributo", "Métrica / Resultado");
+        dgvRes.Columns.Add("Valor", "Valor Obtenido");
+
+        dgvRes.Rows.Add("Grado del Polinomio", (n - 1).ToString());
+        dgvRes.Rows.Add("Ecuación Interpolante", ecuacion);
+        dgvRes.Rows.Add("", ""); // Separador
+        dgvRes.Rows.Add($"Predicción f({xEval})", resultadoEval.ToString("F6"));
+
+        dgvRes.Rows[3].DefaultCellStyle.BackColor = Color.FromArgb(165, 180, 252); // Resalte morado para el resultado
+        dgvRes.Rows[3].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+        dgvRes.Columns[0].Width = 180;
+        dgvRes.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+    }
+
     // 🎨 LA BROCHA MÁGICA PARA EL DISEÑO DE LAS TABLAS
     public void FormatearTabla(DataGridView dgv)
     {

@@ -43,6 +43,9 @@
     <Compile Update="FormNewton.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormNewtonDiferenciaDividida.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FormNoLinealNewton.cs">
       <SubType>Form</SubType>
     </Compile>

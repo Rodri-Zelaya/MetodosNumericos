@@ -29,6 +29,7 @@ namespace Métodos_Numéricos
             panelSubMenuIterativos.Visible = false;
             panelSubMenuMetodosLineales.Visible = false;
             panelSubMenuAjusteCurvas.Visible = false;
+            panelSubMenuInterpolación.Visible = false;
             // Si agregas más submenús en el futuro, los ocultas aquí también
         }
 
@@ -49,6 +50,8 @@ namespace Métodos_Numéricos
                 panelSubMenuMetodosLineales.Visible = false;
             if (panelSubMenuAjusteCurvas.Visible == true)
                 panelSubMenuAjusteCurvas.Visible = false;
+            if(panelSubMenuInterpolación.Visible == true)
+                panelSubMenuInterpolación.Visible = false;
         }
 
         // 3. El motor del Acordeón: Abre el que pediste y cierra los demás
@@ -101,6 +104,10 @@ namespace Métodos_Numéricos
             MostrarSubMenu(panelSubMenuAjusteCurvas);
         }
 
+        private void btnInterpolación_Click(object sender, EventArgs e)
+        {
+            MostrarSubMenu(panelSubMenuInterpolación);
+        }
         // Variable para recordar qué formulario está abierto actualmente
         private Form formularioActivo = null;
 
@@ -242,6 +249,12 @@ namespace Métodos_Numéricos
         private void btnRegresionPolinomial_Click(object sender, EventArgs e)
         {
             AbrirFormularioHijo(new FormRegresionPolinomial());
+            ActivarBoton(sender);
+        }
+
+        private void btnNewtonDDividida_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormNewtonDiferenciaDividida());
             ActivarBoton(sender);
         }
 

@@ -30,6 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDash));
             PanelMenuLateral = new Panel();
+            panelSubMenuInterpolación = new Panel();
+            btnNewtonDDivididas = new Button();
+            btnMétodosInterpolación = new Button();
             panelSubMenuAjusteCurvas = new Panel();
             btnRegresionPolinomial = new Button();
             btnAjusteCurvas = new Button();
@@ -65,6 +68,7 @@
             pictureBox1 = new PictureBox();
             panelContenedorPrincipal = new Panel();
             PanelMenuLateral.SuspendLayout();
+            panelSubMenuInterpolación.SuspendLayout();
             panelSubMenuAjusteCurvas.SuspendLayout();
             panelSubMenuMetodosLineales.SuspendLayout();
             panelSubMenuIterativos.SuspendLayout();
@@ -79,6 +83,8 @@
             // PanelMenuLateral
             // 
             PanelMenuLateral.AutoScroll = true;
+            PanelMenuLateral.Controls.Add(panelSubMenuInterpolación);
+            PanelMenuLateral.Controls.Add(btnMétodosInterpolación);
             PanelMenuLateral.Controls.Add(panelSubMenuAjusteCurvas);
             PanelMenuLateral.Controls.Add(btnAjusteCurvas);
             PanelMenuLateral.Controls.Add(panelSubMenuMetodosLineales);
@@ -99,6 +105,37 @@
             PanelMenuLateral.Name = "PanelMenuLateral";
             PanelMenuLateral.Size = new Size(253, 1055);
             PanelMenuLateral.TabIndex = 0;
+            // 
+            // panelSubMenuInterpolación
+            // 
+            panelSubMenuInterpolación.Controls.Add(btnNewtonDDivididas);
+            panelSubMenuInterpolación.Dock = DockStyle.Top;
+            panelSubMenuInterpolación.Location = new Point(0, 979);
+            panelSubMenuInterpolación.Name = "panelSubMenuInterpolación";
+            panelSubMenuInterpolación.Size = new Size(253, 31);
+            panelSubMenuInterpolación.TabIndex = 0;
+            // 
+            // btnNewtonDDivididas
+            // 
+            btnNewtonDDivididas.Dock = DockStyle.Top;
+            btnNewtonDDivididas.Location = new Point(0, 0);
+            btnNewtonDDivididas.Name = "btnNewtonDDivididas";
+            btnNewtonDDivididas.Size = new Size(253, 29);
+            btnNewtonDDivididas.TabIndex = 0;
+            btnNewtonDDivididas.Text = "Newton D.Divididas";
+            btnNewtonDDivididas.UseVisualStyleBackColor = true;
+            btnNewtonDDivididas.Click += btnNewtonDDividida_Click;
+            // 
+            // btnMétodosInterpolación
+            // 
+            btnMétodosInterpolación.Dock = DockStyle.Top;
+            btnMétodosInterpolación.Location = new Point(0, 950);
+            btnMétodosInterpolación.Name = "btnMétodosInterpolación";
+            btnMétodosInterpolación.Size = new Size(253, 29);
+            btnMétodosInterpolación.TabIndex = 0;
+            btnMétodosInterpolación.Text = "Métodos Interpolación";
+            btnMétodosInterpolación.UseVisualStyleBackColor = true;
+            btnMétodosInterpolación.Click += btnInterpolación_Click;
             // 
             // panelSubMenuAjusteCurvas
             // 
@@ -476,6 +513,7 @@
             Text = "FormDash";
             WindowState = FormWindowState.Maximized;
             PanelMenuLateral.ResumeLayout(false);
+            panelSubMenuInterpolación.ResumeLayout(false);
             panelSubMenuAjusteCurvas.ResumeLayout(false);
             panelSubMenuMetodosLineales.ResumeLayout(false);
             panelSubMenuIterativos.ResumeLayout(false);
@@ -525,5 +563,8 @@
         private Button btnAjusteCurvas;
         private Button btnRegresionPolinomial;
         private Panel panelSubMenuAjusteCurvas;
+        private Panel panelSubMenuInterpolación;
+        private Button btnNewtonDDivididas;
+        private Button btnMétodosInterpolación;
     }
 }
