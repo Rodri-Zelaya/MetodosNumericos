@@ -1757,6 +1757,79 @@ public class MetodosNumericos
         dgvRes.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
     }
 
+    public void DiferenciacionNumericaTabular(double[] X, double[] Y, DataGridView dgvRes)
+    {
+        int n = X.Length;
+
+        // =================================================================
+        // 1. CONFIGURAR LA TABLA VISUAL DE DERIVADAS
+        // =================================================================
+        dgvRes.Columns.Clear();
+        dgvRes.Rows.Clear();
+
+        dgvRes.Columns.Add("i", "Punto");
+        dgvRes.Columns.Add("X", "Tiempo/X");
+        dgvRes.Columns.Add("Y", "Posición/f(X)");
+        dgvRes.Columns.Add("Adelante", "Velocidad f'(x) Adelante");
+        dgvRes.Columns.Add("Atras", "Velocidad f'(x) Atrás");
+        dgvRes.Columns.Add("Central", "Velocidad f'(x) Central");
+
+        // 🚀 NUEVA COLUMNA: SEGUNDA DERIVADA
+        dgvRes.Columns.Add("Segunda", "Aceleración f''(x) Central");
+
+        // =================================================================
+        // 2. CÁLCULO DE DIFERENCIAS FINITAS (1ra y 2da Derivada)
+        // =================================================================
+        for (int i = 0; i < n; i++)
+        {
+            string valAdelante = "-";
+            string valAtras = "-";
+            string valCentral = "-";
+            string valSegunda = "-"; // Para la Aceleración
+
+            // Hacia Adelante (No aplica para el último)
+            if (i < n - 1) valAdelante = ((Y[i + 1] - Y[i]) / (X[i + 1] - X[i])).ToString("F4");
+
+            // Hacia Atrás (No aplica para el primero)
+            if (i > 0) valAtras = ((Y[i] - Y[i - 1]) / (X[i] - X[i - 1])).ToString("F4");
+
+            // Diferencia Central (No aplica ni al primero ni al último)
+            if (i > 0 && i < n - 1)
+            {
+                double h1 = X[i] - X[i - 1]; // Distancia al anterior
+                double h2 = X[i + 1] - X[i]; // Distancia al siguiente
+
+                // Primera Derivada Central (Velocidad)
+                valCentral = ((Y[i + 1] - Y[i - 1]) / (h1 + h2)).ToString("F4");
+
+                // Segunda Derivada Central (Aceleración) - Requiere que h sea constante
+                if (Math.Abs(h1 - h2) < 1e-6)
+                {
+                    double h = h1;
+                    double derivadaSegunda = (Y[i + 1] - 2 * Y[i] + Y[i - 1]) / (h * h);
+                    valSegunda = derivadaSegunda.ToString("F4");
+                }
+                else
+                {
+                    valSegunda = "N/A (h varía)";
+                }
+            }
+
+            dgvRes.Rows.Add(i.ToString(), X[i].ToString("F4"), Y[i].ToString("F4"), valAdelante, valAtras, valCentral, valSegunda);
+        }
+
+        // Estilos destacados para la Primera y Segunda Derivada Central
+        dgvRes.Columns[5].DefaultCellStyle.BackColor = Color.FromArgb(224, 231, 255); // Azulito para Velocidad
+        dgvRes.Columns[5].DefaultCellStyle.Font = new Font("Consolas", 10, FontStyle.Bold);
+        dgvRes.Columns[5].DefaultCellStyle.ForeColor = Color.FromArgb(67, 56, 202);
+
+        dgvRes.Columns[6].DefaultCellStyle.BackColor = Color.FromArgb(254, 226, 226); // Rojito para Aceleración
+        dgvRes.Columns[6].DefaultCellStyle.Font = new Font("Consolas", 10, FontStyle.Bold);
+        dgvRes.Columns[6].DefaultCellStyle.ForeColor = Color.FromArgb(220, 38, 38);
+
+        dgvRes.Columns[0].Width = 60;
+        dgvRes.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+    }
     // 🎨 LA BROCHA MÁGICA PARA EL DISEÑO DE LAS TABLAS
     public void FormatearTabla(DataGridView dgv)
     {

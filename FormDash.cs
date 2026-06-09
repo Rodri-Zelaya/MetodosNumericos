@@ -50,7 +50,7 @@ namespace Métodos_Numéricos
                 panelSubMenuMetodosLineales.Visible = false;
             if (panelSubMenuAjusteCurvas.Visible == true)
                 panelSubMenuAjusteCurvas.Visible = false;
-            if(panelSubMenuInterpolación.Visible == true)
+            if (panelSubMenuInterpolación.Visible == true)
                 panelSubMenuInterpolación.Visible = false;
         }
 
@@ -255,6 +255,12 @@ namespace Métodos_Numéricos
         private void btnNewtonDDividida_Click(object sender, EventArgs e)
         {
             AbrirFormularioHijo(new FormNewtonDiferenciaDividida());
+            ActivarBoton(sender);
+        }
+
+        private void btnLagrange_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormPolinomioLagrange());
             ActivarBoton(sender);
         }
 

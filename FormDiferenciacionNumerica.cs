@@ -6,15 +6,15 @@ using System.Windows.Forms;
 
 namespace Métodos_Numéricos
 {
-    public partial class FormPolinomioLagrange : Form
+    public partial class FormDiferenciacionNumerica : Form
     {
         private Panel pnlEspera;
 
-        public FormPolinomioLagrange()
+        public FormDiferenciacionNumerica()
         {
             InitializeComponent();
             AplicarEstiloTuani(this.Controls);
-            ConfigurarEmptyState("Interpolación de Lagrange", "Método por Polinomios Base de Lagrange. Crea combinaciones lineales ponderadas independientes para asegurar un paso exacto sobre cada coordenada.");
+            ConfigurarEmptyState("Diferenciación Numérica", "Método por Diferencias Finitas Tabuladas. Calcula la primera derivada (tasa de cambio) y la segunda derivada (aceleración) de un conjunto de datos discretos.");
 
             this.Resize += (s, e) => AcomodarControles();
             AcomodarControles();
@@ -28,7 +28,6 @@ namespace Métodos_Numéricos
 
             try
             {
-                // 1. Extraer los datos de la tabla dinámica
                 foreach (DataGridViewRow fila in dgvPuntos.Rows)
                 {
                     if (fila.IsNewRow) continue;
@@ -46,48 +45,28 @@ namespace Métodos_Numéricos
                     }
                 }
 
-                if (listX.Count < 2)
+                if (listX.Count < 3)
                 {
-                    MessageBox.Show("Se requieren al menos 2 puntos en la tabla para calcular el polinomio interpolador.", "Datos Insuficientes", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Se requieren al menos 3 puntos en la tabla para apreciar la diferencia central.", "Datos Insuficientes", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(txtXEvaluar.Text))
-                {
-                    MessageBox.Show("Por favor, ingresa el valor de X que deseas evaluar.", "Falta Valor", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                // 🚀 ARRANCAR MOTOR DE DIFERENCIACIÓN
+                metodos.DiferenciacionNumericaTabular(listX.ToArray(), listY.ToArray(), dgvDerivadas);
 
-                double xEval = metodos.ConvertirADouble(txtXEvaluar.Text);
-
-                // 🚀 ARRANCAR MOTOR DE INTERPOLACIÓN DE LAGRANGE CON NOMBRES ADAPTADOS
-                metodos.InterpolacionLagrange(listX.ToArray(), listY.ToArray(), xEval, dgvPolinomiosBase, dgvResultados);
-
-                // 🚀 ESTILOS: TABLA DE POLINOMIOS BASE L_i(x)
-                dgvPolinomiosBase.EnableHeadersVisualStyles = false;
-                dgvPolinomiosBase.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(55, 65, 81);
-                dgvPolinomiosBase.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-                dgvPolinomiosBase.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                dgvPolinomiosBase.RowHeadersVisible = false;
-                dgvPolinomiosBase.DefaultCellStyle.BackColor = Color.White;
-                dgvPolinomiosBase.DefaultCellStyle.ForeColor = Color.Black;
-                dgvPolinomiosBase.DefaultCellStyle.Font = new Font("Consolas", 10, FontStyle.Regular);
-                dgvPolinomiosBase.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(243, 244, 246);
-
-                // 🚀 ESTILOS: TABLA DE RESULTADOS DE PREDICCIÓN
-                dgvResultados.EnableHeadersVisualStyles = false;
-                dgvResultados.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(17, 24, 39);
-                dgvResultados.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-                dgvResultados.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                dgvResultados.RowHeadersVisible = false;
-                dgvResultados.DefaultCellStyle.BackColor = Color.White;
-                dgvResultados.DefaultCellStyle.ForeColor = Color.Black;
-                dgvResultados.DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-                dgvResultados.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(235, 238, 245);
+                // 🚀 ESTILOS PARA LA TABLA DE DERIVADAS
+                dgvDerivadas.EnableHeadersVisualStyles = false;
+                dgvDerivadas.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(17, 24, 39);
+                dgvDerivadas.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                dgvDerivadas.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                dgvDerivadas.RowHeadersVisible = false;
+                dgvDerivadas.DefaultCellStyle.BackColor = Color.White;
+                dgvDerivadas.DefaultCellStyle.ForeColor = Color.Black;
+                dgvDerivadas.DefaultCellStyle.Font = new Font("Consolas", 10, FontStyle.Regular);
+                dgvDerivadas.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(243, 244, 246);
 
                 pnlEspera.Visible = false;
-                dgvPolinomiosBase.Visible = true;
-                dgvResultados.Visible = true;
+                dgvDerivadas.Visible = true;
             }
             catch (Exception ex)
             {
@@ -97,21 +76,18 @@ namespace Métodos_Numéricos
 
         private void btnExportar_Click(object sender, EventArgs e)
         {
-            try { new MetodosNumericos().ExportarAExcel(dgvResultados); }
+            try { new MetodosNumericos().ExportarAExcel(dgvDerivadas); }
             catch (Exception ex) { MessageBox.Show("Error al exportar los datos: " + ex.Message); }
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             dgvPuntos.Rows.Clear();
-            dgvPolinomiosBase.Rows.Clear();
-            dgvPolinomiosBase.Columns.Clear();
-            dgvResultados.Rows.Clear();
-            txtXEvaluar.Clear();
+            dgvDerivadas.Rows.Clear();
+            dgvDerivadas.Columns.Clear();
 
-            dgvPolinomiosBase.Visible = false;
-            dgvResultados.Visible = false;
-            pnlEspera.Visible = true; 
+            dgvDerivadas.Visible = false;
+            pnlEspera.Visible = true;
         }
 
         private void AplicarEstiloTuani(Control.ControlCollection controles)
@@ -131,7 +107,6 @@ namespace Métodos_Numéricos
                     btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(55, 65, 81);
                 }
                 else if (control is Label lbl) { lbl.ForeColor = Color.Black; lbl.Font = new Font("Segoe UI", 10, FontStyle.Bold); }
-                else if (control is TextBox txt) { txt.Font = new Font("Segoe UI", 12, FontStyle.Bold); txt.BorderStyle = BorderStyle.FixedSingle; }
                 else if (control is DataGridView dgv) { dgv.BackgroundColor = Color.White; dgv.BorderStyle = BorderStyle.FixedSingle; dgv.GridColor = Color.FromArgb(220, 225, 230); }
                 if (control.HasChildren) AplicarEstiloTuani(control.Controls);
             }
@@ -139,28 +114,29 @@ namespace Métodos_Numéricos
 
         private void ConfigurarEmptyState(string nombreMetodo, string descripcion)
         {
-            dgvPolinomiosBase.Visible = false;
-            dgvResultados.Visible = false;
+            dgvDerivadas.Visible = false;
             pnlEspera = new Panel { Location = new Point(40, 260), Size = new Size(this.ClientSize.Width - 80, this.ClientSize.Height - 280), Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right, BackColor = Color.FromArgb(243, 244, 246) };
             pnlEspera.Paint += PnlEspera_Paint;
 
             Panel pnlTarjeta = new Panel { Size = new Size(960, 480), BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle };
-            pnlTarjeta.Controls.Add(new Panel { Dock = DockStyle.Top, Height = 5, BackColor = Color.FromArgb(79, 70, 229) });
+            pnlTarjeta.Controls.Add(new Panel { Dock = DockStyle.Top, Height = 5, BackColor = Color.FromArgb(16, 185, 129) }); // Verde esmeralda para derivadas
 
             Panel pnlDerecha = new Panel { Width = 380, Height = 480, Location = new Point(580, 0), Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right, BackColor = Color.FromArgb(17, 24, 39) };
             pnlDerecha.Controls.Add(new Label { Text = "⚙️ Base Matemática", Font = new Font("Segoe UI", 14, FontStyle.Bold), ForeColor = Color.White, AutoSize = true, Location = new Point(25, 40) });
-            pnlDerecha.Controls.Add(new Label { Text = "L_i(x) = Π (x - x_j) / (x_i - x_j)\n\nP(x) = Σ y_i * L_i(x)", Font = new Font("Consolas", 10, FontStyle.Bold), ForeColor = Color.FromArgb(165, 180, 252), AutoSize = true, Location = new Point(25, 90) });
 
-            Panel pnlNota = new Panel { BackColor = Color.FromArgb(31, 41, 55), Size = new Size(330, 250), Location = new Point(25, 160) };
-            pnlNota.Controls.Add(new Panel { BackColor = Color.FromArgb(79, 70, 229), Dock = DockStyle.Left, Width = 4 });
-            pnlNota.Controls.Add(new Label { Text = "💡 Nota Metodológica:\n\nA diferencia de Newton, Lagrange no requiere diferencias en cadena.\n\nCada punto genera una función polinómica L_i que vale 1 en su propio nodo x_i y 0 en los demás nodos. La suma ponderada produce la curva final.", Font = new Font("Segoe UI", 10), ForeColor = Color.FromArgb(209, 213, 219), AutoSize = true, MaximumSize = new Size(290, 0), Location = new Point(15, 15) });
+            // 🚀 ETIQUETA ACTUALIZADA CON LAS DOS DERIVADAS
+            pnlDerecha.Controls.Add(new Label { Text = "1ra Derivada (Velocidad):\nf'(x) = (y_{i+1} - y_{i-1}) / 2h\n\n2da Derivada (Aceleración):\nf''(x) = (y_{i+1} - 2y_i + y_{i-1}) / h²", Font = new Font("Consolas", 10, FontStyle.Bold), ForeColor = Color.FromArgb(167, 243, 208), AutoSize = true, Location = new Point(25, 90) });
+
+            Panel pnlNota = new Panel { BackColor = Color.FromArgb(31, 41, 55), Size = new Size(330, 250), Location = new Point(25, 180) };
+            pnlNota.Controls.Add(new Panel { BackColor = Color.FromArgb(16, 185, 129), Dock = DockStyle.Left, Width = 4 });
+            pnlNota.Controls.Add(new Label { Text = "💡 Análisis Numérico:\n\nEl método de Diferencia Central es el más preciso ya que su error de truncamiento es proporcional a h².\n\nLa columna Central estará resaltada indicando la aproximación óptima recomendada.", Font = new Font("Segoe UI", 10), ForeColor = Color.FromArgb(209, 213, 219), AutoSize = true, MaximumSize = new Size(290, 0), Location = new Point(15, 15) });
             pnlDerecha.Controls.Add(pnlNota);
 
             pnlTarjeta.Controls.Add(new Label { Text = "⚡ " + nombreMetodo, Font = new Font("Segoe UI", 22, FontStyle.Bold), ForeColor = Color.FromArgb(17, 24, 39), AutoSize = true, Location = new Point(40, 30) });
             pnlTarjeta.Controls.Add(new Label { Text = descripcion, Font = new Font("Segoe UI", 12), ForeColor = Color.FromArgb(100, 116, 139), AutoSize = true, MaximumSize = new Size(500, 0), Location = new Point(45, 95) });
             pnlTarjeta.Controls.Add(new Panel { BackColor = Color.FromArgb(226, 232, 240), Size = new Size(480, 1), Location = new Point(45, 175) });
             pnlTarjeta.Controls.Add(new Label { Text = "📌 Secuencia de Operación", Font = new Font("Segoe UI", 12, FontStyle.Bold), ForeColor = Color.FromArgb(55, 65, 81), AutoSize = true, Location = new Point(45, 200) });
-            pnlTarjeta.Controls.Add(new Label { Text = "[ 1 ]  Ingresa los puntos fijos de la curva.\n\n[ 2 ]  Digita el valor X que quieres interpolar analíticamente.\n\n[ 3 ]  Haz clic en 'Calcular' para desglosar los polinomios base L_i.", Font = new Font("Segoe UI", 10), ForeColor = Color.FromArgb(71, 85, 105), AutoSize = true, Location = new Point(45, 245) });
+            pnlTarjeta.Controls.Add(new Label { Text = "[ 1 ]  Ingresa los puntos discretos (x, y) en orden ascendente.\n\n[ 2 ]  Haz clic en 'Calcular'.\n\n[ 3 ]  Analiza la tabla comparativa de tasas de cambio.", Font = new Font("Segoe UI", 10), ForeColor = Color.FromArgb(71, 85, 105), AutoSize = true, Location = new Point(45, 245) });
             pnlTarjeta.Controls.Add(pnlDerecha);
 
             pnlEspera.Controls.Add(pnlTarjeta);
@@ -179,11 +155,16 @@ namespace Métodos_Numéricos
             for (int i = 0; i < w; i += 40) g.DrawLine(pGrid, i, 0, i, h);
             for (int j = 0; j < h; j += 40) g.DrawLine(pGrid, 0, j, w, j);
             g.DrawLine(pEjes, 0, cY, w, cY); g.DrawLine(pEjes, w / 2, 0, w / 2, h);
-            Pen p1 = new Pen(Color.FromArgb(165, 180, 252), 3), p2 = new Pen(Color.FromArgb(209, 213, 219), 2) { DashStyle = DashStyle.Dash };
-            PointF[] pt1 = new PointF[w / 5], pt2 = new PointF[w / 5];
-            for (int i = 0; i < pt1.Length; i++) { float x = i * 5; pt1[i] = new PointF(x, (float)(cY + Math.Sin(x * 0.012) * 90 + Math.Cos(x * 0.004) * 30)); pt2[i] = new PointF(x, (float)(cY + Math.Cos(x * 0.015) * 60 - Math.Sin(x * 0.008) * 40)); }
-            if (pt1.Length > 1) { g.DrawCurve(p2, pt2); g.DrawCurve(p1, pt1); }
-            pGrid.Dispose(); pEjes.Dispose(); p1.Dispose(); p2.Dispose();
+
+            // Dibujar una línea de datos discretos en lugar de curvas continuas
+            Pen pPuntos = new Pen(Color.FromArgb(16, 185, 129), 3);
+            Pen pTangente = new Pen(Color.FromArgb(245, 158, 11), 2) { DashStyle = DashStyle.Dash };
+            g.DrawEllipse(pPuntos, w / 2 - 50, cY - 20, 8, 8);
+            g.DrawEllipse(pPuntos, w / 2, cY - 40, 8, 8);
+            g.DrawEllipse(pPuntos, w / 2 + 50, cY - 80, 8, 8);
+            g.DrawLine(pTangente, w / 2 - 40, cY - 10, w / 2 + 40, cY - 70); // Simulación de tangente
+
+            pGrid.Dispose(); pEjes.Dispose(); pPuntos.Dispose(); pTangente.Dispose();
         }
 
         private void AcomodarControles()
@@ -204,36 +185,23 @@ namespace Métodos_Numéricos
                 dgvPuntos.Columns[1].Width = 135;
             }
 
-            MoverLabelPorTexto("predecir", 380, boxY - 30);
-            txtXEvaluar.Location = new Point(380, boxY);
-            txtXEvaluar.Size = new Size(120, 30);
-
-            lblTipoPolinomio.Location = new Point(380, boxY + 45);
-            lblTipoPolinomio.AutoSize = true;
-            lblTipoPolinomio.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-            lblTipoPolinomio.ForeColor = Color.FromArgb(79, 70, 229);
-
             int btnX = this.ClientSize.Width - 170;
             btnLimpiar.Location = new Point(btnX, boxY); btnLimpiar.Size = new Size(130, 40);
             btnExportar.Location = new Point(btnX -= 145, boxY); btnExportar.Size = new Size(130, 40);
             btnCalcular.Location = new Point(btnX -= 145, boxY); btnCalcular.Size = new Size(130, 40);
 
-            int tablaSumatoriasY = boxY + boxAlto + 20;
-            int altoResultados = 180;
-            int tablaFinalY = this.ClientSize.Height - altoResultados - 20;
+            // ==========================================
+            // ALINEACIÓN DE LA TABLA ÚNICA DE RESULTADOS
+            // ==========================================
+            int tablaY = boxY + boxAlto + 20;
 
-            int altoSumatorias = tablaFinalY - tablaSumatoriasY - 15;
-
-            dgvPolinomiosBase.Location = new Point(40, tablaSumatoriasY);
-            dgvPolinomiosBase.Size = new Size(this.ClientSize.Width - 80, altoSumatorias);
-
-            dgvResultados.Location = new Point(40, tablaFinalY);
-            dgvResultados.Size = new Size(this.ClientSize.Width - 80, altoResultados);
+            dgvDerivadas.Location = new Point(40, tablaY);
+            dgvDerivadas.Size = new Size(this.ClientSize.Width - 80, this.ClientSize.Height - tablaY - 20);
 
             if (pnlEspera != null)
             {
-                pnlEspera.Location = dgvPolinomiosBase.Location;
-                pnlEspera.Size = new Size(this.ClientSize.Width - 80, this.ClientSize.Height - tablaSumatoriasY - 20);
+                pnlEspera.Location = dgvDerivadas.Location;
+                pnlEspera.Size = new Size(this.ClientSize.Width - 80, this.ClientSize.Height - tablaY - 20);
             }
         }
 

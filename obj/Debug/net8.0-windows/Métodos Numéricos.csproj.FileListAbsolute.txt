@@ -123,3 +123,5 @@ C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-window
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormMatrizInversa.resources
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormRegresionPolinomial.resources
 C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormNewtonDiferenciaDividida.resources
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormPolinomioLagrange.resources
+C:\Users\Rodrigo Alejandro\Documents\Métodos Numéricos\obj\Debug\net8.0-windows\Métodos_Numéricos.FormDiferenciacionNumerica.resources
