@@ -16,6 +16,9 @@
     <Compile Update="FormDash.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormExtrapolaciónRichardson.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FormFactorizacionLU.cs">
       <SubType>Form</SubType>
     </Compile>

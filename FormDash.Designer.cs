@@ -30,6 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDash));
             PanelMenuLateral = new Panel();
+            panelSubMenuCNumerico = new Panel();
+            btnExtrapolaciónRichardson = new Button();
+            btnDiferenciaciónNumérica = new Button();
+            btnCálculoNumérico = new Button();
             panelSubMenuInterpolación = new Panel();
             btnLagrange = new Button();
             btnNewtonDDivididas = new Button();
@@ -69,6 +73,7 @@
             pictureBox1 = new PictureBox();
             panelContenedorPrincipal = new Panel();
             PanelMenuLateral.SuspendLayout();
+            panelSubMenuCNumerico.SuspendLayout();
             panelSubMenuInterpolación.SuspendLayout();
             panelSubMenuAjusteCurvas.SuspendLayout();
             panelSubMenuMetodosLineales.SuspendLayout();
@@ -84,6 +89,8 @@
             // PanelMenuLateral
             // 
             PanelMenuLateral.AutoScroll = true;
+            PanelMenuLateral.Controls.Add(panelSubMenuCNumerico);
+            PanelMenuLateral.Controls.Add(btnCálculoNumérico);
             PanelMenuLateral.Controls.Add(panelSubMenuInterpolación);
             PanelMenuLateral.Controls.Add(btnMétodosInterpolación);
             PanelMenuLateral.Controls.Add(panelSubMenuAjusteCurvas);
@@ -107,6 +114,49 @@
             PanelMenuLateral.Size = new Size(253, 1055);
             PanelMenuLateral.TabIndex = 0;
             // 
+            // panelSubMenuCNumerico
+            // 
+            panelSubMenuCNumerico.Controls.Add(btnExtrapolaciónRichardson);
+            panelSubMenuCNumerico.Controls.Add(btnDiferenciaciónNumérica);
+            panelSubMenuCNumerico.Dock = DockStyle.Top;
+            panelSubMenuCNumerico.Location = new Point(0, 946);
+            panelSubMenuCNumerico.Name = "panelSubMenuCNumerico";
+            panelSubMenuCNumerico.Size = new Size(253, 57);
+            panelSubMenuCNumerico.TabIndex = 0;
+            // 
+            // btnExtrapolaciónRichardson
+            // 
+            btnExtrapolaciónRichardson.Dock = DockStyle.Top;
+            btnExtrapolaciónRichardson.Location = new Point(0, 27);
+            btnExtrapolaciónRichardson.Name = "btnExtrapolaciónRichardson";
+            btnExtrapolaciónRichardson.Size = new Size(253, 29);
+            btnExtrapolaciónRichardson.TabIndex = 0;
+            btnExtrapolaciónRichardson.Text = "Extrapolación Richardson";
+            btnExtrapolaciónRichardson.UseVisualStyleBackColor = true;
+            btnExtrapolaciónRichardson.Click += btnExtrapolaciónRichardson_Click;
+            // 
+            // btnDiferenciaciónNumérica
+            // 
+            btnDiferenciaciónNumérica.Dock = DockStyle.Top;
+            btnDiferenciaciónNumérica.Location = new Point(0, 0);
+            btnDiferenciaciónNumérica.Name = "btnDiferenciaciónNumérica";
+            btnDiferenciaciónNumérica.Size = new Size(253, 27);
+            btnDiferenciaciónNumérica.TabIndex = 0;
+            btnDiferenciaciónNumérica.Text = "Diferenciación Numérica";
+            btnDiferenciaciónNumérica.UseVisualStyleBackColor = true;
+            btnDiferenciaciónNumérica.Click += btnDiferenciacioNumerica_Click;
+            // 
+            // btnCálculoNumérico
+            // 
+            btnCálculoNumérico.Dock = DockStyle.Top;
+            btnCálculoNumérico.Location = new Point(0, 917);
+            btnCálculoNumérico.Name = "btnCálculoNumérico";
+            btnCálculoNumérico.Size = new Size(253, 29);
+            btnCálculoNumérico.TabIndex = 0;
+            btnCálculoNumérico.Text = "Diferenciación Numérica";
+            btnCálculoNumérico.UseVisualStyleBackColor = true;
+            btnCálculoNumérico.Click += btnCálculoNumérico_Click;
+            // 
             // panelSubMenuInterpolación
             // 
             panelSubMenuInterpolación.Controls.Add(btnLagrange);
@@ -114,7 +164,7 @@
             panelSubMenuInterpolación.Dock = DockStyle.Top;
             panelSubMenuInterpolación.Location = new Point(0, 856);
             panelSubMenuInterpolación.Name = "panelSubMenuInterpolación";
-            panelSubMenuInterpolación.Size = new Size(253, 64);
+            panelSubMenuInterpolación.Size = new Size(253, 61);
             panelSubMenuInterpolación.TabIndex = 0;
             // 
             // btnLagrange
@@ -483,7 +533,7 @@
             btnMétodosCerrados.Name = "btnMétodosCerrados";
             btnMétodosCerrados.Size = new Size(253, 37);
             btnMétodosCerrados.TabIndex = 0;
-            btnMétodosCerrados.Text = "  ";
+            btnMétodosCerrados.Text = "Métodos Cerrados";
             btnMétodosCerrados.UseVisualStyleBackColor = true;
             btnMétodosCerrados.Click += btnMétodosCerrados_Click;
             // 
@@ -526,6 +576,7 @@
             Text = "FormDash";
             WindowState = FormWindowState.Maximized;
             PanelMenuLateral.ResumeLayout(false);
+            panelSubMenuCNumerico.ResumeLayout(false);
             panelSubMenuInterpolación.ResumeLayout(false);
             panelSubMenuAjusteCurvas.ResumeLayout(false);
             panelSubMenuMetodosLineales.ResumeLayout(false);
@@ -580,5 +631,9 @@
         private Button btnNewtonDDivididas;
         private Button btnMétodosInterpolación;
         private Button btnLagrange;
+        private Button btnCálculoNumérico;
+        private Panel panelSubMenuCNumerico;
+        private Button btnDiferenciaciónNumérica;
+        private Button btnExtrapolaciónRichardson;
     }
 }

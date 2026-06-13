@@ -1762,20 +1762,18 @@ public class MetodosNumericos
         int n = X.Length;
 
         // =================================================================
-        // 1. CONFIGURAR LA TABLA VISUAL DE DERIVADAS
+        // 1. CONFIGURAR LA TABLA VISUAL DE DERIVADAS (NOMBRES NEUTROS)
         // =================================================================
         dgvRes.Columns.Clear();
         dgvRes.Rows.Clear();
 
-        dgvRes.Columns.Add("i", "Punto");
-        dgvRes.Columns.Add("X", "Tiempo/X");
-        dgvRes.Columns.Add("Y", "Posición/f(X)");
-        dgvRes.Columns.Add("Adelante", "Velocidad f'(x) Adelante");
-        dgvRes.Columns.Add("Atras", "Velocidad f'(x) Atrás");
-        dgvRes.Columns.Add("Central", "Velocidad f'(x) Central");
-
-        // 🚀 NUEVA COLUMNA: SEGUNDA DERIVADA
-        dgvRes.Columns.Add("Segunda", "Aceleración f''(x) Central");
+        dgvRes.Columns.Add("i", "Punto (i)");
+        dgvRes.Columns.Add("X", "Variable (x)");
+        dgvRes.Columns.Add("Y", "Función f(x)");
+        dgvRes.Columns.Add("Adelante", "1ra Derivada f'(x) Adelante");
+        dgvRes.Columns.Add("Atras", "1ra Derivada f'(x) Atrás");
+        dgvRes.Columns.Add("Central", "1ra Derivada f'(x) Central");
+        dgvRes.Columns.Add("Segunda", "2da Derivada f''(x) Central");
 
         // =================================================================
         // 2. CÁLCULO DE DIFERENCIAS FINITAS (1ra y 2da Derivada)
@@ -1855,6 +1853,50 @@ public class MetodosNumericos
         dgv.DefaultCellStyle.SelectionForeColor = Color.White;
         dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Regular);
         dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 242, 255); // Azul hielo muy suave (reemplaza al verde)
+    }
+
+    public void ExtrapolacionRichardson(double Dh, double DhMedios, double n, string valorExactoStr, DataGridView dgvRes)
+    {
+        // 1. Calcular Extrapolacion de Richardson
+        double factor = Math.Pow(2, n);
+        double ER = (factor * DhMedios - Dh) / (factor - 1);
+
+        // 2. Preparar Tabla de Resultados
+        dgvRes.Columns.Clear();
+        dgvRes.Rows.Clear();
+        dgvRes.Columns.Add("Metrica", "Métrica / Parámetro");
+        dgvRes.Columns.Add("Valor", "Resultado Obtenido");
+
+        dgvRes.Rows.Add("Derivada Paso Normal D(h)", Dh.ToString("F8"));
+        dgvRes.Rows.Add("Derivada Paso Medio D(h/2)", DhMedios.ToString("F8"));
+        dgvRes.Rows.Add("Orden de Aproximación (n)", n.ToString());
+        dgvRes.Rows.Add("", ""); // Separador
+
+        int rowIndexER = dgvRes.Rows.Add("Extrapolación ER(h)", ER.ToString("F8"));
+
+        // Estilo resaltado para el resultado principal
+        dgvRes.Rows[rowIndexER].DefaultCellStyle.BackColor = Color.FromArgb(167, 243, 208); // Verde claro
+        dgvRes.Rows[rowIndexER].DefaultCellStyle.Font = new Font("Consolas", 11, FontStyle.Bold);
+        dgvRes.Rows[rowIndexER].DefaultCellStyle.ForeColor = Color.FromArgb(6, 95, 70);
+
+        // 3. NUEVO: Calcular Error Aproximado SIEMPRE (No necesita valor exacto)
+        // Compara la nueva extrapolación (ER) con la mejor estimación anterior D(h/2)
+        double errorAproximado = Math.Abs(ER - DhMedios);
+        int rowIndexEa = dgvRes.Rows.Add("Error Aproximado (ε_a)", errorAproximado.ToString("F8"));
+        dgvRes.Rows[rowIndexEa].DefaultCellStyle.ForeColor = Color.FromArgb(245, 158, 11); // Naranja
+
+        // 4. Calcular Error Verdadero SOLO si el usuario ingresó el Valor Exacto
+        if (!string.IsNullOrWhiteSpace(valorExactoStr))
+        {
+            double valorExacto = ConvertirADouble(valorExactoStr);
+            double errorVerdadero = Math.Abs(valorExacto - ER);
+
+            int rowIndexErr = dgvRes.Rows.Add("Error Verdadero (ε_t)", errorVerdadero.ToString("F8"));
+            dgvRes.Rows[rowIndexErr].DefaultCellStyle.ForeColor = Color.FromArgb(220, 38, 38); // Rojo
+        }
+
+        dgvRes.Columns[0].Width = 250;
+        dgvRes.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
     }
 
     // 🧹 LA ESCOBA MÁGICA (VERSIÓN INTELIGENTE)
