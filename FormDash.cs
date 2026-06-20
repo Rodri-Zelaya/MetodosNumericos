@@ -17,6 +17,8 @@ namespace Métodos_Numéricos
             InitializeComponent();
             PersonalizarDiseno();
             AplicarTema();
+            // Llama a la función para abrir la bienvenida apenas inicia el programa
+            AbrirFormularioHijo(new FormBienvenida());
         }
 
         // 1. Método para esconder todo al arrancar el programa
