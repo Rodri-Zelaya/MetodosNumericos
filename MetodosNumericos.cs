@@ -2068,7 +2068,7 @@ public class MetodosNumericos
         double xBack = Math.Round(x0 - h, 6);
         double xForw = Math.Round(x0 + h, 6);
 
-        // Buscar los 3 puntos clave en la matriz de datos ingresada
+        // Buscar los 3 puntos clave en la matriz de datos
         bool hasY0 = BuscarYExacto(x0, X, Y, out double y0);
         bool hasYBack = BuscarYExacto(xBack, X, Y, out double yBack);
         bool hasYForw = BuscarYExacto(xForw, X, Y, out double yForw);
@@ -2076,7 +2076,6 @@ public class MetodosNumericos
         if (!hasY0)
             throw new Exception($"El punto central X₀ = {x0} no se encontró en la tabla de datos. Es obligatorio para derivar.");
 
-        // Configurar columnas de la tabla de salida
         dgv.Columns.Clear();
         dgv.Rows.Clear();
         dgv.Columns.Add("Metodo", "Método Diferencial");
@@ -2088,7 +2087,7 @@ public class MetodosNumericos
         if (hasYForw)
         {
             double res = (yForw - y0) / h;
-            string sust = $"[f({xForw}) - f({x0})] / {h}  ➔  [{yForw} - {y0}] / {h}";
+            string sust = $"f' ≈ [f({xForw}) - f({x0})] / h\n= [{yForw} - {y0}] / {h}";
             dgv.Rows.Add("Hacia Adelante", sust, res.ToString("F6"), EvaluarError(res, exacto));
         }
         else dgv.Rows.Add("Hacia Adelante", $"Falta f({xForw}) en la tabla", "---", "---");
@@ -2097,7 +2096,7 @@ public class MetodosNumericos
         if (hasYBack)
         {
             double res = (y0 - yBack) / h;
-            string sust = $"[f({x0}) - f({xBack})] / {h}  ➔  [{y0} - {yBack}] / {h}";
+            string sust = $"f' ≈ [f({x0}) - f({xBack})] / h\n= [{y0} - {yBack}] / {h}";
             dgv.Rows.Add("Hacia Atrás", sust, res.ToString("F6"), EvaluarError(res, exacto));
         }
         else dgv.Rows.Add("Hacia Atrás", $"Falta f({xBack}) en la tabla", "---", "---");
@@ -2106,10 +2105,9 @@ public class MetodosNumericos
         if (hasYForw && hasYBack)
         {
             double res = (yForw - yBack) / (2 * h);
-            string sust = $"[f({xForw}) - f({xBack})] / 2({h})  ➔  [{yForw} - {yBack}] / {2 * h}";
+            string sust = $"f' ≈ [f({xForw}) - f({xBack})] / 2h\n= [{yForw} - {yBack}] / {2 * h}";
             int idxCentral = dgv.Rows.Add("Central (Mejor Aproximación)", sust, res.ToString("F6"), EvaluarError(res, exacto));
 
-            // Estilo para resaltar la mejor aproximación
             dgv.Rows[idxCentral].DefaultCellStyle.BackColor = Color.FromArgb(16, 185, 129); // Verde
             dgv.Rows[idxCentral].DefaultCellStyle.ForeColor = Color.White;
             dgv.Rows[idxCentral].DefaultCellStyle.Font = new Font("Consolas", 11, FontStyle.Bold);
@@ -2120,7 +2118,7 @@ public class MetodosNumericos
         if (hasYForw && hasYBack)
         {
             double res2 = (yForw - 2 * y0 + yBack) / (h * h);
-            string sust2 = $"[f({xForw}) - 2f({x0}) + f({xBack})] / {h}²  ➔  [{yForw} - 2({y0}) + {yBack}] / {h * h}";
+            string sust2 = $"f'' ≈ [f({xForw}) - 2f({x0}) + f({xBack})] / h²\n= [{yForw} - 2({y0}) + {yBack}] / {h * h}";
             int idxSegunda = dgv.Rows.Add("Segunda Derivada f''(X₀)", sust2, res2.ToString("F6"), "--- (Requiere Exacto f'')");
 
             dgv.Rows[idxSegunda].DefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55); // Oscuro
@@ -2129,13 +2127,12 @@ public class MetodosNumericos
         else dgv.Rows.Add("Segunda Derivada f''(X₀)", $"Faltan puntos perimetrales", "---", "---");
     }
 
-    // Funciones Auxiliares del Motor
     private bool BuscarYExacto(double target, double[] X, double[] Y, out double yVal)
     {
         yVal = 0;
         for (int i = 0; i < X.Length; i++)
         {
-            if (Math.Abs(X[i] - target) < 1e-5) // Blindaje contra errores de flotante
+            if (Math.Abs(X[i] - target) < 1e-5)
             {
                 yVal = Y[i];
                 return true;
@@ -2176,48 +2173,45 @@ public class MetodosNumericos
         dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 242, 255); // Azul hielo muy suave (reemplaza al verde)
     }
 
-    public void ExtrapolacionRichardson(double Dh, double DhMedios, double n, string valorExactoStr, DataGridView dgvRes)
+    // 🚀 TIENE QUE TENER EXACTAMENTE ESTOS 5 PARÁMETROS
+    public void ExtrapolacionRichardson(double Dh, double Dh2, double n, double? exacto, DataGridView dgv)
     {
-        // 1. Calcular Extrapolacion de Richardson
-        double factor = Math.Pow(2, n);
-        double ER = (factor * DhMedios - Dh) / (factor - 1);
+        // Cálculo dinámico del denominador usando el Orden 'n' (2^n - 1)
+        double denominador = Math.Pow(2, n) - 1;
 
-        // 2. Preparar Tabla de Resultados
-        dgvRes.Columns.Clear();
-        dgvRes.Rows.Clear();
-        dgvRes.Columns.Add("Metrica", "Métrica / Parámetro");
-        dgvRes.Columns.Add("Valor", "Resultado Obtenido");
+        // Fórmula Extrapolación de Richardson
+        double ER = Dh2 + (Dh2 - Dh) / denominador;
 
-        dgvRes.Rows.Add("Derivada Paso Normal D(h)", Dh.ToString("F8"));
-        dgvRes.Rows.Add("Derivada Paso Medio D(h/2)", DhMedios.ToString("F8"));
-        dgvRes.Rows.Add("Orden de Aproximación (n)", n.ToString());
-        dgvRes.Rows.Add("", ""); // Separador
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Metrica", "Métrica / Parámetro");
+        dgv.Columns.Add("Sustitucion", "Sustitución Analítica");
+        dgv.Columns.Add("Valor", "Resultado F8");
 
-        int rowIndexER = dgvRes.Rows.Add("Extrapolación ER(h)", ER.ToString("F8"));
+        // 1. RESULTADO DE LA EXTRAPOLACIÓN
+        string sustER = $"D(h/2) + [D(h/2) - D(h)] / (2^{n} - 1)\n= {Dh2} + [{Dh2} - {Dh}] / {denominador}";
+        int idxER = dgv.Rows.Add("Extrapolación (ER)", sustER, ER.ToString("F8"));
 
-        // Estilo resaltado para el resultado principal
-        dgvRes.Rows[rowIndexER].DefaultCellStyle.BackColor = Color.FromArgb(167, 243, 208); // Verde claro
-        dgvRes.Rows[rowIndexER].DefaultCellStyle.Font = new Font("Consolas", 11, FontStyle.Bold);
-        dgvRes.Rows[rowIndexER].DefaultCellStyle.ForeColor = Color.FromArgb(6, 95, 70);
+        dgv.Rows[idxER].DefaultCellStyle.BackColor = Color.FromArgb(79, 70, 229); // Color Indigo
+        dgv.Rows[idxER].DefaultCellStyle.ForeColor = Color.White;
+        dgv.Rows[idxER].DefaultCellStyle.Font = new Font("Consolas", 11, FontStyle.Bold);
 
-        // 3. NUEVO: Calcular Error Aproximado SIEMPRE (No necesita valor exacto)
-        // Compara la nueva extrapolación (ER) con la mejor estimación anterior D(h/2)
-        double errorAproximado = Math.Abs(ER - DhMedios);
-        int rowIndexEa = dgvRes.Rows.Add("Error Aproximado (ε_a)", errorAproximado.ToString("F8"));
-        dgvRes.Rows[rowIndexEa].DefaultCellStyle.ForeColor = Color.FromArgb(245, 158, 11); // Naranja
+        // 2. ERROR APROXIMADO RELATIVO
+        double ea = Math.Abs((ER - Dh2) / ER);
+        string sustEa = $"|(Actual - Anterior) / Actual|\n= |({ER:F6} - {Dh2:F6}) / {ER:F6}|";
+        dgv.Rows.Add("Error Aproximado |Ea|", sustEa, ea.ToString("F8"));
 
-        // 4. Calcular Error Verdadero SOLO si el usuario ingresó el Valor Exacto
-        if (!string.IsNullOrWhiteSpace(valorExactoStr))
+        // 3. ERROR REAL RELATIVO
+        if (exacto.HasValue)
         {
-            double valorExacto = ConvertirADouble(valorExactoStr);
-            double errorVerdadero = Math.Abs(valorExacto - ER);
-
-            int rowIndexErr = dgvRes.Rows.Add("Error Verdadero (ε_t)", errorVerdadero.ToString("F8"));
-            dgvRes.Rows[rowIndexErr].DefaultCellStyle.ForeColor = Color.FromArgb(220, 38, 38); // Rojo
+            double et = Math.Abs((exacto.Value - ER) / exacto.Value);
+            string sustEt = $"|(Real - ER) / Real|\n= |({exacto.Value} - {ER:F6}) / {exacto.Value}|";
+            dgv.Rows.Add("Error Real Relativo |Er|", sustEt, et.ToString("F8"));
         }
-
-        dgvRes.Columns[0].Width = 250;
-        dgvRes.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        else
+        {
+            dgv.Rows.Add("Error Real Relativo |Er|", "---", "Requiere Valor Real (Exacto)");
+        }
     }
 
     // 🧹 LA ESCOBA MÁGICA (VERSIÓN INTELIGENTE)

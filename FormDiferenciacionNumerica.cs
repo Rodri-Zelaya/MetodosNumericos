@@ -197,9 +197,6 @@ namespace Métodos_Numéricos
             pnlEspera.Visible = true;
         }
 
-        // =================================================================
-        // 🎨 DISEÑO TUANI MINIMALISTA
-        // =================================================================
         private void ConfigurarEstiloTuaniTablas(DataGridView dgv)
         {
             dgv.EnableHeadersVisualStyles = false;
@@ -211,31 +208,32 @@ namespace Métodos_Numéricos
 
             dgv.RowHeadersVisible = false;
             dgv.DefaultCellStyle.Font = new Font("Consolas", 11, FontStyle.Regular);
-            dgv.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+            dgv.DefaultCellStyle.Padding = new Padding(5, 5, 5, 5);
 
-            dgv.RowTemplate.Height = 32;
+            // 🚀 EL SECRETO PARA QUE NO SE APLASTE EL TEXTO
+            dgv.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells; // La fila crece sola hacia abajo
+
             dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-
             dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgv.GridColor = Color.FromArgb(226, 232, 240);
-
-            // 🚀 NUEVA ALTURA DE FILA PARA QUE EL PASO A PASO SE VEA TUANI
-            dgv.RowTemplate.Height = 50;
-
-            // 🚀 AUTO-WRAP: Permitir que el texto salte de línea
-            dgv.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-
-            // 🚀 AJUSTE DE ANCHO DE COLUMNA DE SUSTITUCIÓN
-            if (dgv.Columns.Count > 1)
-            {
-                dgv.Columns[1].Width = 350; // Le damos más espacio a la fórmula
-            }
-
-            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.BackgroundColor = Color.White;
             dgv.BorderStyle = BorderStyle.None;
+
+            // 🚀 REPARTIR EL ESPACIO DE LAS COLUMNAS INTELIGENTEMENTE
+            if (dgv.Columns.Count >= 4)
+            {
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None; // Apagamos el general
+                dgv.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells; // Método
+
+                // La columna de Sustitución se roba todo el espacio del centro para respirar
+                dgv.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+                dgv.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells; // Resultado
+                dgv.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells; // Error
+            }
         }
 
         private void AplicarEstiloTuani(Control.ControlCollection controles)
@@ -325,14 +323,16 @@ namespace Métodos_Numéricos
 
             // Acomodar los nuevos parámetros a la derecha de la tabla
             int panelParametrosX = 330;
+            int alineacionCajasX = panelParametrosX + 330;
+
             MoverControl("lblX0", panelParametrosX, boxY);
-            txtX0.Location = new Point(panelParametrosX + 220, boxY - 3);
+            txtX0.Location = new Point(alineacionCajasX, boxY - 3);
 
             MoverControl("lblH", panelParametrosX, boxY + 50);
-            txtH.Location = new Point(panelParametrosX + 220, boxY + 47);
+            txtH.Location = new Point(alineacionCajasX, boxY + 47);
 
             MoverControl("lblExacto", panelParametrosX, boxY + 100);
-            txtExacto.Location = new Point(panelParametrosX + 280, boxY + 97);
+            txtExacto.Location = new Point(alineacionCajasX, boxY + 97);
 
             int btnX = this.ClientSize.Width - 170;
             btnLimpiar.Location = new Point(btnX, boxY); btnLimpiar.Size = new Size(130, 40);
