@@ -52,38 +52,53 @@ namespace Métodos_Numéricos
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(txtXEvaluar.Text))
+                // 2. 🚀 ESTIMACIÓN OPCIONAL (Ya no se bloquea si está vacío)
+                double? xEval = null;
+                if (!string.IsNullOrWhiteSpace(txtXEvaluar.Text))
                 {
-                    MessageBox.Show("Por favor, ingresa el valor de X que deseas evaluar.", "Falta Valor", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    xEval = metodos.ConvertirADouble(txtXEvaluar.Text);
                 }
 
-                double xEval = metodos.ConvertirADouble(txtXEvaluar.Text);
+                string ecuacion;
+                double? yPredicho;
 
-                // 🚀 ARRANCAR MOTOR DE INTERPOLACIÓN DE LAGRANGE CON NOMBRES ADAPTADOS
-                metodos.InterpolacionLagrange(listX.ToArray(), listY.ToArray(), xEval, dgvPolinomiosBase, dgvResultados);
+                // 3. 🚀 ARRANCAR MOTOR DE INTERPOLACIÓN (Pasando las variables out)
+                metodos.LagrangePasoAPaso(listX.ToArray(), listY.ToArray(), xEval, dgvPolinomiosBase, out ecuacion, out yPredicho);
 
-                // 🚀 ESTILOS: TABLA DE POLINOMIOS BASE L_i(x)
-                dgvPolinomiosBase.EnableHeadersVisualStyles = false;
-                dgvPolinomiosBase.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(55, 65, 81);
-                dgvPolinomiosBase.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-                dgvPolinomiosBase.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                dgvPolinomiosBase.RowHeadersVisible = false;
-                dgvPolinomiosBase.DefaultCellStyle.BackColor = Color.White;
-                dgvPolinomiosBase.DefaultCellStyle.ForeColor = Color.Black;
-                dgvPolinomiosBase.DefaultCellStyle.Font = new Font("Consolas", 10, FontStyle.Regular);
-                dgvPolinomiosBase.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(243, 244, 246);
+                // 4. 🚀 CONSTRUIR LA TABLA DE RESULTADOS DINÁMICAMENTE
+                dgvResultados.Columns.Clear();
+                dgvResultados.Rows.Clear();
+                dgvResultados.Columns.Add("Parametro", "Métrica");
+                dgvResultados.Columns.Add("Valor", "Resultado Analítico");
 
-                // 🚀 ESTILOS: TABLA DE RESULTADOS DE PREDICCIÓN
-                dgvResultados.EnableHeadersVisualStyles = false;
-                dgvResultados.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(17, 24, 39);
-                dgvResultados.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-                dgvResultados.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                dgvResultados.RowHeadersVisible = false;
-                dgvResultados.DefaultCellStyle.BackColor = Color.White;
-                dgvResultados.DefaultCellStyle.ForeColor = Color.Black;
-                dgvResultados.DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-                dgvResultados.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(235, 238, 245);
+                int idxEq = dgvResultados.Rows.Add("📈 Polinomio Interpolante", ecuacion);
+                dgvResultados.Rows[idxEq].DefaultCellStyle.BackColor = Color.FromArgb(217, 119, 6); // Naranja Lagrange (estilo tuani)
+                dgvResultados.Rows[idxEq].DefaultCellStyle.ForeColor = Color.White;
+                dgvResultados.Rows[idxEq].DefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Bold);
+
+                int idxGrado = dgvResultados.Rows.Add("⚙️ Grado del Polinomio", $"Polinomio de Grado {listX.Count - 1}");
+                dgvResultados.Rows[idxGrado].DefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55);
+                dgvResultados.Rows[idxGrado].DefaultCellStyle.ForeColor = Color.White;
+
+                // Mostrar predicción solo si el usuario ingresó un valor
+                if (yPredicho.HasValue)
+                {
+                    int idxPred = dgvResultados.Rows.Add("🎯 Y Predicho", yPredicho.Value.ToString("F8"));
+                    dgvResultados.Rows[idxPred].DefaultCellStyle.BackColor = Color.FromArgb(254, 242, 242);
+                    dgvResultados.Rows[idxPred].DefaultCellStyle.ForeColor = Color.FromArgb(220, 38, 38);
+                    dgvResultados.Rows[idxPred].DefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Bold);
+                }
+                else
+                {
+                    dgvResultados.Rows.Add("🎯 Y Predicho", "--- (Estimación no solicitada)");
+                }
+
+                // 5. 🚀 APLICAR ESTILO TUANI (Para habilitar el scroll en ecuaciones largas)
+                ConfigurarEstiloTuaniTablas(dgvPolinomiosBase);
+                ConfigurarEstiloTuaniTablas(dgvResultados);
+
+                if (lblTipoPolinomio != null)
+                    lblTipoPolinomio.Text = $"➔ Polinomio Base: Grado {listX.Count - 1}";
 
                 pnlEspera.Visible = false;
                 dgvPolinomiosBase.Visible = true;
@@ -109,9 +124,40 @@ namespace Métodos_Numéricos
             dgvResultados.Rows.Clear();
             txtXEvaluar.Clear();
 
+            if (lblTipoPolinomio != null) lblTipoPolinomio.Text = "";
+
             dgvPolinomiosBase.Visible = false;
             dgvResultados.Visible = false;
-            pnlEspera.Visible = true; 
+            pnlEspera.Visible = true;
+        }
+
+        // =================================================================
+        // 🎨 DISEÑO TUANI MINIMALISTA PARA TABLAS
+        // =================================================================
+        private void ConfigurarEstiloTuaniTablas(DataGridView dgv)
+        {
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(15, 23, 42);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgv.ColumnHeadersHeight = 35;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+
+            dgv.RowHeadersVisible = false;
+            dgv.DefaultCellStyle.Font = new Font("Consolas", 11, FontStyle.Regular);
+            dgv.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+
+            dgv.RowTemplate.Height = 32;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
+
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.GridColor = Color.FromArgb(226, 232, 240);
+
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Habilita el scroll horizontal
+
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.BackgroundColor = Color.White;
+            dgv.BorderStyle = BorderStyle.None;
         }
 
         private void AplicarEstiloTuani(Control.ControlCollection controles)
@@ -132,7 +178,10 @@ namespace Métodos_Numéricos
                 }
                 else if (control is Label lbl) { lbl.ForeColor = Color.Black; lbl.Font = new Font("Segoe UI", 10, FontStyle.Bold); }
                 else if (control is TextBox txt) { txt.Font = new Font("Segoe UI", 12, FontStyle.Bold); txt.BorderStyle = BorderStyle.FixedSingle; }
-                else if (control is DataGridView dgv) { dgv.BackgroundColor = Color.White; dgv.BorderStyle = BorderStyle.FixedSingle; dgv.GridColor = Color.FromArgb(220, 225, 230); }
+                else if (control is DataGridView dgv && dgv == dgvPuntos) // Aplicamos estilo rígido solo a la de entrada
+                {
+                    dgv.BackgroundColor = Color.White; dgv.BorderStyle = BorderStyle.FixedSingle; dgv.GridColor = Color.FromArgb(220, 225, 230);
+                }
                 if (control.HasChildren) AplicarEstiloTuani(control.Controls);
             }
         }
@@ -160,7 +209,7 @@ namespace Métodos_Numéricos
             pnlTarjeta.Controls.Add(new Label { Text = descripcion, Font = new Font("Segoe UI", 12), ForeColor = Color.FromArgb(100, 116, 139), AutoSize = true, MaximumSize = new Size(500, 0), Location = new Point(45, 95) });
             pnlTarjeta.Controls.Add(new Panel { BackColor = Color.FromArgb(226, 232, 240), Size = new Size(480, 1), Location = new Point(45, 175) });
             pnlTarjeta.Controls.Add(new Label { Text = "📌 Secuencia de Operación", Font = new Font("Segoe UI", 12, FontStyle.Bold), ForeColor = Color.FromArgb(55, 65, 81), AutoSize = true, Location = new Point(45, 200) });
-            pnlTarjeta.Controls.Add(new Label { Text = "[ 1 ]  Ingresa los puntos fijos de la curva.\n\n[ 2 ]  Digita el valor X que quieres interpolar analíticamente.\n\n[ 3 ]  Haz clic en 'Calcular' para desglosar los polinomios base L_i.", Font = new Font("Segoe UI", 10), ForeColor = Color.FromArgb(71, 85, 105), AutoSize = true, Location = new Point(45, 245) });
+            pnlTarjeta.Controls.Add(new Label { Text = "[ 1 ]  Ingresa los puntos fijos de la curva.\n\n[ 2 ]  Opcional: Digita un valor X para evaluar el modelo.\n\n[ 3 ]  Haz clic en 'Calcular'.", Font = new Font("Segoe UI", 10), ForeColor = Color.FromArgb(71, 85, 105), AutoSize = true, Location = new Point(45, 245) });
             pnlTarjeta.Controls.Add(pnlDerecha);
 
             pnlEspera.Controls.Add(pnlTarjeta);
@@ -208,10 +257,13 @@ namespace Métodos_Numéricos
             txtXEvaluar.Location = new Point(380, boxY);
             txtXEvaluar.Size = new Size(120, 30);
 
-            lblTipoPolinomio.Location = new Point(380, boxY + 45);
-            lblTipoPolinomio.AutoSize = true;
-            lblTipoPolinomio.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-            lblTipoPolinomio.ForeColor = Color.FromArgb(79, 70, 229);
+            if (lblTipoPolinomio != null)
+            {
+                lblTipoPolinomio.Location = new Point(380, boxY + 45);
+                lblTipoPolinomio.AutoSize = true;
+                lblTipoPolinomio.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+                lblTipoPolinomio.ForeColor = Color.FromArgb(79, 70, 229);
+            }
 
             int btnX = this.ClientSize.Width - 170;
             btnLimpiar.Location = new Point(btnX, boxY); btnLimpiar.Size = new Size(130, 40);

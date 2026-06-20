@@ -52,38 +52,53 @@ namespace Métodos_Numéricos
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(txtXEvaluar.Text))
+                // 2. 🚀 ESTIMACIÓN OPCIONAL: Ya no obligamos al usuario a llenarlo
+                double? xEval = null;
+                if (!string.IsNullOrWhiteSpace(txtXEvaluar.Text))
                 {
-                    MessageBox.Show("Por favor, ingresa el valor de X que deseas evaluar en el polinomio interpolante.", "Falta Valor de Evaluación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    xEval = metodos.ConvertirADouble(txtXEvaluar.Text);
                 }
 
-                double xEval = metodos.ConvertirADouble(txtXEvaluar.Text);
+                string ecuacion;
+                int gradoReal;
+                double? yPredicho;
 
-                // 🚀 ARRANCAR MOTOR MATEMÁTICO CON LAS NUEVAS TABLAS COHERENTES
-                metodos.NewtonDiferenciasDivididas(listX.ToArray(), listY.ToArray(), xEval, dgvMatrizDiferencias, dgvResultadosInterpolacion);
+                // 3. 🚀 ARRANCAR MOTOR MATEMÁTICO (Fijate cómo atrapamos las variables 'out')
+                metodos.NewtonDiferenciasDivididasPasoAPaso(listX.ToArray(), listY.ToArray(), xEval, dgvMatrizDiferencias, out ecuacion, out gradoReal, out yPredicho);
 
-                // 🚀 ESTILOS: TABLA DE LA MATRIZ DE DIFERENCIAS (ESCALERA)
-                dgvMatrizDiferencias.EnableHeadersVisualStyles = false;
-                dgvMatrizDiferencias.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(55, 65, 81);
-                dgvMatrizDiferencias.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-                dgvMatrizDiferencias.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                dgvMatrizDiferencias.RowHeadersVisible = false;
-                dgvMatrizDiferencias.DefaultCellStyle.BackColor = Color.White;
-                dgvMatrizDiferencias.DefaultCellStyle.ForeColor = Color.Black;
-                dgvMatrizDiferencias.DefaultCellStyle.Font = new Font("Consolas", 10, FontStyle.Regular);
-                dgvMatrizDiferencias.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(243, 244, 246);
+                // 4. 🚀 CONSTRUIR LA TABLA DE RESULTADOS FINALES MANUALMENTE
+                dgvResultadosInterpolacion.Columns.Clear();
+                dgvResultadosInterpolacion.Rows.Clear();
+                dgvResultadosInterpolacion.Columns.Add("Parametro", "Métrica");
+                dgvResultadosInterpolacion.Columns.Add("Valor", "Resultado Analítico");
 
-                // 🚀 ESTILOS: TABLA DE RESULTADOS FINALES
-                dgvResultadosInterpolacion.EnableHeadersVisualStyles = false;
-                dgvResultadosInterpolacion.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(17, 24, 39);
-                dgvResultadosInterpolacion.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-                dgvResultadosInterpolacion.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                dgvResultadosInterpolacion.RowHeadersVisible = false;
-                dgvResultadosInterpolacion.DefaultCellStyle.BackColor = Color.White;
-                dgvResultadosInterpolacion.DefaultCellStyle.ForeColor = Color.Black;
-                dgvResultadosInterpolacion.DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-                dgvResultadosInterpolacion.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(235, 238, 245);
+                int idxEq = dgvResultadosInterpolacion.Rows.Add("📈 Polinomio Interpolante", ecuacion);
+                dgvResultadosInterpolacion.Rows[idxEq].DefaultCellStyle.BackColor = Color.FromArgb(16, 185, 129); // Verde esmeralda
+                dgvResultadosInterpolacion.Rows[idxEq].DefaultCellStyle.ForeColor = Color.White;
+                dgvResultadosInterpolacion.Rows[idxEq].DefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Bold);
+
+                int idxGrado = dgvResultadosInterpolacion.Rows.Add("⚙️ Grado Real Detectado", $"Polinomio de Grado {gradoReal}");
+                dgvResultadosInterpolacion.Rows[idxGrado].DefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55);
+                dgvResultadosInterpolacion.Rows[idxGrado].DefaultCellStyle.ForeColor = Color.White;
+
+                // Si el usuario pidió estimar, se lo mostramos en rojo; si no, mostramos que fue omitido.
+                if (yPredicho.HasValue)
+                {
+                    int idxPred = dgvResultadosInterpolacion.Rows.Add("🎯 Y Predicho", yPredicho.Value.ToString("F8"));
+                    dgvResultadosInterpolacion.Rows[idxPred].DefaultCellStyle.BackColor = Color.FromArgb(254, 242, 242);
+                    dgvResultadosInterpolacion.Rows[idxPred].DefaultCellStyle.ForeColor = Color.FromArgb(220, 38, 38); // Rojo
+                    dgvResultadosInterpolacion.Rows[idxPred].DefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Bold);
+                }
+                else
+                {
+                    dgvResultadosInterpolacion.Rows.Add("🎯 Y Predicho", "--- (Estimación no solicitada)");
+                }
+
+                // 5. 🚀 APLICAR ESTILO TUANI A LAS DOS TABLAS
+                ConfigurarEstiloTuaniTablas(dgvMatrizDiferencias);
+                ConfigurarEstiloTuaniTablas(dgvResultadosInterpolacion);
+
+                lblTipoPolinomio.Text = $"➔ Polinomio Real: Grado {gradoReal}";
 
                 pnlEspera.Visible = false;
                 dgvMatrizDiferencias.Visible = true;
@@ -93,6 +108,35 @@ namespace Métodos_Numéricos
             {
                 MessageBox.Show("Falla en el cálculo analítico: " + ex.Message, "Error Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // =================================================================
+        // 🎨 MÉTODO DE DISEÑO (Asegurate de tener este en el form)
+        // =================================================================
+        private void ConfigurarEstiloTuaniTablas(DataGridView dgv)
+        {
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(15, 23, 42);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgv.ColumnHeadersHeight = 35;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+
+            dgv.RowHeadersVisible = false;
+            dgv.DefaultCellStyle.Font = new Font("Consolas", 11, FontStyle.Regular);
+            dgv.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
+
+            dgv.RowTemplate.Height = 32;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
+
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.GridColor = Color.FromArgb(226, 232, 240);
+
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells; // Habilita el scroll
+
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.BackgroundColor = Color.White;
+            dgv.BorderStyle = BorderStyle.None;
         }
 
         private void btnExportar_Click(object sender, EventArgs e)

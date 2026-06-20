@@ -40,7 +40,7 @@ namespace Métodos_Numéricos
 
                 for (int i = 0; i < n; i++)
                 {
-                    string[] elementos = lineasA[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] elementos = lineasA[i].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                     if (elementos.Length != n)
                     {
                         MessageBox.Show($"La Matriz A debe ser cuadrada ({n}x{n}). Fila {i + 1} tiene {elementos.Length} elementos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -50,7 +50,7 @@ namespace Métodos_Numéricos
                 }
 
                 // 2. Parsear Vector B
-                string[] lineasB = txtVectorB.Text.Split(new string[] { "\r\n", "\n", " " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] lineasB = txtVectorB.Text.Split(new string[] { "\r\n", "\n", " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
                 if (lineasB.Length != n)
                 {
                     MessageBox.Show($"El vector b debe tener exactamente {n} términos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -59,21 +59,17 @@ namespace Métodos_Numéricos
                 double[] b = new double[n];
                 for (int i = 0; i < n; i++) b[i] = metodos.ConvertirADouble(lineasB[i]);
 
-                // 🚀 ARRANCAR MOTOR DE GAUSS-JORDAN
-                metodos.GaussJordan(A, b, dgvGaussJordan);
+                // 🚀 INVOCAR MOTOR PASO A PASO (DGV se llena adentro automáticamente)
+                metodos.GaussJordanPasoAPaso(A, b, dgvGaussJordan);
 
-                // 🚀 ESTILOS DEL DATAGRIDVIEW
+                // 🚀 ESTILOS GRÁFICOS FINALES
                 dgvGaussJordan.EnableHeadersVisualStyles = false;
                 dgvGaussJordan.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(17, 24, 39);
                 dgvGaussJordan.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
                 dgvGaussJordan.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
                 dgvGaussJordan.RowHeadersVisible = false;
-                dgvGaussJordan.DefaultCellStyle.BackColor = Color.White;
-                dgvGaussJordan.DefaultCellStyle.ForeColor = Color.Black;
-                dgvGaussJordan.DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-                dgvGaussJordan.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(235, 238, 245);
-                dgvGaussJordan.DefaultCellStyle.SelectionBackColor = Color.FromArgb(79, 70, 229);
-                dgvGaussJordan.DefaultCellStyle.SelectionForeColor = Color.White;
+                dgvGaussJordan.DefaultCellStyle.Font = new Font("Consolas", 11, FontStyle.Regular);
+                dgvGaussJordan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
                 pnlEspera.Visible = false;
                 dgvGaussJordan.Visible = true;

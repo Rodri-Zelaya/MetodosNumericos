@@ -1051,782 +1051,1103 @@ public class MetodosNumericos
         }
     }
 
-    public void EliminacionGaussiana(double[,] A, double[] b, DataGridView dgv)
+    public void EliminacionGaussianaPasoAPaso(double[,] matrizA, double[] vectorB, DataGridView dgv)
     {
-        int n = b.Length;
-        double[,] aug = new double[n, n + 1];
+        int n = vectorB.Length;
+        double[,] M = new double[n, n + 1];
 
-        // 1. Armar matriz aumentada [A|b]
+        // 1. Construir la Matriz Aumentada [A | b]
         for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j < n; j++) aug[i, j] = A[i, j];
-            aug[i, n] = b[i];
+            for (int j = 0; j < n; j++) M[i, j] = matrizA[i, j];
+            M[i, n] = vectorB[i];
         }
 
-        // 2. Eliminación hacia adelante con Pivoteo Parcial
-        for (int i = 0; i < n - 1; i++)
+        // 2. Configurar DGV
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Op", "Operación / Renglón");
+
+        string[] letras = { "X", "Y", "Z", "T", "U", "V", "W" };
+        for (int j = 0; j < n; j++)
         {
-            // Buscar pivote mayor
-            int p = i;
-            for (int k = i + 1; k < n; k++)
-            {
-                if (Math.Abs(aug[k, i]) > Math.Abs(aug[p, i])) p = k;
-            }
+            string colName = (j < letras.Length) ? letras[j] : $"X{j + 1}";
+            dgv.Columns.Add(colName, colName);
+        }
+        dgv.Columns.Add("b", "Términos Ind.");
 
-            // Intercambiar filas si es necesario
-            if (p != i)
+        ImprimirPasoMatriz(M, "Matriz Inicial Aumentada [A | b]", dgv, Color.FromArgb(243, 244, 246));
+
+        // 3. Proceso de Triangulación Superior (Hacer ceros solo abajo)
+        for (int k = 0; k < n - 1; k++) // Llegamos hasta n-1 porque la última fila no elimina a nadie
+        {
+            // 🔥 PIVOTEO PARCIAL (Blindaje de computadora)
+            int filaMayor = k;
+            double maxVal = Math.Abs(M[k, k]);
+            for (int i = k + 1; i < n; i++)
             {
-                for (int j = i; j <= n; j++)
+                if (Math.Abs(M[i, k]) > maxVal)
                 {
-                    double temp = aug[i, j];
-                    aug[i, j] = aug[p, j];
-                    aug[p, j] = temp;
+                    maxVal = Math.Abs(M[i, k]);
+                    filaMayor = i;
                 }
             }
 
-            if (Math.Abs(aug[i, i]) < 1e-12) throw new Exception("Matriz singular. El sistema colapsó.");
-
-            // Hacer ceros debajo del pivote
-            for (int k = i + 1; k < n; k++)
+            if (filaMayor != k)
             {
-                double m = aug[k, i] / aug[i, i];
-                for (int j = i; j <= n; j++)
+                for (int j = k; j <= n; j++)
                 {
-                    aug[k, j] -= m * aug[i, j];
+                    double temp = M[k, j];
+                    M[k, j] = M[filaMayor, j];
+                    M[filaMayor, j] = temp;
                 }
+                ImprimirPasoMatriz(M, $"Fila {k + 1} ↔ Fila {filaMayor + 1} (Pivoteo)", dgv, Color.FromArgb(254, 243, 199));
+            }
+
+            if (Math.Abs(M[k, k]) < 1e-10)
+            {
+                throw new Exception("El sistema no tiene solución única (El pivote se hizo cero).");
+            }
+
+            // 💥 ELIMINACIÓN HACIA ADELANTE
+            bool huboCambios = false;
+            List<string> operaciones = new List<string>();
+
+            for (int i = k + 1; i < n; i++) // OJO: i arranca en k+1 (Solo filas de abajo)
+            {
+                double factor = M[i, k] / M[k, k]; // No hicimos el pivote 1, así que dividimos aquí
+                if (Math.Abs(factor) > 1e-9)
+                {
+                    for (int j = k; j <= n; j++)
+                    {
+                        M[i, j] -= factor * M[k, j];
+                    }
+                    huboCambios = true;
+
+                    string signo = (factor > 0) ? "-" : "+";
+                    string operacion = $"F{i + 1} ➔ F{i + 1} {signo} {Math.Abs(factor).ToString("F4")}F{k + 1}";
+                    operaciones.Add(operacion);
+                }
+            }
+
+            if (huboCambios)
+            {
+                string textoOperaciones = string.Join("   ||   ", operaciones);
+                ImprimirPasoMatriz(M, textoOperaciones, dgv, Color.FromArgb(209, 250, 229));
             }
         }
 
-        // 3. Sustitución hacia atrás
-        double[] x = new double[n];
+        // ====================================================================
+        // 4. SUSTITUCIÓN HACIA ATRÁS (De la última variable a la primera)
+        // ====================================================================
+        double[] X = new double[n];
         for (int i = n - 1; i >= 0; i--)
         {
             double suma = 0;
-            for (int j = i + 1; j < n; j++) suma += aug[i, j] * x[j];
-            x[i] = (aug[i, n] - suma) / aug[i, i];
+            for (int j = i + 1; j < n; j++)
+            {
+                suma += M[i, j] * X[j]; // Sumar los términos ya conocidos
+            }
+            X[i] = (M[i, n] - suma) / M[i, i]; // Despejar la variable actual
         }
 
-        // 4. Mostrar en el DataGridView de forma limpia
-        dgv.Columns.Clear();
-        dgv.Rows.Clear();
-        dgv.Columns.Add("Variable", "Variable");
-        dgv.Columns.Add("Valor", "Valor Calculado Exacto");
+        // ====================================================================
+        // 5. MOSTRAR RESULTADOS
+        // ====================================================================
+        int idxEspacio = dgv.Rows.Add();
+        dgv.Rows[idxEspacio].Height = 15;
+
+        int idxTituloFinal = dgv.Rows.Add();
+        dgv.Rows[idxTituloFinal].Cells[0].Value = "🌟 SOLUCIÓN (Sustitución hacia atrás)";
+        dgv.Rows[idxTituloFinal].DefaultCellStyle.BackColor = Color.FromArgb(79, 70, 229);
+        dgv.Rows[idxTituloFinal].DefaultCellStyle.ForeColor = Color.White;
+        dgv.Rows[idxTituloFinal].DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+
+        int idxResultados = dgv.Rows.Add();
+        dgv.Rows[idxResultados].Cells[0].Value = "Valores Exactos ➔";
+        dgv.Rows[idxResultados].DefaultCellStyle.BackColor = Color.FromArgb(243, 244, 246);
+        dgv.Rows[idxResultados].DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
 
         for (int i = 0; i < n; i++)
         {
-            dgv.Rows.Add($"x{i + 1}", x[i].ToString("F8"));
+            dgv.Rows[idxResultados].Cells[i + 1].Value = X[i].ToString("F4");
+            dgv.Rows[idxResultados].Cells[i + 1].Style.ForeColor = Color.FromArgb(220, 38, 38);
+            dgv.Rows[idxResultados].Cells[i + 1].Style.Font = new Font("Consolas", 14, FontStyle.Bold);
         }
     }
 
-    public void FactorizacionLU(double[,] A, double[] b, DataGridView dgv)
+    // 🚀 MÉTODO PRINCIPAL DE FACTORIZACIÓN LU
+    public void FactorizacionLUPasoAPaso(double[,] matrizA, double[] vectorB, DataGridView dgv)
     {
-        int n = b.Length;
+        int n = vectorB.Length;
         double[,] L = new double[n, n];
         double[,] U = new double[n, n];
 
-        // 1. Descomposición LU (Algoritmo de Doolittle)
+        // 1. Inicializar L con 1s en la diagonal y U con ceros
         for (int i = 0; i < n; i++)
         {
-            // Calcular la Matriz U (Triangular Superior)
+            for (int j = 0; j < n; j++)
+            {
+                L[i, j] = (i == j) ? 1.0 : 0.0;
+                U[i, j] = 0.0;
+            }
+        }
+
+        // 2. Algoritmo de Descomposición (Doolittle)
+        for (int i = 0; i < n; i++)
+        {
+            // Calcular fila de U
             for (int k = i; k < n; k++)
             {
                 double sum = 0;
                 for (int j = 0; j < i; j++) sum += (L[i, j] * U[j, k]);
-                U[i, k] = A[i, k] - sum;
+                U[i, k] = matrizA[i, k] - sum;
             }
 
-            // Calcular la Matriz L (Triangular Inferior)
-            for (int k = i; k < n; k++)
+            // Calcular columna de L
+            for (int k = i + 1; k < n; k++)
             {
-                if (i == k)
-                {
-                    L[i, i] = 1; // La diagonal de L siempre es 1
-                }
-                else
-                {
-                    double sum = 0;
-                    for (int j = 0; j < i; j++) sum += (L[k, j] * U[j, i]);
-
-                    if (Math.Abs(U[i, i]) < 1e-12)
-                        throw new Exception("El sistema requiere pivoteo o es singular (División por cero en U). Reordena las filas.");
-
-                    L[k, i] = (A[k, i] - sum) / U[i, i];
-                }
+                if (Math.Abs(U[i, i]) < 1e-10) throw new Exception("Pivote cero detectado. Se requiere permutación (LU con pivoteo no implementado en forma simple).");
+                double sum = 0;
+                for (int j = 0; j < i; j++) sum += (L[k, j] * U[j, i]);
+                L[k, i] = (matrizA[k, i] - sum) / U[i, i];
             }
         }
 
-        // 2. Sustitución hacia adelante (L * y = b)
+        // Preparar DGV
+        dgv.Columns.Clear(); dgv.Rows.Clear();
+        dgv.Columns.Add("Op", "Etapa Analítica");
+        for (int j = 0; j < n; j++) dgv.Columns.Add($"C{j}", $"Col {j + 1}");
+
+        // Imprimir Matriz L
+        int rL = dgv.Rows.Add("📉 MATRIZ INFERIOR (L)");
+        dgv.Rows[rL].DefaultCellStyle.BackColor = Color.FromArgb(254, 243, 199); dgv.Rows[rL].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+        for (int i = 0; i < n; i++) { int r = dgv.Rows.Add($"L - Fila {i + 1}"); for (int j = 0; j < n; j++) dgv.Rows[r].Cells[j + 1].Value = L[i, j].ToString("F4"); }
+        dgv.Rows.Add();
+
+        // Imprimir Matriz U
+        int rU = dgv.Rows.Add("📈 MATRIZ SUPERIOR (U)");
+        dgv.Rows[rU].DefaultCellStyle.BackColor = Color.FromArgb(219, 234, 254); dgv.Rows[rU].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+        for (int i = 0; i < n; i++) { int r = dgv.Rows.Add($"U - Fila {i + 1}"); for (int j = 0; j < n; j++) dgv.Rows[r].Cells[j + 1].Value = U[i, j].ToString("F4"); }
+        dgv.Rows.Add();
+
+        // 3. Resolver L*y = B (Sustitución hacia adelante)
         double[] y = new double[n];
         for (int i = 0; i < n; i++)
         {
-            double sum = 0;
-            for (int j = 0; j < i; j++) sum += L[i, j] * y[j];
-            y[i] = b[i] - sum;
+            double suma = 0;
+            for (int j = 0; j < i; j++) suma += L[i, j] * y[j];
+            y[i] = vectorB[i] - suma;
         }
 
-        // 3. Sustitución hacia atrás (U * x = y)
+        int ry = dgv.Rows.Add("⚙️ VECTOR INTERMEDIO (y) desde L*y = b");
+        dgv.Rows[ry].DefaultCellStyle.BackColor = Color.FromArgb(209, 250, 229);
+        int ryVals = dgv.Rows.Add("Valores de y ➔");
+        for (int i = 0; i < n; i++) dgv.Rows[ryVals].Cells[i + 1].Value = y[i].ToString("F4");
+        dgv.Rows.Add();
+
+        // 4. Resolver U*x = y (Sustitución hacia atrás)
         double[] x = new double[n];
         for (int i = n - 1; i >= 0; i--)
         {
-            double sum = 0;
-            for (int j = i + 1; j < n; j++) sum += U[i, j] * x[j];
-            x[i] = (y[i] - sum) / U[i, i];
+            double suma = 0;
+            for (int j = i + 1; j < n; j++) suma += U[i, j] * x[j];
+            x[i] = (y[i] - suma) / U[i, i];
         }
 
-        // 4. Mostrar Resultados Limpios en la Tabla
-        dgv.Columns.Clear();
-        dgv.Rows.Clear();
-        dgv.Columns.Add("Variable", "Variable");
-        dgv.Columns.Add("Valor", "Valor Calculado Exacto");
+        // Imprimir Solución Final
+        int idxFinal = dgv.Rows.Add("🌟 SOLUCIÓN FINAL (x) desde U*x = y");
+        dgv.Rows[idxFinal].DefaultCellStyle.BackColor = Color.FromArgb(79, 70, 229);
+        dgv.Rows[idxFinal].DefaultCellStyle.ForeColor = Color.White;
+        dgv.Rows[idxFinal].DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
 
+        int resRow = dgv.Rows.Add("Valores de X ➔");
         for (int i = 0; i < n; i++)
         {
-            dgv.Rows.Add($"x{i + 1}", x[i].ToString("F8"));
+            dgv.Rows[resRow].Cells[i + 1].Value = x[i].ToString("F4");
+            dgv.Rows[resRow].Cells[i + 1].Style.ForeColor = Color.FromArgb(220, 38, 38);
+            dgv.Rows[resRow].Cells[i + 1].Style.Font = new Font("Consolas", 14, FontStyle.Bold);
         }
     }
 
-    public void GaussJordan(double[,] A, double[] b, DataGridView dgv)
+    public void GaussJordanPasoAPaso(double[,] matrizA, double[] vectorB, DataGridView dgv)
     {
-        int n = b.Length;
-        double[,] aug = new double[n, n + 1];
+        int n = vectorB.Length;
+        double[,] M = new double[n, n + 1];
 
-        // 1. Armar la matriz aumentada [A|b]
+        // 1. Construir la Matriz Aumentada inicial [A | b]
         for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j < n; j++) aug[i, j] = A[i, j];
-            aug[i, n] = b[i];
+            for (int j = 0; j < n; j++) M[i, j] = matrizA[i, j];
+            M[i, n] = vectorB[i];
         }
 
-        // 2. Proceso de Eliminación de Gauss-Jordan con Pivoteo Parcial
-        for (int i = 0; i < n; i++)
-        {
-            // Pivoteo Parcial: Buscar el elemento mayor en valor absoluto
-            int p = i;
-            for (int k = i + 1; k < n; k++)
-            {
-                if (Math.Abs(aug[k, i]) > Math.Abs(aug[p, i])) p = k;
-            }
+        // 2. Configurar las columnas del DataGridView dinámicamente
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Op", "Operación / Renglón");
 
-            // Intercambiar filas si es necesario
-            if (p != i)
+        string[] letras = { "X", "Y", "Z", "T", "U", "V", "W" };
+        for (int j = 0; j < n; j++)
+        {
+            string colName = (j < letras.Length) ? letras[j] : $"X{j + 1}";
+            dgv.Columns.Add(colName, colName);
+        }
+        dgv.Columns.Add("b", "Términos Ind.");
+
+        // 🚀 REGISTRAR MATRIZ INICIAL
+        ImprimirPasoMatriz(M, "Matriz Inicial Aumentada [A | b]", dgv, Color.FromArgb(243, 244, 246));
+
+        // 3. Proceso de Operaciones Elementales
+        for (int k = 0; k < n; k++)
+        {
+            // 🔥 PIVOTEO PARCIAL
+            int filaMayor = k;
+            double maxVal = Math.Abs(M[k, k]);
+            for (int i = k + 1; i < n; i++)
             {
-                for (int j = i; j <= n; j++)
+                if (Math.Abs(M[i, k]) > maxVal)
                 {
-                    double temp = aug[i, j];
-                    aug[i, j] = aug[p, j];
-                    aug[p, j] = temp;
+                    maxVal = Math.Abs(M[i, k]);
+                    filaMayor = i;
                 }
             }
 
-            // Verificar si es una matriz singular
-            if (Math.Abs(aug[i, i]) < 1e-12)
-                throw new Exception("Matriz singular o con infinitas soluciones. El sistema no se puede resolver.");
-
-            // Dividir la fila actual entre el pivote para hacer un '1' en la diagonal
-            double pivote = aug[i, i];
-            for (int j = i; j <= n; j++) aug[i, j] /= pivote;
-
-            // Hacer '0' todos los elementos arriba y abajo de la diagonal en esta columna
-            for (int k = 0; k < n; k++)
+            if (filaMayor != k)
             {
-                if (k != i)
+                for (int j = k; j <= n; j++)
                 {
-                    double factor = aug[k, i];
-                    for (int j = i; j <= n; j++)
+                    double temp = M[k, j];
+                    M[k, j] = M[filaMayor, j];
+                    M[filaMayor, j] = temp;
+                }
+                ImprimirPasoMatriz(M, $"Fila {k + 1} ↔ Fila {filaMayor + 1} (Pivoteo)", dgv, Color.FromArgb(254, 243, 199)); // Color ámbar
+            }
+
+            if (Math.Abs(M[k, k]) < 1e-10)
+            {
+                throw new Exception("El sistema no tiene solución única.");
+            }
+
+            // 🌟 HACER EL PIVOTE DE LA DIAGONAL = 1
+            double pivote = M[k, k];
+            if (Math.Abs(pivote - 1.0) > 1e-9)
+            {
+                for (int j = k; j <= n; j++) M[k, j] /= pivote;
+                ImprimirPasoMatriz(M, $"Fila {k + 1} ➔ Fila {k + 1} / {pivote.ToString("F4")}", dgv, Color.FromArgb(219, 234, 254)); // Color azul claro
+            }
+
+            // 💥 ELIMINACIÓN (Hacer ceros arriba y abajo del pivote)
+            bool huboCambios = false;
+            List<string> operaciones = new List<string>(); // Para guardar las fórmulas paso a paso
+
+            for (int i = 0; i < n; i++)
+            {
+                if (i != k)
+                {
+                    double factor = M[i, k];
+                    if (Math.Abs(factor) > 1e-9)
                     {
-                        aug[k, j] -= factor * aug[i, j];
+                        for (int j = k; j <= n; j++)
+                        {
+                            M[i, j] -= factor * M[k, j];
+                        }
+                        huboCambios = true;
+
+                        // 🚀 TRADUCCIÓN EXACTA AL LENGUAJE DEL CUADERNO
+                        string signo = (factor > 0) ? "-" : "+";
+                        string operacion = $"F{i + 1} ➔ F{i + 1} {signo} {Math.Abs(factor).ToString("F4")}F{k + 1}";
+                        operaciones.Add(operacion);
                     }
                 }
             }
-        }
 
-        // 3. Mostrar Resultados Limpios en la Tabla
-        dgv.Columns.Clear();
-        dgv.Rows.Clear();
-        dgv.Columns.Add("Variable", "Variable");
-        dgv.Columns.Add("Valor", "Valor Exacto (Gauss-Jordan)");
-
-        for (int i = 0; i < n; i++)
-        {
-            dgv.Rows.Add($"x{i + 1}", aug[i, n].ToString("F8"));
-        }
-    }
-
-    public void ReglaCramer(double[,] A, double[] b, DataGridView dgv)
-    {
-        int n = b.Length;
-
-        // 1. Calcular el determinante de la matriz principal A
-        double detPrincipal = CalcularDeterminante(A, n);
-
-        // 🛡️ REGLA MATEMÁTICA: Si el det es cero, el sistema no tiene solución única
-        if (Math.Abs(detPrincipal) < 1e-12)
-        {
-            throw new Exception("El determinante de la matriz principal es cero. El sistema no tiene solución única o las ecuaciones son dependientes.");
-        }
-
-        double[] x = new double[n];
-
-        // 2. Calcular los determinantes modificados para cada variable
-        for (int i = 0; i < n; i++)
-        {
-            // Crear una copia de la matriz A
-            double[,] matrizModificada = new double[n, n];
-            for (int r = 0; r < n; r++)
+            if (huboCambios)
             {
-                for (int c = 0; c < n; c++)
-                {
-                    // Si es la columna de la variable actual, la reemplazamos por el vector b
-                    if (c == i) matrizModificada[r, c] = b[r];
-                    else matrizModificada[r, c] = A[r, c];
-                }
+                // Unir todas las operaciones de ese paso en una sola línea clara
+                string textoOperaciones = string.Join("   ||   ", operaciones);
+                ImprimirPasoMatriz(M, textoOperaciones, dgv, Color.FromArgb(209, 250, 229)); // Color verde claro
             }
-
-            // Calcular el determinante de la matriz modificada
-            double detModificado = CalcularDeterminante(matrizModificada, n);
-
-            // Aplicar la fórmula de Cramer
-            x[i] = detModificado / detPrincipal;
         }
+        // ====================================================================
+        // 4. AISLAR Y MOSTRAR LOS RESULTADOS FINALES EN EL DATAGRIDVIEW
+        // ====================================================================
 
-        // 3. Mostrar Resultados Limpios en la Tabla
-        dgv.Columns.Clear();
-        dgv.Rows.Clear();
-        dgv.Columns.Add("Variable", "Variable");
-        dgv.Columns.Add("Valor", "Valor Exacto (Cramer)");
+        // Añadir un espacio en blanco para separar
+        int idxEspacio = dgv.Rows.Add();
+        dgv.Rows[idxEspacio].Height = 15;
 
+        // Fila de Título
+        int idxTituloFinal = dgv.Rows.Add();
+        dgv.Rows[idxTituloFinal].Cells[0].Value = "🌟 SOLUCIÓN FINAL DEL SISTEMA";
+        dgv.Rows[idxTituloFinal].DefaultCellStyle.BackColor = Color.FromArgb(79, 70, 229); // Morado Tuani
+        dgv.Rows[idxTituloFinal].DefaultCellStyle.ForeColor = Color.White;
+        dgv.Rows[idxTituloFinal].DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+
+        // Fila con los valores exactos
+        int idxResultados = dgv.Rows.Add();
+        dgv.Rows[idxResultados].Cells[0].Value = "Valores Exactos ➔";
+        dgv.Rows[idxResultados].DefaultCellStyle.BackColor = Color.FromArgb(243, 244, 246);
+        dgv.Rows[idxResultados].DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+
+        // Rellenar las celdas correspondientes a cada variable (X, Y, Z, T...)
         for (int i = 0; i < n; i++)
         {
-            dgv.Rows.Add($"x{i + 1}", x[i].ToString("F8"));
+            dgv.Rows[idxResultados].Cells[i + 1].Value = M[i, n].ToString("F4");
+            dgv.Rows[idxResultados].Cells[i + 1].Style.ForeColor = Color.FromArgb(220, 38, 38); // Letra Roja
+            dgv.Rows[idxResultados].Cells[i + 1].Style.Font = new Font("Consolas", 14, FontStyle.Bold); // Letra grande
         }
     }
 
-    // 🧠 HÉLPER MATEMÁTICO: Calcula el determinante usando eliminación gaussiana para máxima eficiencia
-    private double CalcularDeterminante(double[,] matriz, int n)
+    // Función auxiliar para plasmar el bloque de la matriz en la tabla
+    private void ImprimirPasoMatriz(double[,] M, string descripcion, DataGridView dgv, Color colorEncabezado)
     {
-        double[,] temp = new double[n, n];
-        Array.Copy(matriz, temp, matriz.Length);
-        double det = 1;
+        int n = M.GetLength(0);
+
+        // 1. Insertar fila de título/operación
+        int idxTitulo = dgv.Rows.Add();
+        dgv.Rows[idxTitulo].Cells[0].Value = descripcion;
+        dgv.Rows[idxTitulo].DefaultCellStyle.BackColor = colorEncabezado;
+        dgv.Rows[idxTitulo].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+        // 2. Insertar las filas con los datos numéricos de la matriz en ese instante
+        for (int i = 0; i < n; i++)
+        {
+            int idxFila = dgv.Rows.Add();
+            dgv.Rows[idxFila].Cells[0].Value = $"Renglón {i + 1}";
+
+            for (int j = 0; j <= n; j++)
+            {
+                // Formateo a 4 decimales para que se vea limpio
+                dgv.Rows[idxFila].Cells[j + 1].Value = M[i, j].ToString("F4");
+            }
+        }
+
+        // 3. Dejar una fila vacía como separador estético
+        dgv.Rows.Add();
+    }
+
+    // 🛠️ Función Auxiliar para Calcular Determinantes (Rápida y blindada)
+    private double CalcularDeterminante(double[,] matriz)
+    {
+        int n = matriz.GetLength(0);
+        double[,] M = (double[,])matriz.Clone();
+        double det = 1.0;
 
         for (int i = 0; i < n; i++)
         {
-            // Pivoteo parcial para estabilidad
             int pivot = i;
             for (int j = i + 1; j < n; j++)
-            {
-                if (Math.Abs(temp[j, i]) > Math.Abs(temp[pivot, i])) pivot = j;
-            }
+                if (Math.Abs(M[j, i]) > Math.Abs(M[pivot, i])) pivot = j;
+
+            if (Math.Abs(M[pivot, i]) < 1e-10) return 0; // Determinante cero
 
             if (pivot != i)
             {
-                for (int j = 0; j < n; j++)
-                {
-                    double t = temp[i, j];
-                    temp[i, j] = temp[pivot, j];
-                    temp[pivot, j] = t;
-                }
-                det *= -1; // Cambia el signo del det al intercambiar filas
+                for (int j = i; j < n; j++) { double tmp = M[i, j]; M[i, j] = M[pivot, j]; M[pivot, j] = tmp; }
+                det *= -1; // Al cambiar filas, el determinante cambia de signo
             }
 
-            if (Math.Abs(temp[i, i]) < 1e-12) return 0; // Si hay un cero en la diagonal, el det es 0
-
-            det *= temp[i, i];
-
+            det *= M[i, i];
             for (int j = i + 1; j < n; j++)
             {
-                double factor = temp[j, i] / temp[i, i];
-                for (int k = i; k < n; k++)
-                {
-                    temp[j, k] -= factor * temp[i, k];
-                }
+                double factor = M[j, i] / M[i, i];
+                for (int k = i; k < n; k++) M[j, k] -= factor * M[i, k];
             }
         }
         return det;
     }
 
-    public void MatrizInversa(double[,] A, double[] b, DataGridView dgv)
+    // 🚀 MÉTODO PRINCIPAL DE CRAMER
+    public void ReglaCramerPasoAPaso(double[,] matrizA, double[] vectorB, DataGridView dgv)
     {
-        int n = b.Length;
+        int n = vectorB.Length;
+        string[] letras = { "X", "Y", "Z", "T", "U", "V", "W" };
 
-        // 1. Crear la matriz aumentada [A | I] (Matriz original + Matriz Identidad)
-        double[,] aug = new double[n, 2 * n];
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++) aug[i, j] = A[i, j];
-            aug[i, n + i] = 1.0; // Inyectamos el 1 en la diagonal de la identidad
-        }
+        dgv.Columns.Clear(); dgv.Rows.Clear();
+        dgv.Columns.Add("Op", "Parámetro / Matriz");
+        for (int j = 0; j < n; j++) dgv.Columns.Add($"C{j}", $"Col {j + 1}");
 
-        // 2. Gauss-Jordan sobre toda la fila extendida (2*n) para transformar la izquierda en Identidad
-        for (int i = 0; i < n; i++)
+        // 1. Calcular el Determinante Principal (Δ)
+        double detA = CalcularDeterminante(matrizA);
+
+        int idxTitulo = dgv.Rows.Add($"Determinante Principal (Δ) = {detA.ToString("F6")}");
+        dgv.Rows[idxTitulo].DefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55);
+        dgv.Rows[idxTitulo].DefaultCellStyle.ForeColor = Color.White;
+        dgv.Rows[idxTitulo].DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+
+        if (Math.Abs(detA) < 1e-10) throw new Exception("El determinante principal es 0. El sistema no tiene solución única (Regla de Cramer no aplicable).");
+
+        double[] soluciones = new double[n];
+
+        // 2. Calcular Determinantes Modificados (Δx, Δy, Δz...)
+        for (int k = 0; k < n; k++)
         {
-            // Pivoteo Parcial para estabilidad numérica
-            int p = i;
-            for (int k = i + 1; k < n; k++)
+            double[,] matrizModificada = (double[,])matrizA.Clone();
+
+            // Sustituir la columna k por el vector B
+            for (int i = 0; i < n; i++) matrizModificada[i, k] = vectorB[i];
+
+            double detMod = CalcularDeterminante(matrizModificada);
+            soluciones[k] = detMod / detA;
+
+            string varName = (k < letras.Length) ? letras[k] : $"X{k + 1}";
+
+            // Título de la variable
+            int idxVar = dgv.Rows.Add();
+            dgv.Rows[idxVar].Cells[0].Value = $"Matriz Modificada para [{varName}]";
+            dgv.Rows[idxVar].DefaultCellStyle.BackColor = Color.FromArgb(219, 234, 254);
+            dgv.Rows[idxVar].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+            // Imprimir la matriz modificada
+            for (int i = 0; i < n; i++)
             {
-                if (Math.Abs(aug[k, i]) > Math.Abs(aug[p, i])) p = k;
+                int row = dgv.Rows.Add($"Renglón {i + 1}");
+                for (int j = 0; j < n; j++) dgv.Rows[row].Cells[j + 1].Value = matrizModificada[i, j].ToString("F4");
             }
 
-            if (p != i)
+            // Imprimir el cálculo de la variable
+            int idxCalc = dgv.Rows.Add();
+            dgv.Rows[idxCalc].Cells[0].Value = $"Δ{varName} = {detMod.ToString("F4")}  ➔  {varName} = Δ{varName}/Δ = {soluciones[k].ToString("F6")}";
+            dgv.Rows[idxCalc].DefaultCellStyle.BackColor = Color.FromArgb(209, 250, 229);
+            dgv.Rows[idxCalc].DefaultCellStyle.Font = new Font("Consolas", 11, FontStyle.Bold);
+            dgv.Rows.Add(); // Espacio
+        }
+
+        // 3. Imprimir Resultado Final
+        int idxFinal = dgv.Rows.Add("🌟 SOLUCIÓN EXACTA DE CRAMER");
+        dgv.Rows[idxFinal].DefaultCellStyle.BackColor = Color.FromArgb(79, 70, 229);
+        dgv.Rows[idxFinal].DefaultCellStyle.ForeColor = Color.White;
+        dgv.Rows[idxFinal].DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+
+        int resRow = dgv.Rows.Add("Valores ➔");
+        for (int i = 0; i < n; i++)
+        {
+            dgv.Rows[resRow].Cells[i + 1].Value = soluciones[i].ToString("F4");
+            dgv.Rows[resRow].Cells[i + 1].Style.ForeColor = Color.FromArgb(220, 38, 38);
+            dgv.Rows[resRow].Cells[i + 1].Style.Font = new Font("Consolas", 14, FontStyle.Bold);
+        }
+    }
+
+    public void MatrizInversaPasoAPaso(double[,] matrizA, double[] vectorB, DataGridView dgv)
+    {
+        int n = vectorB.Length;
+        double[,] M = new double[n, 2 * n]; // Matriz aumentada gigante [A | I]
+
+        // 1. Construir la Matriz Aumentada inicial [A | I]
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++) M[i, j] = matrizA[i, j]; // Lado izquierdo (A)
+            for (int j = 0; j < n; j++) M[i, j + n] = (i == j) ? 1.0 : 0.0; // Lado derecho (Identidad)
+        }
+
+        // 2. Configurar las columnas del DataGridView dinámicamente
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Op", "Operación / Renglón");
+
+        string[] letras = { "X", "Y", "Z", "T", "U", "V", "W" };
+
+        // Columnas para la matriz original (lado izquierdo)
+        for (int j = 0; j < n; j++)
+        {
+            string colName = (j < letras.Length) ? letras[j] : $"X{j + 1}";
+            dgv.Columns.Add(colName, colName);
+        }
+
+        // Columnas para la matriz identidad/inversa (lado derecho)
+        for (int j = 0; j < n; j++)
+        {
+            dgv.Columns.Add($"I{j + 1}", $"Inv {j + 1}");
+        }
+
+        // 🚀 REGISTRAR MATRIZ INICIAL
+        ImprimirPasoMatrizInversa(M, "Matriz Inicial Aumentada [A | I]", dgv, Color.FromArgb(243, 244, 246));
+
+        // 3. Proceso de Operaciones Elementales
+        for (int k = 0; k < n; k++)
+        {
+            // 🔥 PIVOTEO PARCIAL
+            int filaMayor = k;
+            double maxVal = Math.Abs(M[k, k]);
+            for (int i = k + 1; i < n; i++)
             {
-                for (int j = 0; j < 2 * n; j++)
+                if (Math.Abs(M[i, k]) > maxVal)
                 {
-                    double temp = aug[i, j];
-                    aug[i, j] = aug[p, j];
-                    aug[p, j] = temp;
+                    maxVal = Math.Abs(M[i, k]);
+                    filaMayor = i;
                 }
             }
 
-            // 🛡️ Si el pivote es cero, la matriz no tiene inversa
-            if (Math.Abs(aug[i, i]) < 1e-12)
-                throw new Exception("La matriz de coeficientes es singular y no tiene inversa. El sistema no se puede resolver por este método.");
-
-            double pivote = aug[i, i];
-            for (int j = i; j < 2 * n; j++) aug[i, j] /= pivote;
-
-            for (int k = 0; k < n; k++)
+            if (filaMayor != k)
             {
-                if (k != i)
+                for (int j = k; j < 2 * n; j++) // Ojo aquí: recorre el doble de columnas
                 {
-                    double factor = aug[k, i];
-                    for (int j = i; j < 2 * n; j++)
+                    double temp = M[k, j];
+                    M[k, j] = M[filaMayor, j];
+                    M[filaMayor, j] = temp;
+                }
+                ImprimirPasoMatrizInversa(M, $"Fila {k + 1} ↔ Fila {filaMayor + 1} (Pivoteo)", dgv, Color.FromArgb(254, 243, 199));
+            }
+
+            if (Math.Abs(M[k, k]) < 1e-10)
+            {
+                throw new Exception("La matriz es singular. No tiene inversa y por ende no se puede resolver por este método.");
+            }
+
+            // 🌟 HACER EL PIVOTE DE LA DIAGONAL = 1
+            double pivote = M[k, k];
+            if (Math.Abs(pivote - 1.0) > 1e-9)
+            {
+                for (int j = k; j < 2 * n; j++) M[k, j] /= pivote;
+                ImprimirPasoMatrizInversa(M, $"Fila {k + 1} ➔ Fila {k + 1} / {pivote.ToString("F4")}", dgv, Color.FromArgb(219, 234, 254));
+            }
+
+            // 💥 ELIMINACIÓN (Hacer ceros arriba y abajo del pivote)
+            bool huboCambios = false;
+            List<string> operaciones = new List<string>();
+
+            for (int i = 0; i < n; i++)
+            {
+                if (i != k)
+                {
+                    double factor = M[i, k];
+                    if (Math.Abs(factor) > 1e-9)
                     {
-                        aug[k, j] -= factor * aug[i, j];
+                        for (int j = k; j < 2 * n; j++)
+                        {
+                            M[i, j] -= factor * M[k, j];
+                        }
+                        huboCambios = true;
+
+                        string signo = (factor > 0) ? "-" : "+";
+                        string operacion = $"F{i + 1} ➔ F{i + 1} {signo} {Math.Abs(factor).ToString("F4")}F{k + 1}";
+                        operaciones.Add(operacion);
                     }
                 }
             }
+
+            if (huboCambios)
+            {
+                string textoOperaciones = string.Join("   ||   ", operaciones);
+                ImprimirPasoMatrizInversa(M, textoOperaciones, dgv, Color.FromArgb(209, 250, 229));
+            }
         }
 
-        // Extraer la matriz inversa A^-1 de la mitad derecha de la matriz aumentada
-        double[,] inversa = new double[n, n];
+        // ====================================================================
+        // 4. MULTIPLICAR LA MATRIZ INVERSA POR EL VECTOR B: X = A^(-1) * B
+        // ====================================================================
+        double[] resultados = new double[n];
         for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j < n; j++) inversa[i, j] = aug[i, n + j];
+            resultados[i] = 0;
+            for (int j = 0; j < n; j++)
+            {
+                // La inversa quedó guardada en el lado derecho de la matriz (columnas de la 'n' a la '2n-1')
+                resultados[i] += M[i, j + n] * vectorB[j];
+            }
         }
 
-        // 3. Multiplicar la Matriz Inversa por el Vector b (x = A^-1 * b)
-        double[] x = new double[n];
+        // Añadir un espacio en blanco
+        int idxEspacio = dgv.Rows.Add();
+        dgv.Rows[idxEspacio].Height = 15;
+
+        // Fila de Título
+        int idxTituloFinal = dgv.Rows.Add();
+        dgv.Rows[idxTituloFinal].Cells[0].Value = "🌟 SOLUCIÓN (X = A⁻¹ * b)";
+        dgv.Rows[idxTituloFinal].DefaultCellStyle.BackColor = Color.FromArgb(79, 70, 229);
+        dgv.Rows[idxTituloFinal].DefaultCellStyle.ForeColor = Color.White;
+        dgv.Rows[idxTituloFinal].DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+
+        // Fila con los valores exactos
+        int idxResultados = dgv.Rows.Add();
+        dgv.Rows[idxResultados].Cells[0].Value = "Valores Exactos ➔";
+        dgv.Rows[idxResultados].DefaultCellStyle.BackColor = Color.FromArgb(243, 244, 246);
+        dgv.Rows[idxResultados].DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+
         for (int i = 0; i < n; i++)
         {
-            double suma = 0;
-            for (int j = 0; j < n; j++) suma += inversa[i, j] * b[j];
-            x[i] = suma;
-        }
-
-        // 4. Mostrar Resultados Limpios en la Tabla
-        dgv.Columns.Clear();
-        dgv.Rows.Clear();
-        dgv.Columns.Add("Variable", "Variable");
-        dgv.Columns.Add("Valor", "Valor Exacto (A^-1 · b)");
-
-        for (int i = 0; i < n; i++)
-        {
-            dgv.Rows.Add($"x{i + 1}", x[i].ToString("F8"));
+            dgv.Rows[idxResultados].Cells[i + 1].Value = resultados[i].ToString("F4");
+            dgv.Rows[idxResultados].Cells[i + 1].Style.ForeColor = Color.FromArgb(220, 38, 38);
+            dgv.Rows[idxResultados].Cells[i + 1].Style.Font = new Font("Consolas", 14, FontStyle.Bold);
         }
     }
 
-    public void RegresionPolinomial(double[] X, double[] Y, int grado, DataGridView dgvSumatorias, DataGridView dgvResultados)
+    // Método auxiliar exclusivo para imprimir matrices anchas [A | I]
+    private void ImprimirPasoMatrizInversa(double[,] M, string descripcion, DataGridView dgv, Color colorEncabezado)
+    {
+        int n = M.GetLength(0);
+        int totalColumnas = M.GetLength(1);
+
+        int idxTitulo = dgv.Rows.Add();
+        dgv.Rows[idxTitulo].Cells[0].Value = descripcion;
+        dgv.Rows[idxTitulo].DefaultCellStyle.BackColor = colorEncabezado;
+        dgv.Rows[idxTitulo].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+        for (int i = 0; i < n; i++)
+        {
+            int idxFila = dgv.Rows.Add();
+            dgv.Rows[idxFila].Cells[0].Value = $"Renglón {i + 1}";
+
+            for (int j = 0; j < totalColumnas; j++)
+            {
+                dgv.Rows[idxFila].Cells[j + 1].Value = M[i, j].ToString("F4");
+            }
+        }
+
+        dgv.Rows.Add(); // Espacio separador
+    }
+
+    public void RegresionPolinomialCompleta(double[] X, double[] Y, int grado, DataGridView dgvSumas, DataGridView dgvCoefs, out double[] coeficientes, out string ecuacionFinal, out double r2, out double r)
     {
         int n = X.Length;
-        int m = grado;
+        int m = grado + 1;
 
-        // =================================================================
-        // 1. CONSTRUIR LA TABLA DE SUMATORIAS (EL PASO A PASO)
-        // =================================================================
-        dgvSumatorias.Columns.Clear();
-        dgvSumatorias.Rows.Clear();
+        // 1. Crear las matrices para el sistema de ecuaciones normales (Sumatorias)
+        double[,] matrizA = new double[m, m];
+        double[] vectorB = new double[m];
 
-        // Agregar columnas base
-        dgvSumatorias.Columns.Add("x", "x");
-        dgvSumatorias.Columns.Add("y", "y");
+        // Configurar columnas de la tabla de sumatorias dinámicamente
+        dgvSumas.Columns.Clear();
+        dgvSumas.Rows.Clear();
+        dgvSumas.Columns.Add("Punto", "Punto");
+        dgvSumas.Columns.Add("X", "X");
+        dgvSumas.Columns.Add("Y", "Y");
+        for (int k = 2; k <= 2 * grado; k++) dgvSumas.Columns.Add($"X{k}", $"X^{k}");
+        for (int k = 1; k <= grado; k++) dgvSumas.Columns.Add($"X{k}Y", $"X^{k}·Y");
 
-        // Agregar columnas dinámicas de x^k y x^k*y según el grado
-        for (int k = 2; k <= 2 * m; k++) dgvSumatorias.Columns.Add($"x^{k}", $"x^{k}");
-        for (int k = 1; k <= m; k++) dgvSumatorias.Columns.Add($"x^{k}y", $"x^{k}y");
-
-        double[] sumX = new double[2 * m + 1];
-        double[] sumXY = new double[m + 1];
-        sumX[0] = n; // n es la sumatoria de x^0 (1)
-
-        // Llenar filas por cada punto
+        // Llenar datos fila por fila
         for (int i = 0; i < n; i++)
         {
-            List<string> fila = new List<string>();
-            fila.Add(X[i].ToString("F4"));
-            fila.Add(Y[i].ToString("F4"));
+            int rIdx = dgvSumas.Rows.Add();
+            dgvSumas.Rows[rIdx].Cells[0].Value = $"P{i + 1}";
+            dgvSumas.Rows[rIdx].Cells[1].Value = X[i].ToString("F4");
+            dgvSumas.Rows[rIdx].Cells[2].Value = Y[i].ToString("F4");
 
-            sumX[1] += X[i];
-            sumXY[0] += Y[i];
-
-            for (int k = 2; k <= 2 * m; k++)
-            {
-                double val = Math.Pow(X[i], k);
-                sumX[k] += val;
-                fila.Add(val.ToString("F4"));
-            }
-            for (int k = 1; k <= m; k++)
-            {
-                double val = Math.Pow(X[i], k) * Y[i];
-                sumXY[k] += val;
-                fila.Add(val.ToString("F4"));
-            }
-            dgvSumatorias.Rows.Add(fila.ToArray());
+            int colIdx = 3;
+            for (int k = 2; k <= 2 * grado; k++) dgvSumas.Rows[rIdx].Cells[colIdx++].Value = Math.Pow(X[i], k).ToString("F4");
+            for (int k = 1; k <= grado; k++) dgvSumas.Rows[rIdx].Cells[colIdx++].Value = (Math.Pow(X[i], k) * Y[i]).ToString("F4");
         }
 
-        // Fila final de Sumatorias Totales (Resaltada)
-        List<string> filaSum = new List<string>();
-        filaSum.Add("Σ=" + sumX[1].ToString("F4"));
-        filaSum.Add("Σ=" + sumXY[0].ToString("F4"));
-        for (int k = 2; k <= 2 * m; k++) filaSum.Add("Σ=" + sumX[k].ToString("F4"));
-        for (int k = 1; k <= m; k++) filaSum.Add("Σ=" + sumXY[k].ToString("F4"));
+        // Calcular las sumatorias para armar el sistema
+        double[] sumX = new double[2 * grado + 1];
+        double[] sumXY = new double[grado + 1];
 
-        int idxSum = dgvSumatorias.Rows.Add(filaSum.ToArray());
-        dgvSumatorias.Rows[idxSum].DefaultCellStyle.BackColor = Color.FromArgb(253, 230, 138); // Amarillo para destacar
-        dgvSumatorias.Rows[idxSum].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-
-        // =================================================================
-        // 2. ARMAR MATRIZ DE ECUACIONES NORMALES Y RESOLVER
-        // =================================================================
-        double[,] aug = new double[m + 1, m + 2];
-        for (int i = 0; i <= m; i++)
+        for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j <= m; j++) aug[i, j] = sumX[i + j];
-            aug[i, m + 1] = sumXY[i];
+            for (int k = 0; k <= 2 * grado; k++) sumX[k] += Math.Pow(X[i], k);
+            for (int k = 0; k <= grado; k++) sumXY[k] += Math.Pow(X[i], k) * Y[i];
         }
 
-        // Gauss-Jordan Interno
-        for (int i = 0; i <= m; i++)
+        // Inyectar Fila de Totales (∑) al DataGridView de sumatorias
+        int totalIdx = dgvSumas.Rows.Add();
+        dgvSumas.Rows[totalIdx].Cells[0].Value = "∑ TOTAL";
+        dgvSumas.Rows[totalIdx].DefaultCellStyle.BackColor = Color.FromArgb(243, 244, 246);
+        dgvSumas.Rows[totalIdx].DefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+        dgvSumas.Rows[totalIdx].Cells[1].Value = sumX[1].ToString("F4");
+        dgvSumas.Rows[totalIdx].Cells[2].Value = sumXY[0].ToString("F4");
+
+        int colSumIdx = 3;
+        for (int k = 2; k <= 2 * grado; k++) dgvSumas.Rows[totalIdx].Cells[colSumIdx++].Value = sumX[k].ToString("F4");
+        for (int k = 1; k <= grado; k++) dgvSumas.Rows[totalIdx].Cells[colSumIdx++].Value = sumXY[k].ToString("F4");
+
+        // Armar matriz del sistema [A|b]
+        for (int i = 0; i < m; i++)
         {
-            int p = i;
-            for (int k = i + 1; k <= m; k++)
-            {
-                if (Math.Abs(aug[k, i]) > Math.Abs(aug[p, i])) p = k;
-            }
-
-            if (Math.Abs(aug[p, i]) < 1e-12)
-                throw new Exception("Datos colineales o sistema singular. No se puede calcular este grado con los puntos dados.");
-
-            if (p != i)
-            {
-                for (int j = 0; j <= m + 1; j++)
-                {
-                    double temp = aug[i, j]; aug[i, j] = aug[p, j]; aug[p, j] = temp;
-                }
-            }
-
-            double pivote = aug[i, i];
-            for (int j = i; j <= m + 1; j++) aug[i, j] /= pivote;
-
-            for (int k = 0; k <= m; k++)
-            {
-                if (k != i)
-                {
-                    double factor = aug[k, i];
-                    for (int j = i; j <= m + 1; j++) aug[k, j] -= factor * aug[i, j];
-                }
-            }
+            for (int j = 0; j < m; j++) matrizA[i, j] = sumX[i + j];
+            vectorB[i] = sumXY[i];
         }
 
-        double[] a = new double[m + 1];
-        for (int i = 0; i <= m; i++) a[i] = aug[i, m + 1];
+        // Resolver el sistema usando tu Gauss-Jordan blindado
+        coeficientes = GaussJordanEcuacionesPuras(matrizA, vectorB);
 
-        // =================================================================
-        // 3. CÁLCULO DEL ERROR (R²) Y PRESENTACIÓN
-        // =================================================================
-        double mediaY = sumXY[0] / n;
+        // 2. Llenar la tabla de coeficientes (b0, b1, b2...) estrictamente a F8
+        dgvCoefs.Columns.Clear();
+        dgvCoefs.Rows.Clear();
+        dgvCoefs.Columns.Add("Coef", "Coeficiente");
+        dgvCoefs.Columns.Add("Val", "Valor Preciso (F8)");
+        for (int i = 0; i < coeficientes.Length; i++)
+        {
+            dgvCoefs.Rows.Add($"b{i}", coeficientes[i].ToString("F8"));
+        }
+
+        // 3. Construir la Ecuación Final SIN REDONDEOS (F8 parejo en ambos lados)
+        List<string> terminos = new List<string>();
+        terminos.Add(coeficientes[0].ToString("F8"));
+        for (int i = 1; i < coeficientes.Length; i++)
+        {
+            double val = coeficientes[i];
+            string signo = (val >= 0) ? "+" : "-";
+            terminos.Add($"{signo} {Math.Abs(val).ToString("F8")}·x^{i}");
+        }
+        ecuacionFinal = "Y = " + string.Join(" ", terminos);
+
+        // 4. Cálculo estricto de R² y del Coeficiente de Correlación r
+        double sumaY = sumXY[0];
+        double mediaY = sumaY / n;
         double St = 0, Sr = 0;
+
         for (int i = 0; i < n; i++)
         {
-            St += Math.Pow(Y[i] - mediaY, 2);
-            double yCalculado = 0;
-            for (int j = 0; j <= m; j++) yCalculado += a[j] * Math.Pow(X[i], j);
-            Sr += Math.Pow(Y[i] - yCalculado, 2);
+            St += Math.Pow(Y[i] - mediaY, i);
+
+            // Evaluar el polinomio construido en el punto X[i]
+            double yPredicho = 0;
+            for (int j = 0; j < coeficientes.Length; j++) yPredicho += coeficientes[j] * Math.Pow(X[i], j);
+            Sr += Math.Pow(Y[i] - yPredicho, 2);
         }
-        double r2 = (St == 0) ? 1 : (St - Sr) / St;
 
-        dgvResultados.Columns.Clear();
-        dgvResultados.Rows.Clear();
-        dgvResultados.Columns.Add("Atributo", "Parámetro del Modelo");
-        dgvResultados.Columns.Add("Valor", "Valor Obtenido");
-
-        for (int i = 0; i <= m; i++) dgvResultados.Rows.Add($"Coeficiente a{i}", a[i].ToString("F6"));
-
-        dgvResultados.Rows.Add("", "");
-        dgvResultados.Rows.Add("Precisión (R²)", (r2 * 100.0).ToString("F2") + " %");
-
-        string ecuacion = "y = " + a[0].ToString("F4");
-        for (int i = 1; i <= m; i++) ecuacion += (a[i] >= 0 ? " + " : " - ") + Math.Abs(a[i]).ToString("F4") + "x" + (i > 1 ? "^" + i : "");
-        dgvResultados.Rows.Add("Ecuación Final", ecuacion);
-
-        dgvResultados.Columns[0].Width = 150;
-        dgvResultados.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        r2 = (St - Sr) / St;
+        if (r2 < 0) r2 = 0; // Control por si los datos son un caos absoluto
+        r = Math.Sqrt(r2);  // Coeficiente de correlación pura r
     }
 
-    public void NewtonDiferenciasDivididas(double[] X, double[] Y, double xEval, DataGridView dgvTabla, DataGridView dgvRes)
+    // Función interna simplificada para no interferir con el DGV visual de tu otra pantalla
+    private double[] GaussJordanEcuacionesPuras(double[,] matrizA, double[] vectorB)
+    {
+        int n = vectorB.Length; double[,] M = new double[n, n + 1];
+        for (int i = 0; i < n; i++) { for (int j = 0; j < n; j++) M[i, j] = matrizA[i, j]; M[i, n] = vectorB[i]; }
+        for (int k = 0; k < n; k++)
+        {
+            int maxRow = k; double maxVal = Math.Abs(M[k, k]);
+            for (int i = k + 1; i < n; i++) if (Math.Abs(M[i, k]) > maxVal) { maxVal = Math.Abs(M[i, k]); maxRow = i; }
+            if (maxRow != k) for (int j = k; j <= n; j++) { double t = M[k, j]; M[k, j] = M[maxRow, j]; M[maxRow, j] = t; }
+            double piv = M[k, k];
+            for (int j = k; j <= n; j++) M[k, j] /= piv;
+            for (int i = 0; i < n; i++) if (i != k) { double fac = M[i, k]; for (int j = k; j <= n; j++) M[i, j] -= fac * M[k, j]; }
+        }
+        double[] res = new double[n]; for (int i = 0; i < n; i++) res[i] = M[i, n]; return res;
+    }
+
+    public void ExportarRegresionAExcelCompleto(DataGridView dgvSumas, DataGridView dgvCoefs)
+    {
+        Type excelType = Type.GetTypeFromProgID("Excel.Application");
+        if (excelType == null) throw new Exception("Microsoft Excel no está instalado.");
+
+        dynamic excelApp = Activator.CreateInstance(excelType);
+        excelApp.Visible = true;
+        dynamic workbook = excelApp.Workbooks.Add();
+        dynamic sheet = workbook.ActiveSheet;
+        sheet.Name = "Regresión Polinomial";
+
+        int fila = 1;
+
+        // 1. TÍTULO Y TABLA DE SUMATORIAS
+        sheet.Cells[fila, 1].Value = "📊 TABLA DE CONTROL DE SUMATORIAS";
+        sheet.Cells[fila, 1].Font.Bold = true;
+        sheet.Cells[fila, 1].Font.Size = 12;
+        fila += 2;
+
+        for (int c = 1; c <= dgvSumas.Columns.Count; c++)
+        {
+            sheet.Cells[fila, c].Value = dgvSumas.Columns[c - 1].HeaderText;
+            sheet.Cells[fila, c].Interior.Color = ColorTranslator.ToOle(Color.FromArgb(17, 24, 39));
+            sheet.Cells[fila, c].Font.Color = ColorTranslator.ToOle(Color.White);
+            sheet.Cells[fila, c].Font.Bold = true;
+        }
+        fila++;
+
+        for (int i = 0; i < dgvSumas.Rows.Count; i++)
+        {
+            if (dgvSumas.Rows[i].IsNewRow) continue;
+            for (int j = 0; j < dgvSumas.Columns.Count; j++)
+                sheet.Cells[fila, j + 1].Value = dgvSumas.Rows[i].Cells[j].Value?.ToString() ?? "";
+            fila++;
+        }
+
+        fila += 3; // Espacio separador
+
+        // 2. TÍTULO Y TABLA DE RESULTADOS/MÉTRICAS
+        sheet.Cells[fila, 1].Value = "📉 COEFICIENTES Y MODELO MATEMÁTICO";
+        sheet.Cells[fila, 1].Font.Bold = true;
+        sheet.Cells[fila, 1].Font.Size = 12;
+        fila += 2;
+
+        for (int c = 1; c <= dgvCoefs.Columns.Count; c++)
+        {
+            sheet.Cells[fila, c].Value = dgvCoefs.Columns[c - 1].HeaderText;
+            sheet.Cells[fila, c].Interior.Color = ColorTranslator.ToOle(Color.FromArgb(55, 65, 81));
+            sheet.Cells[fila, c].Font.Color = ColorTranslator.ToOle(Color.White);
+            sheet.Cells[fila, c].Font.Bold = true;
+        }
+        fila++;
+
+        for (int i = 0; i < dgvCoefs.Rows.Count; i++)
+        {
+            if (dgvCoefs.Rows[i].IsNewRow) continue;
+            for (int j = 0; j < dgvCoefs.Columns.Count; j++)
+            {
+                sheet.Cells[fila, j + 1].Value = dgvCoefs.Rows[i].Cells[j].Value?.ToString() ?? "";
+            }
+
+            // Si la fila contiene la Ecuación o el R2, pintarla en Excel también
+            string celdaIzquierda = dgvCoefs.Rows[i].Cells[0].Value?.ToString() ?? "";
+            if (celdaIzquierda.Contains("Modelo"))
+            {
+                sheet.Range[sheet.Cells[fila, 1], sheet.Cells[fila, 2]].Interior.Color = ColorTranslator.ToOle(Color.FromArgb(16, 185, 129));
+                sheet.Range[sheet.Cells[fila, 1], sheet.Cells[fila, 2]].Font.Color = ColorTranslator.ToOle(Color.White);
+                sheet.Range[sheet.Cells[fila, 1], sheet.Cells[fila, 2]].Font.Bold = true;
+            }
+            else if (celdaIzquierda.Contains("Coef."))
+            {
+                sheet.Range[sheet.Cells[fila, 1], sheet.Cells[fila, 2]].Interior.Color = ColorTranslator.ToOle(Color.FromArgb(31, 41, 55));
+                sheet.Range[sheet.Cells[fila, 1], sheet.Cells[fila, 2]].Font.Color = ColorTranslator.ToOle(Color.White);
+                sheet.Range[sheet.Cells[fila, 1], sheet.Cells[fila, 2]].Font.Bold = true;
+            }
+            fila++;
+        }
+
+        excelApp.Columns.AutoFit();
+    }
+
+    public void NewtonDiferenciasDivididasPasoAPaso(double[] X, double[] Y, double? xEstimar, DataGridView dgv, out string ecuacionFinal, out int gradoReal, out double? yEstimado)
     {
         int n = X.Length;
         double[,] F = new double[n, n];
 
         // 1. Inicializar la primera columna con los valores de Y
-        for (int i = 0; i < n; i++)
-        {
-            F[i, 0] = Y[i];
-        }
+        for (int i = 0; i < n; i++) F[i, 0] = Y[i];
 
-        // 2. Calcular las Diferencias Divididas (La escalera)
+        // 2. Calcular la tabla de diferencias divididas
         for (int j = 1; j < n; j++)
         {
             for (int i = 0; i < n - j; i++)
             {
-                F[i, j] = (F[i + 1, j - 1] - F[i, j - 1]) / (X[i + j] - X[i]);
+                double denominador = X[i + j] - X[i];
+                if (Math.Abs(denominador) < 1e-10) throw new Exception("Hay dos valores de X idénticos. No se puede dividir entre cero.");
+
+                F[i, j] = (F[i + 1, j - 1] - F[i, j - 1]) / denominador;
             }
         }
 
-        // =================================================================
-        // 3. CONSTRUIR LA TABLA VISUAL DE DIFERENCIAS
-        // =================================================================
-        dgvTabla.Columns.Clear();
-        dgvTabla.Rows.Clear();
-
-        dgvTabla.Columns.Add("X", "X");
-        dgvTabla.Columns.Add("Y", "Y (Orden 0)");
-
-        for (int j = 1; j < n; j++)
+        // 3. DETECTAR EL GRADO REAL DEL POLINOMIO (Buscar el último coeficiente != 0 en la primera fila)
+        gradoReal = 0;
+        for (int j = n - 1; j >= 0; j--)
         {
-            dgvTabla.Columns.Add($"Orden{j}", $"Orden {j}");
+            if (Math.Abs(F[0, j]) > 1e-8) // Tolerancia para considerar cero real
+            {
+                gradoReal = j;
+                break;
+            }
         }
 
-        // Llenar la tabla (dejando en blanco los espacios de la escalera)
+        // 4. Configurar las columnas del DataGridView visual
+        dgv.Columns.Clear(); dgv.Rows.Clear();
+        dgv.Columns.Add("Punto", "Punto");
+        dgv.Columns.Add("X", "X");
+        dgv.Columns.Add("Y", "Y (F[i,0])");
+        for (int j = 1; j < n; j++) dgv.Columns.Add($"D{j}", $"Dif. Div. Orden {j}");
+
+        // Rellenar el DataGridView con los números calculados
         for (int i = 0; i < n; i++)
         {
-            List<string> fila = new List<string>();
-            fila.Add(X[i].ToString("F4"));
+            int rIdx = dgv.Rows.Add();
+            dgv.Rows[rIdx].Cells[0].Value = $"P{i + 1}";
+            dgv.Rows[rIdx].Cells[1].Value = X[i].ToString("F4");
 
             for (int j = 0; j < n - i; j++)
             {
-                fila.Add(F[i, j].ToString("F4"));
+                dgv.Rows[rIdx].Cells[j + 2].Value = F[i, j].ToString("F4");
             }
-            dgvTabla.Rows.Add(fila.ToArray());
         }
 
-        // Resaltar la primera fila (Estos son los coeficientes b0, b1, b2... del polinomio)
-        dgvTabla.Rows[0].DefaultCellStyle.BackColor = Color.FromArgb(253, 230, 138); // Amarillo
-        dgvTabla.Rows[0].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+        // 5. CONSTRUIR EL POLINOMIO SÓLO HASTA EL GRADO REAL DETECTADO
+        List<string> terminos = new List<string>();
+        terminos.Add(F[0, 0].ToString("F4")); // El primer término a0
 
-        // =================================================================
-        // 4. ARMAR EL POLINOMIO Y EVALUAR
-        // =================================================================
-        double resultadoEval = F[0, 0];
-        double terminoX = 1;
-
-        // Construir el texto de la ecuación de forma limpia
-        string ecuacion = F[0, 0].ToString("F4");
-
-        for (int j = 1; j < n; j++)
+        for (int j = 1; j <= gradoReal; j++)
         {
-            // Para la evaluación matemática
-            terminoX *= (xEval - X[j - 1]);
-            resultadoEval += (F[0, j] * terminoX);
+            double coef = F[0, j];
+            if (Math.Abs(coef) < 1e-8) continue; // Si es cero intermedio, se salta
 
-            // Para la presentación visual de la ecuación
-            string signoCoef = F[0, j] >= 0 ? " + " : " - ";
-            string textoTermino = signoCoef + Math.Abs(F[0, j]).ToString("F4");
+            string signo = (coef > 0) ? "+" : "-";
+            string constructorX = "";
 
             for (int k = 0; k < j; k++)
             {
-                string signoX = X[k] < 0 ? "+" : "-";
-                textoTermino += $"(x {signoX} {Math.Abs(X[k])})";
+                string signoX = (X[k] >= 0) ? "-" : "+";
+                constructorX += $"(x {signoX} {Math.Abs(X[k]).ToString("F2")})";
             }
-            ecuacion += textoTermino;
+
+            terminos.Add($"{signo} {Math.Abs(coef).ToString("F4")}{constructorX}");
         }
+        ecuacionFinal = "P(x) = " + string.Join(" ", terminos);
 
-        // =================================================================
-        // 5. MOSTRAR RESULTADOS FINALES
-        // =================================================================
-        dgvRes.Columns.Clear();
-        dgvRes.Rows.Clear();
-        dgvRes.Columns.Add("Atributo", "Métrica / Resultado");
-        dgvRes.Columns.Add("Valor", "Valor Obtenido");
+        // 6. ESTIMACIÓN OPTIONAL (Sólo si el usuario metió un valor de X)
+        yEstimado = null;
+        if (xEstimar.HasValue)
+        {
+            double xVal = xEstimar.Value;
+            double suma = F[0, 0];
+            double acumuladoX = 1.0;
 
-        dgvRes.Rows.Add("Grado del Polinomio", (n - 1).ToString());
-        dgvRes.Rows.Add("Ecuación Interpolante", ecuacion);
-        dgvRes.Rows.Add("", ""); // Separador
-        dgvRes.Rows.Add($"Predicción f({xEval})", resultadoEval.ToString("F6"));
-
-        dgvRes.Rows[3].DefaultCellStyle.BackColor = Color.FromArgb(165, 180, 252); // Resalte morado para el resultado
-        dgvRes.Rows[3].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-
-        dgvRes.Columns[0].Width = 180;
-        dgvRes.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            for (int j = 1; j <= gradoReal; j++)
+            {
+                acumuladoX *= (xVal - X[j - 1]);
+                suma += F[0, j] * acumuladoX;
+            }
+            yEstimado = suma;
+        }
     }
-
-    public void InterpolacionLagrange(double[] X, double[] Y, double xEval, DataGridView dgvBase, DataGridView dgvRes)
+    public void LagrangePasoAPaso(double[] X, double[] Y, double? xEval, DataGridView dgv, out string ecuacionFinal, out double? yEstimado)
     {
         int n = X.Length;
-        double[] L = new double[n];
-        double resultadoEval = 0;
+        yEstimado = null;
 
-        // 1. Calcular los Polinomios Base L_i y la evaluación final
+        // 1. Configurar la tabla de salida dinámicamente
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("i", "i");
+        dgv.Columns.Add("X", "X_i");
+        dgv.Columns.Add("Y", "Y_i");
+
+        // Solo mostramos L_i y el producto parcial si el usuario metió un X a evaluar
+        if (xEval.HasValue)
+        {
+            dgv.Columns.Add("L", $"L_i({xEval.Value})");
+            dgv.Columns.Add("Termino", $"Y_i · L_i");
+        }
+
+        List<string> terminosEcuacion = new List<string>();
+        double sumaTotal = 0;
+
+        // 2. Calcular los factores L_i y construir la fórmula
         for (int i = 0; i < n; i++)
         {
-            double numerador = 1;
-            double denominador = 1;
+            List<string> numTerm = new List<string>();
+            double denTotal = 1.0;
+            double L_i = 1.0;
 
             for (int j = 0; j < n; j++)
             {
-                if (j != i)
+                if (i != j)
                 {
-                    numerador *= (xEval - X[j]);
-                    denominador *= (X[i] - X[j]);
+                    // Construir el string del numerador (x - X_j)
+                    string signoXj = X[j] >= 0 ? "-" : "+";
+                    numTerm.Add($"(x {signoXj} {Math.Abs(X[j])})");
+
+                    // Calcular el denominador real (X_i - X_j)
+                    denTotal *= (X[i] - X[j]);
+
+                    // Calcular el valor numérico de L_i si hay un X de estimación
+                    if (xEval.HasValue)
+                    {
+                        L_i *= (xEval.Value - X[j]) / (X[i] - X[j]);
+                    }
                 }
             }
 
-            // Evitar división por cero si meten puntos X repetidos
-            if (Math.Abs(denominador) < 1e-12)
-                throw new Exception($"Hay valores repetidos en X (X[{i}] = X). No se puede interpolar con puntos sobre la misma línea vertical.");
+            // Ensamblar el bloque de texto de este término específico
+            string numeradorStr = string.Join("", numTerm);
+            string terminoEcuacion = $"{Y[i]} * [{numeradorStr} / {denTotal}]";
+            terminosEcuacion.Add(terminoEcuacion);
 
-            L[i] = numerador / denominador;
-            resultadoEval += Y[i] * L[i];
-        }
+            // Llenar la fila correspondiente en la tabla visual
+            int rIdx = dgv.Rows.Add();
+            dgv.Rows[rIdx].Cells[0].Value = i.ToString();
+            dgv.Rows[rIdx].Cells[1].Value = X[i].ToString("F4");
+            dgv.Rows[rIdx].Cells[2].Value = Y[i].ToString("F4");
 
-        // =================================================================
-        // 2. CONSTRUIR LA TABLA VISUAL DE LOS POLINOMIOS BASE L_i
-        // =================================================================
-        dgvBase.Columns.Clear();
-        dgvBase.Rows.Clear();
-
-        dgvBase.Columns.Add("Indice", "Punto (i)");
-        dgvBase.Columns.Add("X", "x_i");
-        dgvBase.Columns.Add("Y", "y_i");
-        dgvBase.Columns.Add("Li", $"L_{{i}}(x) Evaluado en x={xEval}");
-
-        for (int i = 0; i < n; i++)
-        {
-            dgvBase.Rows.Add(i.ToString(), X[i].ToString("F4"), Y[i].ToString("F4"), L[i].ToString("F6"));
-        }
-
-        // Destacar la tabla con un estilo limpio de procedimiento
-        dgvBase.Columns[0].Width = 80;
-        dgvBase.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-        // =================================================================
-        // 3. ENSAMBLAR LA ECUACIÓN SIMBÓLICA ORIGINAL DE LAGRANGE
-        // =================================================================
-        string ecuacion = "";
-        for (int i = 0; i < n; i++)
-        {
-            double den = 1;
-            for (int j = 0; j < n; j++)
+            if (xEval.HasValue)
             {
-                if (j != i) den *= (X[i] - X[j]);
-            }
-
-            double coef = Y[i] / den;
-            if (Math.Abs(coef) < 1e-6) continue; // Ignorar términos nulos
-
-            string signo = coef >= 0 ? (ecuacion == "" ? "" : " + ") : " - ";
-            ecuacion += signo + Math.Abs(coef).ToString("F4");
-
-            for (int j = 0; j < n; j++)
-            {
-                if (j != i)
-                {
-                    string signoX = X[j] >= 0 ? "-" : "+";
-                    ecuacion += $"(x {signoX} {Math.Abs(X[j])})";
-                }
+                dgv.Rows[rIdx].Cells[3].Value = L_i.ToString("F6");
+                double terminoActual = Y[i] * L_i;
+                dgv.Rows[rIdx].Cells[4].Value = terminoActual.ToString("F6");
+                sumaTotal += terminoActual;
             }
         }
 
-        // =================================================================
-        // 4. MOSTRAR RESULTADOS FINALES ABAJO
-        // =================================================================
-        dgvRes.Columns.Clear();
-        dgvRes.Rows.Clear();
-        dgvRes.Columns.Add("Atributo", "Métrica / Resultado");
-        dgvRes.Columns.Add("Valor", "Valor Obtenido");
-
-        dgvRes.Rows.Add("Grado del Polinomio", (n - 1).ToString());
-        dgvRes.Rows.Add("Fórmula Polinómica", ecuacion);
-        dgvRes.Rows.Add("", ""); // Separador visual
-        dgvRes.Rows.Add($"Resultado Interpolado P({xEval})", resultadoEval.ToString("F6"));
-
-        // Estilo destacado a la celda de predicción final
-        dgvRes.Rows[3].DefaultCellStyle.BackColor = Color.FromArgb(165, 180, 252); // Morado
-        dgvRes.Rows[3].DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-
-        dgvRes.Columns[0].Width = 180;
-        dgvRes.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        // 3. Unir todo con el formato de sumatoria de Lagrange
+        ecuacionFinal = "P(x) = " + string.Join("  +  ", terminosEcuacion);
+        if (xEval.HasValue) yEstimado = sumaTotal;
     }
 
-    public void DiferenciacionNumericaTabular(double[] X, double[] Y, DataGridView dgvRes)
+    // 🚀 MOTOR DE DIFERENCIACIÓN FOCALIZADA
+    public void DiferenciacionNumericaFocalizada(double[] X, double[] Y, double x0, double h, double? exacto, DataGridView dgv)
     {
-        int n = X.Length;
+        double xBack = Math.Round(x0 - h, 6);
+        double xForw = Math.Round(x0 + h, 6);
 
-        // =================================================================
-        // 1. CONFIGURAR LA TABLA VISUAL DE DERIVADAS (NOMBRES NEUTROS)
-        // =================================================================
-        dgvRes.Columns.Clear();
-        dgvRes.Rows.Clear();
+        // Buscar los 3 puntos clave en la matriz de datos ingresada
+        bool hasY0 = BuscarYExacto(x0, X, Y, out double y0);
+        bool hasYBack = BuscarYExacto(xBack, X, Y, out double yBack);
+        bool hasYForw = BuscarYExacto(xForw, X, Y, out double yForw);
 
-        dgvRes.Columns.Add("i", "Punto (i)");
-        dgvRes.Columns.Add("X", "Variable (x)");
-        dgvRes.Columns.Add("Y", "Función f(x)");
-        dgvRes.Columns.Add("Adelante", "1ra Derivada f'(x) Adelante");
-        dgvRes.Columns.Add("Atras", "1ra Derivada f'(x) Atrás");
-        dgvRes.Columns.Add("Central", "1ra Derivada f'(x) Central");
-        dgvRes.Columns.Add("Segunda", "2da Derivada f''(x) Central");
+        if (!hasY0)
+            throw new Exception($"El punto central X₀ = {x0} no se encontró en la tabla de datos. Es obligatorio para derivar.");
 
-        // =================================================================
-        // 2. CÁLCULO DE DIFERENCIAS FINITAS (1ra y 2da Derivada)
-        // =================================================================
-        for (int i = 0; i < n; i++)
+        // Configurar columnas de la tabla de salida
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Metodo", "Método Diferencial");
+        dgv.Columns.Add("Sustitucion", "Sustitución en la Fórmula");
+        dgv.Columns.Add("Resultado", "Aproximación");
+        dgv.Columns.Add("Error", "Error Absoluto |E|");
+
+        // 1. HACIA ADELANTE
+        if (hasYForw)
         {
-            string valAdelante = "-";
-            string valAtras = "-";
-            string valCentral = "-";
-            string valSegunda = "-"; // Para la Aceleración
-
-            // Hacia Adelante (No aplica para el último)
-            if (i < n - 1) valAdelante = ((Y[i + 1] - Y[i]) / (X[i + 1] - X[i])).ToString("F4");
-
-            // Hacia Atrás (No aplica para el primero)
-            if (i > 0) valAtras = ((Y[i] - Y[i - 1]) / (X[i] - X[i - 1])).ToString("F4");
-
-            // Diferencia Central (No aplica ni al primero ni al último)
-            if (i > 0 && i < n - 1)
-            {
-                double h1 = X[i] - X[i - 1]; // Distancia al anterior
-                double h2 = X[i + 1] - X[i]; // Distancia al siguiente
-
-                // Primera Derivada Central (Velocidad)
-                valCentral = ((Y[i + 1] - Y[i - 1]) / (h1 + h2)).ToString("F4");
-
-                // Segunda Derivada Central (Aceleración) - Requiere que h sea constante
-                if (Math.Abs(h1 - h2) < 1e-6)
-                {
-                    double h = h1;
-                    double derivadaSegunda = (Y[i + 1] - 2 * Y[i] + Y[i - 1]) / (h * h);
-                    valSegunda = derivadaSegunda.ToString("F4");
-                }
-                else
-                {
-                    valSegunda = "N/A (h varía)";
-                }
-            }
-
-            dgvRes.Rows.Add(i.ToString(), X[i].ToString("F4"), Y[i].ToString("F4"), valAdelante, valAtras, valCentral, valSegunda);
+            double res = (yForw - y0) / h;
+            string sust = $"[f({xForw}) - f({x0})] / {h}  ➔  [{yForw} - {y0}] / {h}";
+            dgv.Rows.Add("Hacia Adelante", sust, res.ToString("F6"), EvaluarError(res, exacto));
         }
+        else dgv.Rows.Add("Hacia Adelante", $"Falta f({xForw}) en la tabla", "---", "---");
 
-        // Estilos destacados para la Primera y Segunda Derivada Central
-        dgvRes.Columns[5].DefaultCellStyle.BackColor = Color.FromArgb(224, 231, 255); // Azulito para Velocidad
-        dgvRes.Columns[5].DefaultCellStyle.Font = new Font("Consolas", 10, FontStyle.Bold);
-        dgvRes.Columns[5].DefaultCellStyle.ForeColor = Color.FromArgb(67, 56, 202);
+        // 2. HACIA ATRÁS
+        if (hasYBack)
+        {
+            double res = (y0 - yBack) / h;
+            string sust = $"[f({x0}) - f({xBack})] / {h}  ➔  [{y0} - {yBack}] / {h}";
+            dgv.Rows.Add("Hacia Atrás", sust, res.ToString("F6"), EvaluarError(res, exacto));
+        }
+        else dgv.Rows.Add("Hacia Atrás", $"Falta f({xBack}) en la tabla", "---", "---");
 
-        dgvRes.Columns[6].DefaultCellStyle.BackColor = Color.FromArgb(254, 226, 226); // Rojito para Aceleración
-        dgvRes.Columns[6].DefaultCellStyle.Font = new Font("Consolas", 10, FontStyle.Bold);
-        dgvRes.Columns[6].DefaultCellStyle.ForeColor = Color.FromArgb(220, 38, 38);
+        // 3. CENTRAL (1ra Derivada)
+        if (hasYForw && hasYBack)
+        {
+            double res = (yForw - yBack) / (2 * h);
+            string sust = $"[f({xForw}) - f({xBack})] / 2({h})  ➔  [{yForw} - {yBack}] / {2 * h}";
+            int idxCentral = dgv.Rows.Add("Central (Mejor Aproximación)", sust, res.ToString("F6"), EvaluarError(res, exacto));
 
-        dgvRes.Columns[0].Width = 60;
-        dgvRes.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            // Estilo para resaltar la mejor aproximación
+            dgv.Rows[idxCentral].DefaultCellStyle.BackColor = Color.FromArgb(16, 185, 129); // Verde
+            dgv.Rows[idxCentral].DefaultCellStyle.ForeColor = Color.White;
+            dgv.Rows[idxCentral].DefaultCellStyle.Font = new Font("Consolas", 11, FontStyle.Bold);
+        }
+        else dgv.Rows.Add("Central (1ra Derivada)", $"Faltan puntos perimetrales", "---", "---");
+
+        // 4. CENTRAL (2da Derivada / Aceleración)
+        if (hasYForw && hasYBack)
+        {
+            double res2 = (yForw - 2 * y0 + yBack) / (h * h);
+            string sust2 = $"[f({xForw}) - 2f({x0}) + f({xBack})] / {h}²  ➔  [{yForw} - 2({y0}) + {yBack}] / {h * h}";
+            int idxSegunda = dgv.Rows.Add("Segunda Derivada f''(X₀)", sust2, res2.ToString("F6"), "--- (Requiere Exacto f'')");
+
+            dgv.Rows[idxSegunda].DefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55); // Oscuro
+            dgv.Rows[idxSegunda].DefaultCellStyle.ForeColor = Color.White;
+        }
+        else dgv.Rows.Add("Segunda Derivada f''(X₀)", $"Faltan puntos perimetrales", "---", "---");
+    }
+
+    // Funciones Auxiliares del Motor
+    private bool BuscarYExacto(double target, double[] X, double[] Y, out double yVal)
+    {
+        yVal = 0;
+        for (int i = 0; i < X.Length; i++)
+        {
+            if (Math.Abs(X[i] - target) < 1e-5) // Blindaje contra errores de flotante
+            {
+                yVal = Y[i];
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private string EvaluarError(double aproximado, double? exacto)
+    {
+        if (!exacto.HasValue) return "---";
+        return Math.Abs(exacto.Value - aproximado).ToString("F6");
     }
     // 🎨 LA BROCHA MÁGICA PARA EL DISEÑO DE LAS TABLAS
     public void FormatearTabla(DataGridView dgv)

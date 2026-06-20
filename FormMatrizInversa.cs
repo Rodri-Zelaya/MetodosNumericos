@@ -14,7 +14,7 @@ namespace Métodos_Numéricos
         {
             InitializeComponent();
             AplicarEstiloTuani(this.Controls);
-            ConfigurarEmptyState("Método de la Matriz Inversa", "Método directo exacto. Obtiene la matriz inversa A^-1 aplicando operaciones de renglón sobre la estructura aumentada [A|I]. La solución del sistema se calcula directamente mediante el producto matricial x = A^-1 · b.");
+            ConfigurarEmptyState("Método de la Matriz Inversa", "Método directo exacto. Obtiene la matriz inversa A⁻¹ aplicando operaciones de renglón sobre la estructura aumentada [A|I]. La solución del sistema se calcula directamente mediante el producto matricial X = A⁻¹ · b.");
 
             // 🚀 MOTOR DE ALINEACIÓN AUTOMÁTICA
             this.Resize += (s, e) => AcomodarControles();
@@ -40,7 +40,7 @@ namespace Métodos_Numéricos
 
                 for (int i = 0; i < n; i++)
                 {
-                    string[] elementos = lineasA[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] elementos = lineasA[i].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                     if (elementos.Length != n)
                     {
                         MessageBox.Show($"La Matriz A debe ser cuadrada ({n}x{n}). Fila {i + 1} tiene {elementos.Length} elementos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -50,7 +50,7 @@ namespace Métodos_Numéricos
                 }
 
                 // 2. Parsear Vector B
-                string[] lineasB = txtVectorB.Text.Split(new string[] { "\r\n", "\n", " " }, StringSplitOptions.RemoveEmptyEntries);
+                string[] lineasB = txtVectorB.Text.Split(new string[] { "\r\n", "\n", " ", "\t" }, StringSplitOptions.RemoveEmptyEntries);
                 if (lineasB.Length != n)
                 {
                     MessageBox.Show($"El vector b debe tener exactamente {n} términos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -59,8 +59,8 @@ namespace Métodos_Numéricos
                 double[] b = new double[n];
                 for (int i = 0; i < n; i++) b[i] = metodos.ConvertirADouble(lineasB[i]);
 
-                // 🚀 ARRANCAR MOTOR DE MATRIZ INVERSA
-                metodos.MatrizInversa(A, b, dgvMatrizInversa);
+                // 🚀 ARRANCAR MOTOR DE MATRIZ INVERSA PASO A PASO
+                metodos.MatrizInversaPasoAPaso(A, b, dgvMatrizInversa);
 
                 // 🚀 ESTILOS DEL DATAGRIDVIEW
                 dgvMatrizInversa.EnableHeadersVisualStyles = false;
@@ -70,10 +70,15 @@ namespace Métodos_Numéricos
                 dgvMatrizInversa.RowHeadersVisible = false;
                 dgvMatrizInversa.DefaultCellStyle.BackColor = Color.White;
                 dgvMatrizInversa.DefaultCellStyle.ForeColor = Color.Black;
-                dgvMatrizInversa.DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+
+                // Usar Consolas para alinear bien los decimales
+                dgvMatrizInversa.DefaultCellStyle.Font = new Font("Consolas", 10, FontStyle.Regular);
                 dgvMatrizInversa.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(235, 238, 245);
                 dgvMatrizInversa.DefaultCellStyle.SelectionBackColor = Color.FromArgb(79, 70, 229);
                 dgvMatrizInversa.DefaultCellStyle.SelectionForeColor = Color.White;
+
+                // Que las columnas se expandan para ocupar toda la tabla
+                dgvMatrizInversa.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
                 pnlEspera.Visible = false;
                 dgvMatrizInversa.Visible = true;
@@ -130,7 +135,7 @@ namespace Métodos_Numéricos
 
             Panel pnlDerecha = new Panel { Width = 380, Height = 480, Location = new Point(580, 0), Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right, BackColor = Color.FromArgb(17, 24, 39) };
             pnlDerecha.Controls.Add(new Label { Text = "⚙️ Base Matemática", Font = new Font("Segoe UI", 14, FontStyle.Bold), ForeColor = Color.White, AutoSize = true, Location = new Point(25, 40) });
-            pnlDerecha.Controls.Add(new Label { Text = "[A|I] ➔ [I|A^-1]\n\nx = A^-1 · b\n\nA^-1 = Matriz Inversa", Font = new Font("Consolas", 8, FontStyle.Bold), ForeColor = Color.FromArgb(165, 180, 252), AutoSize = true, Location = new Point(25, 90) });
+            pnlDerecha.Controls.Add(new Label { Text = "[A|I] ➔ [I|A⁻¹]\n\nX = A⁻¹ · b\n\nA⁻¹ = Matriz Inversa", Font = new Font("Consolas", 11, FontStyle.Bold), ForeColor = Color.FromArgb(165, 180, 252), AutoSize = true, Location = new Point(25, 90) });
 
             Panel pnlNota = new Panel { BackColor = Color.FromArgb(31, 41, 55), Size = new Size(330, 250), Location = new Point(25, 160) };
             pnlNota.Controls.Add(new Panel { BackColor = Color.FromArgb(79, 70, 229), Dock = DockStyle.Left, Width = 4 });

@@ -34,10 +34,8 @@
             dgvPuntos = new DataGridView();
             ColX = new DataGridViewTextBoxColumn();
             ColY = new DataGridViewTextBoxColumn();
-            dgvDerivadas = new DataGridView();
             label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvPuntos).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgvDerivadas).BeginInit();
             SuspendLayout();
             // 
             // btnCalcular
@@ -94,15 +92,6 @@
             ColY.Name = "ColY";
             ColY.Width = 125;
             // 
-            // dgvDerivadas
-            // 
-            dgvDerivadas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDerivadas.Location = new Point(12, 202);
-            dgvDerivadas.Name = "dgvDerivadas";
-            dgvDerivadas.RowHeadersWidth = 51;
-            dgvDerivadas.Size = new Size(769, 221);
-            dgvDerivadas.TabIndex = 4;
-            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -118,7 +107,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(label1);
-            Controls.Add(dgvDerivadas);
             Controls.Add(dgvPuntos);
             Controls.Add(btnLimpiar);
             Controls.Add(btnExportar);
@@ -126,7 +114,6 @@
             Name = "FormDiferenciacionNumerica";
             Text = "FormDiferenciacionNumerica";
             ((System.ComponentModel.ISupportInitialize)dgvPuntos).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgvDerivadas).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -139,7 +126,6 @@
         private DataGridView dgvPuntos;
         private DataGridViewTextBoxColumn ColX;
         private DataGridViewTextBoxColumn ColY;
-        private DataGridView dgvDerivadas;
         private Label label1;
     }
 }

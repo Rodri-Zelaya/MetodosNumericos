@@ -139,7 +139,7 @@
             // dgvSumatorias
             // 
             dgvSumatorias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSumatorias.Location = new Point(341, 86);
+            dgvSumatorias.Location = new Point(143, 220);
             dgvSumatorias.Name = "dgvSumatorias";
             dgvSumatorias.RowHeadersWidth = 51;
             dgvSumatorias.Size = new Size(300, 188);
