@@ -136,7 +136,7 @@
             btnTrapecio.Name = "btnTrapecio";
             btnTrapecio.Size = new Size(232, 29);
             btnTrapecio.TabIndex = 0;
-            btnTrapecio.Text = "Trapecio";
+            btnTrapecio.Text = "Trapecio, Simpson, Romberg";
             btnTrapecio.UseVisualStyleBackColor = true;
             btnTrapecio.Click += btnTrapecio_Click;
             // 
@@ -406,7 +406,7 @@
             btnNewtonNoLineal.Name = "btnNewtonNoLineal";
             btnNewtonNoLineal.Size = new Size(232, 31);
             btnNewtonNoLineal.TabIndex = 0;
-            btnNewtonNoLineal.Text = "Newton Raphson No Lineal";
+            btnNewtonNoLineal.Text = "Newton No Lineal";
             btnNewtonNoLineal.UseVisualStyleBackColor = true;
             btnNewtonNoLineal.Click += btnNewtonNoLineal_Click;
             // 

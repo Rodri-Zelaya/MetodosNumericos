@@ -37,40 +37,42 @@ namespace Métodos_Numéricos
         {
             pnlControles = new Panel { BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle };
 
-            cmbTipoIntegral = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 10), Width = 320, Location = new Point(10, 15) };
-            cmbTipoIntegral.Items.Add("Integral Simple. Regla del Trapecio");
-            cmbTipoIntegral.Items.Add("Integral Doble. Regla del Trapecio");
-            cmbTipoIntegral.Items.Add("Integral Simple. Regla de Simpson 1/3");
-            cmbTipoIntegral.Items.Add("Integral Doble. Regla de Simpson 1/3");
-            cmbTipoIntegral.Items.Add("Integral Simple. Regla de Simpson 3/8");
-            cmbTipoIntegral.Items.Add("Integral Doble. Regla de Simpson 3/8");
+            // 🚀 ComboBox más ancho (Width: 420)
+            cmbTipoIntegral = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 10), Width = 420, Location = new Point(10, 15) };
+            cmbTipoIntegral.Items.Add("1D: Regla del Trapecio");
+            cmbTipoIntegral.Items.Add("2D: Regla del Trapecio");
+            cmbTipoIntegral.Items.Add("1D: Regla de Simpson 1/3");
+            cmbTipoIntegral.Items.Add("2D: Regla de Simpson 1/3");
+            cmbTipoIntegral.Items.Add("1D: Regla de Simpson 3/8");
+            cmbTipoIntegral.Items.Add("2D: Regla de Simpson 3/8");
             cmbTipoIntegral.Items.Add("1D: Integración de Romberg");
             cmbTipoIntegral.Items.Add("2D: Integración de Romberg");
             cmbTipoIntegral.SelectedIndex = 0;
             cmbTipoIntegral.SelectedIndexChanged += CmbTipoIntegral_SelectedIndexChanged;
 
+            // 🚀 Caja de función mucho más ancha (Width: 350)
             pnlControles.Controls.Add(new Label { Text = "Función f:", Location = new Point(10, 55), AutoSize = true });
-            txtFuncion = new TextBox { Location = new Point(80, 53), Width = 200 , Text = "x^2" };
+            txtFuncion = new TextBox { Location = new Point(80, 53), Width = 350, Text = "x^2" };
 
-            // Entradas X (1D y 2D)
+            // Entradas X (Separadas para que respiren mejor)
             pnlControles.Controls.Add(new Label { Text = "Lim A (x):", Location = new Point(10, 95), AutoSize = true });
-            txtA = new TextBox { Location = new Point(80, 93), Width = 50, Text = "0" };
+            txtA = new TextBox { Location = new Point(80, 93), Width = 60, Text = "0" };
 
-            pnlControles.Controls.Add(new Label { Text = "Lim B (x):", Location = new Point(140, 95), AutoSize = true });
-            txtB = new TextBox { Location = new Point(210, 93), Width = 50, Text = "5" };
+            pnlControles.Controls.Add(new Label { Text = "Lim B (x):", Location = new Point(160, 95), AutoSize = true });
+            txtB = new TextBox { Location = new Point(230, 93), Width = 60, Text = "5" };
 
             pnlControles.Controls.Add(new Label { Text = "Int n (x):", Location = new Point(10, 130), AutoSize = true });
-            txtN = new TextBox { Location = new Point(80, 128), Width = 50, Text = "10" };
+            txtN = new TextBox { Location = new Point(80, 128), Width = 60, Text = "10" };
 
             // Entradas Y (Solo 2D)
             lblCy = new Label { Text = "Lim C (y):", Location = new Point(10, 170), AutoSize = true, Visible = false };
-            txtC = new TextBox { Location = new Point(80, 168), Width = 50, Text = "0", Visible = false };
+            txtC = new TextBox { Location = new Point(80, 168), Width = 60, Text = "0", Visible = false };
 
-            lblDy = new Label { Text = "Lim D (y):", Location = new Point(140, 170), AutoSize = true, Visible = false };
-            txtD = new TextBox { Location = new Point(210, 168), Width = 50, Text = "3", Visible = false };
+            lblDy = new Label { Text = "Lim D (y):", Location = new Point(160, 170), AutoSize = true, Visible = false };
+            txtD = new TextBox { Location = new Point(230, 168), Width = 60, Text = "3", Visible = false };
 
             lblNy = new Label { Text = "Int n (y):", Location = new Point(10, 205), AutoSize = true, Visible = false };
-            txtNy = new TextBox { Location = new Point(80, 203), Width = 50, Text = "4", Visible = false };
+            txtNy = new TextBox { Location = new Point(80, 203), Width = 60, Text = "4", Visible = false };
 
             pnlControles.Controls.AddRange(new Control[] { cmbTipoIntegral, txtFuncion, txtA, txtB, txtN, lblCy, txtC, lblDy, txtD, lblNy, txtNy });
             this.Controls.Add(pnlControles);
@@ -233,15 +235,18 @@ namespace Métodos_Numéricos
             if (this.ClientSize.Width == 0) return;
 
             int boxY = 80;
-            bool esModo1D = (cmbTipoIntegral.SelectedIndex == 0 || cmbTipoIntegral.SelectedIndex == 2 || cmbTipoIntegral.SelectedIndex == 4);
+
+            // Detectar si es 1D o 2D para ajustar la altura de la caja
+            bool esModo1D = (cmbTipoIntegral.SelectedIndex == 0 || cmbTipoIntegral.SelectedIndex == 2 ||
+                             cmbTipoIntegral.SelectedIndex == 4 || cmbTipoIntegral.SelectedIndex == 6);
+
             int boxAlto = esModo1D ? 170 : 250;
 
+            // 🚀 Aumentamos el Width del Panel blanco a 450
             pnlControles.Location = new Point(40, boxY);
-            pnlControles.Size = new Size(360, boxAlto);
+            pnlControles.Size = new Size(450, boxAlto);
 
-            pnlControles.Location = new Point(40, boxY);
-            pnlControles.Size = new Size(320, boxAlto);
-
+            // Los botones se acomodan a la derecha de la pantalla
             int btnX = this.ClientSize.Width - 170;
             if (btnLimpiar != null) { btnLimpiar.Location = new Point(btnX, boxY); btnLimpiar.Size = new Size(130, 40); }
             if (btnExportar != null) { btnExportar.Location = new Point(btnX -= 145, boxY); btnExportar.Size = new Size(130, 40); }

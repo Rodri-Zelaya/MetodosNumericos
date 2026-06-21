@@ -15,9 +15,14 @@ namespace Métodos_Numéricos
         public FormDash()
         {
             InitializeComponent();
+            // 🚀 1. PRIMERO LE INYECTAMOS EL TEXTO GIGANTE Y EL SALTO DE LÍNEA
+            btnTrapecio.Text = "Regla del Trapecio" + Environment.NewLine + "Simpson y Romberg";
+
+            // 🚀 2. DESPUÉS APLICAMOS EL TEMA (Para que detecte el salto y le dé los 65px)
             PersonalizarDiseno();
             AplicarTema();
-            // Llama a la función para abrir la bienvenida apenas inicia el programa
+
+            // 3. ABRIMOS LA PANTALLA
             AbrirFormularioHijo(new FormBienvenida());
         }
 
@@ -340,12 +345,19 @@ namespace Métodos_Numéricos
                     {
                         if (subControl is Button)
                         {
-                            // 🛠️ CAMBIO AQUÍ: Altura a 45 y Fuente a tamaño 10
-                            EstilizarBoton((Button)subControl, colorSubMenu, colorTexto, colorHover, 45, new Font("Segoe UI", 10, FontStyle.Regular));
-                            ((Button)subControl).Padding = new Padding(35, 0, 0, 0);
+                            Button btnSub = (Button)subControl;
 
-                            // 🛠️ CAMBIO AQUÍ: Ahora sumamos 45px para que no se corten
-                            altoTotal += 45;
+                            // 🚀 1. DETECTA LAS DOS LÍNEAS: Lee el salto de línea que pusiste en el constructor
+                            int altoBoton = btnSub.Text.Contains(Environment.NewLine) || btnSub.Text.Contains("\n") ? 65 : 45;
+
+                            // 🚀 2. ESTILIZA DINÁMICAMENTE: Pasa la variable 'altoBoton' en lugar del 45 fijo
+                            EstilizarBoton(btnSub, colorSubMenu, colorTexto, colorHover, altoBoton, new Font("Segoe UI", 10, FontStyle.Regular));
+
+                            // 🚀 3. ESPACIO SEGURO: Padding a 20 para que "Romberg" no choque con el borde
+                            btnSub.Padding = new Padding(20, 0, 0, 0);
+
+                            // 🚀 4. EXPANSIÓN DEL MENÚ: Suma la altura real calculada
+                            altoTotal += altoBoton;
                         }
                     }
 
