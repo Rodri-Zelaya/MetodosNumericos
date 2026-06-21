@@ -33,6 +33,7 @@ namespace Métodos_Numéricos
             panelSubMenuAjusteCurvas.Visible = false;
             panelSubMenuInterpolación.Visible = false;
             panelSubMenuCNumerico.Visible = false;
+            panelSubMenuIntNumérica.Visible = false;
             // Si agregas más submenús en el futuro, los ocultas aquí también
         }
 
@@ -57,6 +58,8 @@ namespace Métodos_Numéricos
                 panelSubMenuInterpolación.Visible = false;
             if (panelSubMenuCNumerico.Visible == true)
                 panelSubMenuCNumerico.Visible = false;
+            if (panelSubMenuIntNumérica.Visible == true)
+                panelSubMenuIntNumérica.Visible = false;
         }
 
         // 3. El motor del Acordeón: Abre el que pediste y cierra los demás
@@ -117,6 +120,11 @@ namespace Métodos_Numéricos
         private void btnCálculoNumérico_Click(object sender, EventArgs e)
         {
             MostrarSubMenu(panelSubMenuCNumerico);
+        }
+
+        private void btnIntegraciónNumérica_Click(object sender, EventArgs e)
+        {
+            MostrarSubMenu(panelSubMenuIntNumérica);
         }
 
         // Variable para recordar qué formulario está abierto actualmente
@@ -287,6 +295,12 @@ namespace Métodos_Numéricos
             ActivarBoton(sender);
         }
 
+        private void btnTrapecio_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormTrapecio());
+            ActivarBoton(sender);
+        }
+
         private void AplicarTema()
         {
             // 🎨 Paleta de colores
@@ -308,6 +322,7 @@ namespace Métodos_Numéricos
             panelSubMenuAbiertos.BackColor = colorSubMenu;
             panelSubMenuPolinomios.BackColor = colorSubMenu;
             panelSubMenuNoLineales.BackColor = colorSubMenu;
+            panelSubMenuIntNumérica.BackColor = colorSubMenu;
 
             // 3. Magia automática: Renderizado y Auto-Ajuste de Alturas
             foreach (Control control in PanelMenuLateral.Controls)

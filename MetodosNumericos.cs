@@ -2214,6 +2214,336 @@ public class MetodosNumericos
         }
     }
 
+    // VERSIÓN 1D: Se activa sola cuando le pasas Func<double, double>
+    public void EjecutarTrapecio(Func<double, double> f, double a, double b, int n, DataGridView dgv)
+    {
+        if (n < 1) throw new Exception("El número de intervalos n debe ser >= 1.");
+
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Punto", "xᵢ");
+        dgv.Columns.Add("Evaluacion", "f(xᵢ)");
+        dgv.Columns.Add("Operacion", "Peso × f(xᵢ)");
+
+        double h = (b - a) / n;
+        double sumaTotal = 0;
+
+        for (int i = 0; i <= n; i++)
+        {
+            double x = a + i * h;
+            double y = f(x);
+
+            int peso = (i == 0 || i == n) ? 1 : 2;
+            double valorParcial = peso * y;
+            sumaTotal += valorParcial;
+
+            dgv.Rows.Add($"x{i} = {x:F4}", $"f({x:F4}) = {y:F6}", $"[{peso}] × {y:F6} = {valorParcial:F6}");
+        }
+
+        double integral = (h / 2.0) * sumaTotal;
+        int idxFinal = dgv.Rows.Add("🔮 INTEGRAL SIMPLE", $"h = {h:F4}  ➔  I = (h/2) · Σ", integral.ToString("F8"));
+        AplicarEstiloGranTotal(dgv.Rows[idxFinal]);
+    }
+
+    // VERSIÓN 2D: Se activa sola cuando le pasas Func<double, double, double>
+    public void EjecutarTrapecio(Func<double, double, double> f, double ax, double bx, int nx, double cy, double dy, int ny, DataGridView dgv)
+    {
+        if (nx < 1 || ny < 1) throw new Exception("Los intervalos nx y ny deben ser >= 1.");
+
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Coordenada", "(xᵢ, yⱼ)");
+        dgv.Columns.Add("Evaluacion", "f(x, y)");
+        dgv.Columns.Add("Operacion", "Peso Wᵢⱼ × f(x, y)");
+
+        double hx = (bx - ax) / nx;
+        double hy = (dy - cy) / ny;
+        double sumaTotal = 0;
+
+        for (int i = 0; i <= nx; i++)
+        {
+            double x = ax + i * hx;
+            int pesoX = (i == 0 || i == nx) ? 1 : 2;
+
+            for (int j = 0; j <= ny; j++)
+            {
+                double y = cy + j * hy;
+                int pesoY = (j == 0 || j == ny) ? 1 : 2;
+
+                int pesoFinal = pesoX * pesoY;
+                double evaluacion = f(x, y);
+                double valorParcial = pesoFinal * evaluacion;
+                sumaTotal += valorParcial;
+
+                dgv.Rows.Add($"({x:F2}, {y:F2})", $"f = {evaluacion:F6}", $"[{pesoFinal}] × {evaluacion:F6} = {valorParcial:F6}");
+            }
+        }
+
+        double integral = (hx * hy / 4.0) * sumaTotal;
+        int idxFinal = dgv.Rows.Add("🔮 INTEGRAL DOBLE", $"hx = {hx:F4}, hy = {hy:F4}", integral.ToString("F8"));
+        AplicarEstiloGranTotal(dgv.Rows[idxFinal]);
+    }
+
+    // =====================================================================
+    // 2. HERRAMIENTAS DE DISEÑO Y EXPORTACIÓN
+    // =====================================================================
+    private void AplicarEstiloGranTotal(DataGridViewRow fila)
+    {
+        fila.DefaultCellStyle.BackColor = Color.FromArgb(14, 116, 144);
+        fila.DefaultCellStyle.ForeColor = Color.White;
+        fila.DefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Bold);
+        fila.DefaultCellStyle.SelectionBackColor = Color.FromArgb(21, 94, 117);
+        fila.DefaultCellStyle.SelectionForeColor = Color.White;
+    }
+
+    // =====================================================================
+    // MOTOR DE INTEGRACIÓN: SIMPSON 1/3 (Exige 'n' PAR)
+    // Fórmulas: (h/3) para 1D  |  (hx*hy/9) para 2D
+    // Patrón de Pesos 1D: 1, 4, 2, 4, 2 ... 4, 1
+    // =====================================================================
+    public void EjecutarSimpson13(Func<double, double> f, double a, double b, int n, DataGridView dgv)
+    {
+        if (n < 2 || n % 2 != 0) throw new Exception("Para Simpson 1/3, el número de intervalos 'n' debe ser PAR (ej: 2, 4, 6).");
+
+        dgv.Columns.Clear(); dgv.Rows.Clear();
+        dgv.Columns.Add("Punto", "xᵢ"); dgv.Columns.Add("Evaluacion", "f(xᵢ)"); dgv.Columns.Add("Operacion", "Peso × f(xᵢ)");
+
+        double h = (b - a) / n;
+        double sumaTotal = 0;
+
+        for (int i = 0; i <= n; i++)
+        {
+            double x = a + i * h;
+            double y = f(x);
+
+            // Lógica de pesos Simpson 1/3
+            int peso = 1;
+            if (i > 0 && i < n) peso = (i % 2 == 0) ? 2 : 4;
+
+            double valorParcial = peso * y;
+            sumaTotal += valorParcial;
+            dgv.Rows.Add($"x{i} = {x:F4}", $"f({x:F4}) = {y:F6}", $"[{peso}] × {y:F6} = {valorParcial:F6}");
+        }
+
+        double integral = (h / 3.0) * sumaTotal;
+        int idxFinal = dgv.Rows.Add("🔮 SIMPSON 1/3 (1D)", $"h = {h:F4}  ➔  I = (h/3) · Σ", integral.ToString("F8"));
+        AplicarEstiloGranTotal(dgv.Rows[idxFinal]);
+    }
+
+    public void EjecutarSimpson13(Func<double, double, double> f, double ax, double bx, int nx, double cy, double dy, int ny, DataGridView dgv)
+    {
+        if (nx < 2 || nx % 2 != 0 || ny < 2 || ny % 2 != 0) throw new Exception("Para Simpson 1/3 en 2D, los intervalos 'nx' y 'ny' deben ser PARES.");
+
+        dgv.Columns.Clear(); dgv.Rows.Clear();
+        dgv.Columns.Add("Coordenada", "(xᵢ, yⱼ)"); dgv.Columns.Add("Evaluacion", "f(x, y)"); dgv.Columns.Add("Operacion", "Peso Wᵢⱼ × f(x, y)");
+
+        double hx = (bx - ax) / nx;
+        double hy = (dy - cy) / ny;
+        double sumaTotal = 0;
+
+        for (int i = 0; i <= nx; i++)
+        {
+            double x = ax + i * hx;
+            int pesoX = 1; if (i > 0 && i < nx) pesoX = (i % 2 == 0) ? 2 : 4;
+
+            for (int j = 0; j <= ny; j++)
+            {
+                double y = cy + j * hy;
+                int pesoY = 1; if (j > 0 && j < ny) pesoY = (j % 2 == 0) ? 2 : 4;
+
+                int pesoFinal = pesoX * pesoY; // Multiplicación de la matriz cruzada
+                double evaluacion = f(x, y);
+                double valorParcial = pesoFinal * evaluacion;
+                sumaTotal += valorParcial;
+
+                dgv.Rows.Add($"({x:F2}, {y:F2})", $"f = {evaluacion:F6}", $"[{pesoFinal}] × {evaluacion:F6} = {valorParcial:F6}");
+            }
+        }
+
+        double integral = (hx * hy / 9.0) * sumaTotal;
+        int idxFinal = dgv.Rows.Add("🔮 SIMPSON 1/3 (2D)", $"hx = {hx:F4}, hy = {hy:F4}", integral.ToString("F8"));
+        AplicarEstiloGranTotal(dgv.Rows[idxFinal]);
+    }
+
+    // =====================================================================
+    // MOTOR DE INTEGRACIÓN: SIMPSON 3/8 (Exige 'n' Múltiplo de 3)
+    // Fórmulas: (3h/8) para 1D  |  (9*hx*hy/64) para 2D
+    // Patrón de Pesos 1D: 1, 3, 3, 2, 3, 3, 2 ... 3, 3, 1
+    // =====================================================================
+    public void EjecutarSimpson38(Func<double, double> f, double a, double b, int n, DataGridView dgv)
+    {
+        if (n < 3 || n % 3 != 0) throw new Exception("Para Simpson 3/8, el número de intervalos 'n' debe ser MÚLTIPLO DE 3 (ej: 3, 6, 9).");
+
+        dgv.Columns.Clear(); dgv.Rows.Clear();
+        dgv.Columns.Add("Punto", "xᵢ"); dgv.Columns.Add("Evaluacion", "f(xᵢ)"); dgv.Columns.Add("Operacion", "Peso × f(xᵢ)");
+
+        double h = (b - a) / n;
+        double sumaTotal = 0;
+
+        for (int i = 0; i <= n; i++)
+        {
+            double x = a + i * h;
+            double y = f(x);
+
+            // Lógica de pesos Simpson 3/8
+            int peso = 1;
+            if (i > 0 && i < n) peso = (i % 3 == 0) ? 2 : 3;
+
+            double valorParcial = peso * y;
+            sumaTotal += valorParcial;
+            dgv.Rows.Add($"x{i} = {x:F4}", $"f({x:F4}) = {y:F6}", $"[{peso}] × {y:F6} = {valorParcial:F6}");
+        }
+
+        double integral = (3.0 * h / 8.0) * sumaTotal;
+        int idxFinal = dgv.Rows.Add("🔮 SIMPSON 3/8 (1D)", $"h = {h:F4}  ➔  I = (3h/8) · Σ", integral.ToString("F8"));
+        AplicarEstiloGranTotal(dgv.Rows[idxFinal]);
+    }
+
+    public void EjecutarSimpson38(Func<double, double, double> f, double ax, double bx, int nx, double cy, double dy, int ny, DataGridView dgv)
+    {
+        if (nx < 3 || nx % 3 != 0 || ny < 3 || ny % 3 != 0) throw new Exception("Para Simpson 3/8 en 2D, los intervalos 'nx' y 'ny' deben ser MÚLTIPLOS DE 3.");
+
+        dgv.Columns.Clear(); dgv.Rows.Clear();
+        dgv.Columns.Add("Coordenada", "(xᵢ, yⱼ)"); dgv.Columns.Add("Evaluacion", "f(x, y)"); dgv.Columns.Add("Operacion", "Peso Wᵢⱼ × f(x, y)");
+
+        double hx = (bx - ax) / nx;
+        double hy = (dy - cy) / ny;
+        double sumaTotal = 0;
+
+        for (int i = 0; i <= nx; i++)
+        {
+            double x = ax + i * hx;
+            int pesoX = 1; if (i > 0 && i < nx) pesoX = (i % 3 == 0) ? 2 : 3;
+
+            for (int j = 0; j <= ny; j++)
+            {
+                double y = cy + j * hy;
+                int pesoY = 1; if (j > 0 && j < ny) pesoY = (j % 3 == 0) ? 2 : 3;
+
+                int pesoFinal = pesoX * pesoY;
+                double evaluacion = f(x, y);
+                double valorParcial = pesoFinal * evaluacion;
+                sumaTotal += valorParcial;
+
+                dgv.Rows.Add($"({x:F2}, {y:F2})", $"f = {evaluacion:F6}", $"[{pesoFinal}] × {evaluacion:F6} = {valorParcial:F6}");
+            }
+        }
+
+        double integral = (9.0 * hx * hy / 64.0) * sumaTotal;
+        int idxFinal = dgv.Rows.Add("🔮 SIMPSON 3/8 (2D)", $"hx = {hx:F4}, hy = {hy:F4}", integral.ToString("F8"));
+        AplicarEstiloGranTotal(dgv.Rows[idxFinal]);
+    }
+
+    // =====================================================================
+    // MOTOR SILENCIOSO: ROMBERG INTERNO (Para usar dentro de la doble)
+    // =====================================================================
+    private double CalcularRombergInterno(Func<double, double> f, double a, double b, int niveles)
+    {
+        double[,] R = new double[niveles, niveles];
+
+        // Columna 0: Regla del Trapecio
+        for (int j = 0; j < niveles; j++)
+        {
+            int n = (int)Math.Pow(2, j);
+            double h = (b - a) / n;
+            double suma = 0;
+            for (int i = 1; i < n; i++) suma += f(a + i * h);
+            R[j, 0] = (h / 2.0) * (f(a) + 2 * suma + f(b));
+        }
+
+        // Extrapolación de Richardson
+        for (int k = 1; k < niveles; k++)
+        {
+            double factor = Math.Pow(4, k);
+            for (int j = 0; j < niveles - k; j++)
+            {
+                R[j, k] = (factor * R[j + 1, k - 1] - R[j, k - 1]) / (factor - 1);
+            }
+        }
+        return R[0, niveles - 1]; // El valor más preciso
+    }
+
+    // =====================================================================
+    // MOTOR DE INTEGRACIÓN: ROMBERG 1D
+    // =====================================================================
+    public void EjecutarRomberg(Func<double, double> f, double a, double b, int niveles, DataGridView dgv)
+    {
+        if (niveles < 1) throw new Exception("Para Romberg, el número de niveles debe ser >= 1.");
+
+        dgv.Columns.Clear(); dgv.Rows.Clear();
+
+        // Crear columnas dinámicas según los niveles
+        dgv.Columns.Add("Nivel", "Nivel (j)");
+        dgv.Columns.Add("K0", "k=0 [Trapecio]");
+        for (int k = 1; k < niveles; k++)
+        {
+            dgv.Columns.Add($"K{k}", $"k={k} O(h^{2 * (k + 1)})");
+        }
+
+        double[,] R = new double[niveles, niveles];
+
+        // Columna 0: Trapecio
+        for (int j = 0; j < niveles; j++)
+        {
+            int n = (int)Math.Pow(2, j);
+            double h = (b - a) / n;
+            double suma = 0;
+            for (int i = 1; i < n; i++) suma += f(a + i * h);
+            R[j, 0] = (h / 2.0) * (f(a) + 2 * suma + f(b));
+        }
+
+        // Extrapolación de Richardson
+        for (int k = 1; k < niveles; k++)
+        {
+            double factor = Math.Pow(4, k);
+            for (int j = 0; j < niveles - k; j++)
+            {
+                R[j, k] = (factor * R[j + 1, k - 1] - R[j, k - 1]) / (factor - 1);
+            }
+        }
+
+        // Imprimir Matriz Triangular en la tabla
+        for (int j = 0; j < niveles; j++)
+        {
+            string[] filaDatos = new string[niveles + 1];
+            filaDatos[0] = $"j={j} (n={(int)Math.Pow(2, j)})";
+
+            for (int k = 0; k < niveles; k++)
+            {
+                if (k <= niveles - 1 - j) filaDatos[k + 1] = R[j, k].ToString("F8");
+                else filaDatos[k + 1] = "---"; // Espacios vacíos de la matriz triangular
+            }
+            dgv.Rows.Add(filaDatos);
+        }
+
+        double integral = R[0, niveles - 1];
+
+        // Agregar fila de Gran Total adaptada a múltiples columnas
+        int idxFinal = dgv.Rows.Add();
+        dgv.Rows[idxFinal].Cells[0].Value = "🔮 ROMBERG 1D";
+        dgv.Rows[idxFinal].Cells[1].Value = "Extrapolación Final ➔";
+        dgv.Rows[idxFinal].Cells[2].Value = integral.ToString("F8");
+        AplicarEstiloGranTotal(dgv.Rows[idxFinal]);
+    }
+
+    // =====================================================================
+    // MOTOR DE INTEGRACIÓN: ROMBERG 2D (Funciones Anidadas)
+    // =====================================================================
+    public void EjecutarRomberg(Func<double, double, double> f, double ax, double bx, int nx, double cy, double dy, int ny, DataGridView dgv)
+    {
+        if (nx < 1 || ny < 1) throw new Exception("El número de niveles nx y ny debe ser >= 1.");
+
+        // LA MAGIA: Creamos una función de 1D que por dentro resuelve el Romberg de Y
+        Func<double, double> funcionExterior = (x) => CalcularRombergInterno((y) => f(x, y), cy, dy, ny);
+
+        // Mandamos a resolver y dibujar esa función exterior usando el Romberg 1D
+        EjecutarRomberg(funcionExterior, ax, bx, nx, dgv);
+
+        // Ajustamos la etiqueta final para que diga 2D
+        int ultimaFila = dgv.Rows.Count - 1;
+        dgv.Rows[ultimaFila].Cells[0].Value = "🔮 ROMBERG 2D";
+    }
+
     // 🧹 LA ESCOBA MÁGICA (VERSIÓN INTELIGENTE)
     public void LimpiarPantalla(DataGridView tabla, TextBox[] cajasDeTexto, Label[] etiquetasResultados = null)
     {
