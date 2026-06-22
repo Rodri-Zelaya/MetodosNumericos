@@ -76,6 +76,9 @@
     <Compile Update="FormRegresionPolinomial.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormRungeKutta.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FormSecante.cs">
       <SubType>Form</SubType>
     </Compile>

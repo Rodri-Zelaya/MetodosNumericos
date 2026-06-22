@@ -2697,6 +2697,71 @@ public class MetodosNumericos
         }
     }
 
+    // =====================================================================
+    // MOTOR DE EDO: MÉTODO DE RUNGE-KUTTA (4TO ORDEN)
+    // =====================================================================
+    public void EjecutarRungeKutta4(Func<double, double, double> f, double x0, double y0, double xf, int n, DataGridView dgv)
+    {
+        if (n < 1) throw new Exception("El número de pasos 'n' debe ser mayor o igual a 1.");
+
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("n", "n");
+        dgv.Columns.Add("Xn", "Xn");
+        dgv.Columns.Add("Yn", "Yn");
+        dgv.Columns.Add("K1", "K1");
+        dgv.Columns.Add("K2", "K2");
+        dgv.Columns.Add("K3", "K3");
+        dgv.Columns.Add("K4", "K4");
+        dgv.Columns.Add("Yn_1", "Yn+1");
+
+        double h = (xf - x0) / n;
+        double x = x0;
+        double y = y0;
+
+        for (int i = 0; i <= n; i++)
+        {
+            if (i == n)
+            {
+                // Fila final, no hay predicción hacia adelante
+                dgv.Rows.Add(i.ToString(), x.ToString("F4"), y.ToString("F8"), "---", "---", "---", "---", "---");
+                break;
+            }
+
+            // 1. Calcular las 4 pendientes (k1, k2, k3, k4)
+            double k1 = f(x, y);
+            double k2 = f(x + (h / 2.0), y + (k1 * h / 2.0));
+            double k3 = f(x + (h / 2.0), y + (k2 * h / 2.0));
+            double k4 = f(x + h, y + (k3 * h));
+
+            // 2. Calcular el siguiente valor de Y promediando las pendientes
+            double ySiguiente = y + (h / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4);
+
+            // Agregar fila a la tabla (formateando a 8 decimales como en tu Excel)
+            dgv.Rows.Add(i.ToString(),
+                         x.ToString("F4"),
+                         y.ToString("F8"),
+                         k1.ToString("F8"),
+                         k2.ToString("F8"),
+                         k3.ToString("F8"),
+                         k4.ToString("F8"),
+                         ySiguiente.ToString("F8"));
+
+            // Avanzar al siguiente paso
+            x = x0 + (i + 1) * h;
+            y = ySiguiente;
+        }
+
+        // Fila del gran total resaltada
+        int idxFinal = dgv.Rows.Add("🎯 RESULTADO", $"x = {xf:F4}", $"y ≈ {y:F8}", "", "", "", "", "");
+
+        dgv.Rows[idxFinal].DefaultCellStyle.BackColor = Color.FromArgb(14, 116, 144);
+        dgv.Rows[idxFinal].DefaultCellStyle.ForeColor = Color.White;
+        dgv.Rows[idxFinal].DefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Bold);
+        dgv.Rows[idxFinal].DefaultCellStyle.SelectionBackColor = Color.FromArgb(21, 94, 117);
+        dgv.Rows[idxFinal].DefaultCellStyle.SelectionForeColor = Color.White;
+    }
+
     // 🧹 LA ESCOBA MÁGICA (VERSIÓN INTELIGENTE)
     public void LimpiarPantalla(DataGridView tabla, TextBox[] cajasDeTexto, Label[] etiquetasResultados = null)
     {

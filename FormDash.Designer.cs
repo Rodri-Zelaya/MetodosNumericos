@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDash));
             PanelMenuLateral = new Panel();
             panelSubMenuEDO = new Panel();
+            btnRK4 = new Button();
             btnEuler = new Button();
             btnEcuacionesDiferenciales = new Button();
             panelSubMenuIntNumérica = new Panel();
@@ -128,21 +129,33 @@
             // 
             // panelSubMenuEDO
             // 
+            panelSubMenuEDO.Controls.Add(btnRK4);
             panelSubMenuEDO.Controls.Add(btnEuler);
             panelSubMenuEDO.Dock = DockStyle.Top;
             panelSubMenuEDO.Location = new Point(0, 1016);
             panelSubMenuEDO.Name = "panelSubMenuEDO";
-            panelSubMenuEDO.Size = new Size(253, 29);
+            panelSubMenuEDO.Size = new Size(232, 57);
             panelSubMenuEDO.TabIndex = 0;
+            // 
+            // btnRK4
+            // 
+            btnRK4.Dock = DockStyle.Top;
+            btnRK4.Location = new Point(0, 29);
+            btnRK4.Name = "btnRK4";
+            btnRK4.Size = new Size(232, 29);
+            btnRK4.TabIndex = 0;
+            btnRK4.Text = "Runge Kutta";
+            btnRK4.UseVisualStyleBackColor = true;
+            btnRK4.Click += btnRK4_Click;
             // 
             // btnEuler
             // 
             btnEuler.Dock = DockStyle.Top;
             btnEuler.Location = new Point(0, 0);
             btnEuler.Name = "btnEuler";
-            btnEuler.Size = new Size(253, 29);
+            btnEuler.Size = new Size(232, 29);
             btnEuler.TabIndex = 0;
-            btnEuler.Text = "Euler S/M";
+            btnEuler.Text = "Euler Simple/Mejorado";
             btnEuler.UseVisualStyleBackColor = true;
             btnEuler.Click += btnEuler_Click;
             // 
@@ -151,7 +164,7 @@
             btnEcuacionesDiferenciales.Dock = DockStyle.Top;
             btnEcuacionesDiferenciales.Location = new Point(0, 987);
             btnEcuacionesDiferenciales.Name = "btnEcuacionesDiferenciales";
-            btnEcuacionesDiferenciales.Size = new Size(253, 29);
+            btnEcuacionesDiferenciales.Size = new Size(232, 29);
             btnEcuacionesDiferenciales.TabIndex = 0;
             btnEcuacionesDiferenciales.Text = "Ecuaciones Diferenciales";
             btnEcuacionesDiferenciales.UseVisualStyleBackColor = true;
@@ -163,7 +176,7 @@
             panelSubMenuIntNumérica.Dock = DockStyle.Top;
             panelSubMenuIntNumérica.Location = new Point(0, 956);
             panelSubMenuIntNumérica.Name = "panelSubMenuIntNumérica";
-            panelSubMenuIntNumérica.Size = new Size(253, 31);
+            panelSubMenuIntNumérica.Size = new Size(232, 31);
             panelSubMenuIntNumérica.TabIndex = 0;
             // 
             // btnTrapecio
@@ -171,7 +184,7 @@
             btnTrapecio.Dock = DockStyle.Top;
             btnTrapecio.Location = new Point(0, 0);
             btnTrapecio.Name = "btnTrapecio";
-            btnTrapecio.Size = new Size(253, 29);
+            btnTrapecio.Size = new Size(232, 29);
             btnTrapecio.TabIndex = 0;
             btnTrapecio.Text = "Trapecio, Simpson, Romberg";
             btnTrapecio.UseVisualStyleBackColor = true;
@@ -182,7 +195,7 @@
             btnIntegraciónNumérica.Dock = DockStyle.Top;
             btnIntegraciónNumérica.Location = new Point(0, 946);
             btnIntegraciónNumérica.Name = "btnIntegraciónNumérica";
-            btnIntegraciónNumérica.Size = new Size(253, 10);
+            btnIntegraciónNumérica.Size = new Size(232, 10);
             btnIntegraciónNumérica.TabIndex = 0;
             btnIntegraciónNumérica.Text = "Integración Numérica";
             btnIntegraciónNumérica.UseVisualStyleBackColor = true;
@@ -195,7 +208,7 @@
             panelSubMenuCNumerico.Dock = DockStyle.Top;
             panelSubMenuCNumerico.Location = new Point(0, 889);
             panelSubMenuCNumerico.Name = "panelSubMenuCNumerico";
-            panelSubMenuCNumerico.Size = new Size(253, 57);
+            panelSubMenuCNumerico.Size = new Size(232, 57);
             panelSubMenuCNumerico.TabIndex = 0;
             // 
             // btnExtrapolaciónRichardson
@@ -203,7 +216,7 @@
             btnExtrapolaciónRichardson.Dock = DockStyle.Top;
             btnExtrapolaciónRichardson.Location = new Point(0, 27);
             btnExtrapolaciónRichardson.Name = "btnExtrapolaciónRichardson";
-            btnExtrapolaciónRichardson.Size = new Size(253, 29);
+            btnExtrapolaciónRichardson.Size = new Size(232, 29);
             btnExtrapolaciónRichardson.TabIndex = 0;
             btnExtrapolaciónRichardson.Text = "Extrapolación Richardson";
             btnExtrapolaciónRichardson.UseVisualStyleBackColor = true;
@@ -214,7 +227,7 @@
             btnDiferenciaciónNumérica.Dock = DockStyle.Top;
             btnDiferenciaciónNumérica.Location = new Point(0, 0);
             btnDiferenciaciónNumérica.Name = "btnDiferenciaciónNumérica";
-            btnDiferenciaciónNumérica.Size = new Size(253, 27);
+            btnDiferenciaciónNumérica.Size = new Size(232, 27);
             btnDiferenciaciónNumérica.TabIndex = 0;
             btnDiferenciaciónNumérica.Text = "Diferenciación Numérica";
             btnDiferenciaciónNumérica.UseVisualStyleBackColor = true;
@@ -225,7 +238,7 @@
             btnCálculoNumérico.Dock = DockStyle.Top;
             btnCálculoNumérico.Location = new Point(0, 878);
             btnCálculoNumérico.Name = "btnCálculoNumérico";
-            btnCálculoNumérico.Size = new Size(253, 11);
+            btnCálculoNumérico.Size = new Size(232, 11);
             btnCálculoNumérico.TabIndex = 0;
             btnCálculoNumérico.Text = "Diferenciación Numérica";
             btnCálculoNumérico.UseVisualStyleBackColor = true;
@@ -238,7 +251,7 @@
             panelSubMenuInterpolación.Dock = DockStyle.Top;
             panelSubMenuInterpolación.Location = new Point(0, 817);
             panelSubMenuInterpolación.Name = "panelSubMenuInterpolación";
-            panelSubMenuInterpolación.Size = new Size(253, 61);
+            panelSubMenuInterpolación.Size = new Size(232, 61);
             panelSubMenuInterpolación.TabIndex = 0;
             // 
             // btnLagrange
@@ -246,7 +259,7 @@
             btnLagrange.Dock = DockStyle.Top;
             btnLagrange.Location = new Point(0, 31);
             btnLagrange.Name = "btnLagrange";
-            btnLagrange.Size = new Size(253, 29);
+            btnLagrange.Size = new Size(232, 29);
             btnLagrange.TabIndex = 0;
             btnLagrange.Text = "Polinomio Lagrange";
             btnLagrange.UseVisualStyleBackColor = true;
@@ -257,7 +270,7 @@
             btnNewtonDDivididas.Dock = DockStyle.Top;
             btnNewtonDDivididas.Location = new Point(0, 0);
             btnNewtonDDivididas.Name = "btnNewtonDDivididas";
-            btnNewtonDDivididas.Size = new Size(253, 31);
+            btnNewtonDDivididas.Size = new Size(232, 31);
             btnNewtonDDivididas.TabIndex = 0;
             btnNewtonDDivididas.Text = "Newton D.Divididas";
             btnNewtonDDivididas.UseVisualStyleBackColor = true;
@@ -268,7 +281,7 @@
             btnMétodosInterpolación.Dock = DockStyle.Top;
             btnMétodosInterpolación.Location = new Point(0, 807);
             btnMétodosInterpolación.Name = "btnMétodosInterpolación";
-            btnMétodosInterpolación.Size = new Size(253, 10);
+            btnMétodosInterpolación.Size = new Size(232, 10);
             btnMétodosInterpolación.TabIndex = 0;
             btnMétodosInterpolación.Text = "Métodos Interpolación";
             btnMétodosInterpolación.UseVisualStyleBackColor = true;
@@ -280,7 +293,7 @@
             panelSubMenuAjusteCurvas.Dock = DockStyle.Top;
             panelSubMenuAjusteCurvas.Location = new Point(0, 778);
             panelSubMenuAjusteCurvas.Name = "panelSubMenuAjusteCurvas";
-            panelSubMenuAjusteCurvas.Size = new Size(253, 29);
+            panelSubMenuAjusteCurvas.Size = new Size(232, 29);
             panelSubMenuAjusteCurvas.TabIndex = 1;
             // 
             // btnRegresionPolinomial
@@ -288,7 +301,7 @@
             btnRegresionPolinomial.Dock = DockStyle.Top;
             btnRegresionPolinomial.Location = new Point(0, 0);
             btnRegresionPolinomial.Name = "btnRegresionPolinomial";
-            btnRegresionPolinomial.Size = new Size(253, 29);
+            btnRegresionPolinomial.Size = new Size(232, 29);
             btnRegresionPolinomial.TabIndex = 0;
             btnRegresionPolinomial.Text = "Regresión Polinomial";
             btnRegresionPolinomial.UseVisualStyleBackColor = true;
@@ -299,7 +312,7 @@
             btnAjusteCurvas.Dock = DockStyle.Top;
             btnAjusteCurvas.Location = new Point(0, 748);
             btnAjusteCurvas.Name = "btnAjusteCurvas";
-            btnAjusteCurvas.Size = new Size(253, 30);
+            btnAjusteCurvas.Size = new Size(232, 30);
             btnAjusteCurvas.TabIndex = 0;
             btnAjusteCurvas.Text = "Ajuste Curvas";
             btnAjusteCurvas.UseVisualStyleBackColor = true;
@@ -315,7 +328,7 @@
             panelSubMenuMetodosLineales.Dock = DockStyle.Top;
             panelSubMenuMetodosLineales.Location = new Point(0, 603);
             panelSubMenuMetodosLineales.Name = "panelSubMenuMetodosLineales";
-            panelSubMenuMetodosLineales.Size = new Size(253, 145);
+            panelSubMenuMetodosLineales.Size = new Size(232, 145);
             panelSubMenuMetodosLineales.TabIndex = 0;
             // 
             // btnMatrizInversa
@@ -323,7 +336,7 @@
             btnMatrizInversa.Dock = DockStyle.Top;
             btnMatrizInversa.Location = new Point(0, 116);
             btnMatrizInversa.Name = "btnMatrizInversa";
-            btnMatrizInversa.Size = new Size(253, 29);
+            btnMatrizInversa.Size = new Size(232, 29);
             btnMatrizInversa.TabIndex = 3;
             btnMatrizInversa.Text = "Matriz Inversa";
             btnMatrizInversa.UseVisualStyleBackColor = true;
@@ -334,7 +347,7 @@
             btnEliminaciónGaussiana.Dock = DockStyle.Top;
             btnEliminaciónGaussiana.Location = new Point(0, 87);
             btnEliminaciónGaussiana.Name = "btnEliminaciónGaussiana";
-            btnEliminaciónGaussiana.Size = new Size(253, 29);
+            btnEliminaciónGaussiana.Size = new Size(232, 29);
             btnEliminaciónGaussiana.TabIndex = 0;
             btnEliminaciónGaussiana.Text = "Eliminación Gaussiana";
             btnEliminaciónGaussiana.UseVisualStyleBackColor = true;
@@ -345,7 +358,7 @@
             btnReglaCramer.Dock = DockStyle.Top;
             btnReglaCramer.Location = new Point(0, 58);
             btnReglaCramer.Name = "btnReglaCramer";
-            btnReglaCramer.Size = new Size(253, 29);
+            btnReglaCramer.Size = new Size(232, 29);
             btnReglaCramer.TabIndex = 2;
             btnReglaCramer.Text = "Regla de Cramer";
             btnReglaCramer.UseVisualStyleBackColor = true;
@@ -356,7 +369,7 @@
             btnFactorizaciónLU.Dock = DockStyle.Top;
             btnFactorizaciónLU.Location = new Point(0, 29);
             btnFactorizaciónLU.Name = "btnFactorizaciónLU";
-            btnFactorizaciónLU.Size = new Size(253, 29);
+            btnFactorizaciónLU.Size = new Size(232, 29);
             btnFactorizaciónLU.TabIndex = 0;
             btnFactorizaciónLU.Text = "Factoración LU";
             btnFactorizaciónLU.UseVisualStyleBackColor = true;
@@ -367,7 +380,7 @@
             btnGaussJordan.Dock = DockStyle.Top;
             btnGaussJordan.Location = new Point(0, 0);
             btnGaussJordan.Name = "btnGaussJordan";
-            btnGaussJordan.Size = new Size(253, 29);
+            btnGaussJordan.Size = new Size(232, 29);
             btnGaussJordan.TabIndex = 1;
             btnGaussJordan.Text = "Gauss Jordan";
             btnGaussJordan.UseVisualStyleBackColor = true;
@@ -378,7 +391,7 @@
             btnMétodosLineales.Dock = DockStyle.Top;
             btnMétodosLineales.Location = new Point(0, 574);
             btnMétodosLineales.Name = "btnMétodosLineales";
-            btnMétodosLineales.Size = new Size(253, 29);
+            btnMétodosLineales.Size = new Size(232, 29);
             btnMétodosLineales.TabIndex = 0;
             btnMétodosLineales.Text = "Métodos Lineales";
             btnMétodosLineales.UseVisualStyleBackColor = true;
@@ -391,7 +404,7 @@
             panelSubMenuIterativos.Dock = DockStyle.Top;
             panelSubMenuIterativos.Location = new Point(0, 516);
             panelSubMenuIterativos.Name = "panelSubMenuIterativos";
-            panelSubMenuIterativos.Size = new Size(253, 58);
+            panelSubMenuIterativos.Size = new Size(232, 58);
             panelSubMenuIterativos.TabIndex = 0;
             // 
             // btnJacobi
@@ -399,7 +412,7 @@
             btnJacobi.Dock = DockStyle.Top;
             btnJacobi.Location = new Point(0, 29);
             btnJacobi.Name = "btnJacobi";
-            btnJacobi.Size = new Size(253, 29);
+            btnJacobi.Size = new Size(232, 29);
             btnJacobi.TabIndex = 0;
             btnJacobi.Text = "Jacobi";
             btnJacobi.UseVisualStyleBackColor = true;
@@ -410,7 +423,7 @@
             btnGaussSeidel.Dock = DockStyle.Top;
             btnGaussSeidel.Location = new Point(0, 0);
             btnGaussSeidel.Name = "btnGaussSeidel";
-            btnGaussSeidel.Size = new Size(253, 29);
+            btnGaussSeidel.Size = new Size(232, 29);
             btnGaussSeidel.TabIndex = 0;
             btnGaussSeidel.Text = "Gauss Seidel";
             btnGaussSeidel.UseVisualStyleBackColor = true;
@@ -421,7 +434,7 @@
             btnMétodosIterativos.Dock = DockStyle.Top;
             btnMétodosIterativos.Location = new Point(0, 485);
             btnMétodosIterativos.Name = "btnMétodosIterativos";
-            btnMétodosIterativos.Size = new Size(253, 31);
+            btnMétodosIterativos.Size = new Size(232, 31);
             btnMétodosIterativos.TabIndex = 0;
             btnMétodosIterativos.Text = "Métodos Iterativos";
             btnMétodosIterativos.UseVisualStyleBackColor = true;
@@ -433,7 +446,7 @@
             panelSubMenuNoLineales.Dock = DockStyle.Top;
             panelSubMenuNoLineales.Location = new Point(0, 454);
             panelSubMenuNoLineales.Name = "panelSubMenuNoLineales";
-            panelSubMenuNoLineales.Size = new Size(253, 31);
+            panelSubMenuNoLineales.Size = new Size(232, 31);
             panelSubMenuNoLineales.TabIndex = 0;
             // 
             // btnNewtonNoLineal
@@ -441,7 +454,7 @@
             btnNewtonNoLineal.Dock = DockStyle.Top;
             btnNewtonNoLineal.Location = new Point(0, 0);
             btnNewtonNoLineal.Name = "btnNewtonNoLineal";
-            btnNewtonNoLineal.Size = new Size(253, 31);
+            btnNewtonNoLineal.Size = new Size(232, 31);
             btnNewtonNoLineal.TabIndex = 0;
             btnNewtonNoLineal.Text = "Newton No Lineal";
             btnNewtonNoLineal.UseVisualStyleBackColor = true;
@@ -452,7 +465,7 @@
             btnMétodosNoLineales.Dock = DockStyle.Top;
             btnMétodosNoLineales.Location = new Point(0, 426);
             btnMétodosNoLineales.Name = "btnMétodosNoLineales";
-            btnMétodosNoLineales.Size = new Size(253, 28);
+            btnMétodosNoLineales.Size = new Size(232, 28);
             btnMétodosNoLineales.TabIndex = 0;
             btnMétodosNoLineales.Text = "Métodos No Lineales";
             btnMétodosNoLineales.UseVisualStyleBackColor = true;
@@ -466,7 +479,7 @@
             panelSubMenuPolinomios.Dock = DockStyle.Top;
             panelSubMenuPolinomios.Location = new Point(0, 336);
             panelSubMenuPolinomios.Name = "panelSubMenuPolinomios";
-            panelSubMenuPolinomios.Size = new Size(253, 90);
+            panelSubMenuPolinomios.Size = new Size(232, 90);
             panelSubMenuPolinomios.TabIndex = 0;
             // 
             // button8
@@ -474,7 +487,7 @@
             button8.Dock = DockStyle.Top;
             button8.Location = new Point(0, 58);
             button8.Name = "button8";
-            button8.Size = new Size(253, 29);
+            button8.Size = new Size(232, 29);
             button8.TabIndex = 0;
             button8.Text = "Bairstow";
             button8.UseVisualStyleBackColor = true;
@@ -485,7 +498,7 @@
             button7.Dock = DockStyle.Top;
             button7.Location = new Point(0, 29);
             button7.Name = "button7";
-            button7.Size = new Size(253, 29);
+            button7.Size = new Size(232, 29);
             button7.TabIndex = 0;
             button7.Text = "Horner Newton";
             button7.UseVisualStyleBackColor = true;
@@ -496,7 +509,7 @@
             btnMuller.Dock = DockStyle.Top;
             btnMuller.Location = new Point(0, 0);
             btnMuller.Name = "btnMuller";
-            btnMuller.Size = new Size(253, 29);
+            btnMuller.Size = new Size(232, 29);
             btnMuller.TabIndex = 0;
             btnMuller.Text = "Muller";
             btnMuller.UseVisualStyleBackColor = true;
@@ -507,7 +520,7 @@
             btnPolinomios.Dock = DockStyle.Top;
             btnPolinomios.Location = new Point(0, 310);
             btnPolinomios.Name = "btnPolinomios";
-            btnPolinomios.Size = new Size(253, 26);
+            btnPolinomios.Size = new Size(232, 26);
             btnPolinomios.TabIndex = 0;
             btnPolinomios.Text = "Polinomios";
             btnPolinomios.UseVisualStyleBackColor = true;
@@ -521,7 +534,7 @@
             panelSubMenuAbiertos.Dock = DockStyle.Top;
             panelSubMenuAbiertos.Location = new Point(0, 223);
             panelSubMenuAbiertos.Name = "panelSubMenuAbiertos";
-            panelSubMenuAbiertos.Size = new Size(253, 87);
+            panelSubMenuAbiertos.Size = new Size(232, 87);
             panelSubMenuAbiertos.TabIndex = 0;
             // 
             // button3
@@ -529,7 +542,7 @@
             button3.Dock = DockStyle.Top;
             button3.Location = new Point(0, 58);
             button3.Name = "button3";
-            button3.Size = new Size(253, 29);
+            button3.Size = new Size(232, 29);
             button3.TabIndex = 2;
             button3.Text = "Punto Fijo";
             button3.UseVisualStyleBackColor = true;
@@ -540,7 +553,7 @@
             button1.Dock = DockStyle.Top;
             button1.Location = new Point(0, 29);
             button1.Name = "button1";
-            button1.Size = new Size(253, 29);
+            button1.Size = new Size(232, 29);
             button1.TabIndex = 0;
             button1.Text = "Secante";
             button1.UseVisualStyleBackColor = true;
@@ -551,7 +564,7 @@
             button2.Dock = DockStyle.Top;
             button2.Location = new Point(0, 0);
             button2.Name = "button2";
-            button2.Size = new Size(253, 29);
+            button2.Size = new Size(232, 29);
             button2.TabIndex = 1;
             button2.Text = "Newton Raphson";
             button2.UseVisualStyleBackColor = true;
@@ -562,7 +575,7 @@
             btnMétodoAbiertos.Dock = DockStyle.Top;
             btnMétodoAbiertos.Location = new Point(0, 199);
             btnMétodoAbiertos.Name = "btnMétodoAbiertos";
-            btnMétodoAbiertos.Size = new Size(253, 24);
+            btnMétodoAbiertos.Size = new Size(232, 24);
             btnMétodoAbiertos.TabIndex = 0;
             btnMétodoAbiertos.Text = "Métodos Abiertos";
             btnMétodoAbiertos.UseVisualStyleBackColor = true;
@@ -575,7 +588,7 @@
             panelSubMenuCerrados.Dock = DockStyle.Top;
             panelSubMenuCerrados.Location = new Point(0, 139);
             panelSubMenuCerrados.Name = "panelSubMenuCerrados";
-            panelSubMenuCerrados.Size = new Size(253, 60);
+            panelSubMenuCerrados.Size = new Size(232, 60);
             panelSubMenuCerrados.TabIndex = 0;
             // 
             // button5
@@ -583,7 +596,7 @@
             button5.Dock = DockStyle.Top;
             button5.Location = new Point(0, 29);
             button5.Name = "button5";
-            button5.Size = new Size(253, 29);
+            button5.Size = new Size(232, 29);
             button5.TabIndex = 1;
             button5.Text = "Regla Falsa";
             button5.UseVisualStyleBackColor = true;
@@ -594,7 +607,7 @@
             button4.Dock = DockStyle.Top;
             button4.Location = new Point(0, 0);
             button4.Name = "button4";
-            button4.Size = new Size(253, 29);
+            button4.Size = new Size(232, 29);
             button4.TabIndex = 0;
             button4.Text = "Bisección";
             button4.UseVisualStyleBackColor = true;
@@ -605,7 +618,7 @@
             btnMétodosCerrados.Dock = DockStyle.Top;
             btnMétodosCerrados.Location = new Point(0, 122);
             btnMétodosCerrados.Name = "btnMétodosCerrados";
-            btnMétodosCerrados.Size = new Size(253, 17);
+            btnMétodosCerrados.Size = new Size(232, 17);
             btnMétodosCerrados.TabIndex = 0;
             btnMétodosCerrados.Text = "Métodos Cerrados";
             btnMétodosCerrados.UseVisualStyleBackColor = true;
@@ -617,7 +630,7 @@
             PanelLogo.Dock = DockStyle.Top;
             PanelLogo.Location = new Point(0, 0);
             PanelLogo.Name = "PanelLogo";
-            PanelLogo.Size = new Size(253, 122);
+            PanelLogo.Size = new Size(232, 122);
             PanelLogo.TabIndex = 0;
             // 
             // pictureBox1
@@ -626,7 +639,7 @@
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(253, 122);
+            pictureBox1.Size = new Size(232, 122);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
@@ -717,5 +730,6 @@
         private Panel panelSubMenuEDO;
         private Button btnEuler;
         private Button btnEcuacionesDiferenciales;
+        private Button btnRK4;
     }
 }

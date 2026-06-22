@@ -320,6 +320,12 @@ namespace Métodos_Numéricos
             ActivarBoton(sender);
         }
 
+        private void btnRK4_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormRungeKutta());
+            ActivarBoton(sender);
+        }
+
         private void AplicarTema()
         {
             // 🎨 Paleta de colores

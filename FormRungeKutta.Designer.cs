@@ -1,0 +1,86 @@
+﻿namespace Métodos_Numéricos
+{
+    partial class FormRungeKutta
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            btnCalcular = new Button();
+            btnLimpiar = new Button();
+            dgvResultados = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvResultados).BeginInit();
+            SuspendLayout();
+            // 
+            // btnCalcular
+            // 
+            btnCalcular.Location = new Point(493, 2);
+            btnCalcular.Name = "btnCalcular";
+            btnCalcular.Size = new Size(94, 29);
+            btnCalcular.TabIndex = 0;
+            btnCalcular.Text = "Calcular";
+            btnCalcular.UseVisualStyleBackColor = true;
+            btnCalcular.Click += btnCalcular_Click;
+            // 
+            // btnLimpiar
+            // 
+            btnLimpiar.Location = new Point(634, 13);
+            btnLimpiar.Name = "btnLimpiar";
+            btnLimpiar.Size = new Size(94, 29);
+            btnLimpiar.TabIndex = 1;
+            btnLimpiar.Text = "Limpiar";
+            btnLimpiar.UseVisualStyleBackColor = true;
+            btnLimpiar.Click += btnLimpiar_Click;
+            // 
+            // dgvResultados
+            // 
+            dgvResultados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvResultados.Location = new Point(464, 213);
+            dgvResultados.Name = "dgvResultados";
+            dgvResultados.RowHeadersWidth = 51;
+            dgvResultados.Size = new Size(300, 188);
+            dgvResultados.TabIndex = 2;
+            // 
+            // FormRungeKutta
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(dgvResultados);
+            Controls.Add(btnLimpiar);
+            Controls.Add(btnCalcular);
+            Name = "FormRungeKutta";
+            Text = "FormRungeKutta";
+            ((System.ComponentModel.ISupportInitialize)dgvResultados).EndInit();
+            ResumeLayout(false);
+        }
+
+        #endregion
+
+        private Button btnCalcular;
+        private Button btnLimpiar;
+        private DataGridView dgvResultados;
+    }
+}
