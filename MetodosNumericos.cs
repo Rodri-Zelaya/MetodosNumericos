@@ -2441,17 +2441,19 @@ public class MetodosNumericos
     {
         double[,] R = new double[niveles, niveles];
 
-        // Columna 0: Regla del Trapecio
+        // 🚀 REGLA DE TU CUADERNO: Columna 1 con n = 2^j (j empezando en 1)
         for (int j = 0; j < niveles; j++)
         {
-            int n = (int)Math.Pow(2, j);
+            int j_real = j + 1; // Hacemos que j valga 1, 2, 3, 4...
+            int n = (int)Math.Pow(2, j_real); // n = 2, 4, 8, 16...
+
             double h = (b - a) / n;
             double suma = 0;
             for (int i = 1; i < n; i++) suma += f(a + i * h);
             R[j, 0] = (h / 2.0) * (f(a) + 2 * suma + f(b));
         }
 
-        // Extrapolación de Richardson
+        // Extrapolación de Richardson para el resto de la matriz
         for (int k = 1; k < niveles; k++)
         {
             double factor = Math.Pow(4, k);
@@ -2460,32 +2462,35 @@ public class MetodosNumericos
                 R[j, k] = (factor * R[j + 1, k - 1] - R[j, k - 1]) / (factor - 1);
             }
         }
-        return R[0, niveles - 1]; // El valor más preciso
+        return R[0, niveles - 1];
     }
 
     // =====================================================================
-    // MOTOR DE INTEGRACIÓN: ROMBERG 1D
+    // MOTOR DE INTEGRACIÓN: ROMBERG 1D (Visual y Matemático)
     // =====================================================================
     public void EjecutarRomberg(Func<double, double> f, double a, double b, int niveles, DataGridView dgv)
     {
         if (niveles < 1) throw new Exception("Para Romberg, el número de niveles debe ser >= 1.");
 
-        dgv.Columns.Clear(); dgv.Rows.Clear();
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
 
-        // Crear columnas dinámicas según los niveles
+        // Construcción de cabeceras idénticas a tu libreta (K1, K2, K3...)
         dgv.Columns.Add("Nivel", "Nivel (j)");
-        dgv.Columns.Add("K0", "k=0 [Trapecio]");
+        dgv.Columns.Add("K1", "k=1 [Trapecio]");
         for (int k = 1; k < niveles; k++)
         {
-            dgv.Columns.Add($"K{k}", $"k={k} O(h^{2 * (k + 1)})");
+            dgv.Columns.Add($"K{k + 1}", $"k={k + 1}");
         }
 
         double[,] R = new double[niveles, niveles];
 
-        // Columna 0: Trapecio
+        // 🚀 REGLA DE TU CUADERNO: Evaluaciones iniciales con n = 2^j
         for (int j = 0; j < niveles; j++)
         {
-            int n = (int)Math.Pow(2, j);
+            int j_real = j + 1;
+            int n = (int)Math.Pow(2, j_real); // Arrojando n = 2, 4, 8, 16...
+
             double h = (b - a) / n;
             double suma = 0;
             for (int i = 1; i < n; i++) suma += f(a + i * h);
@@ -2502,23 +2507,27 @@ public class MetodosNumericos
             }
         }
 
-        // Imprimir Matriz Triangular en la tabla
+        // Plasmar la matriz triangular en el DataGridView
         for (int j = 0; j < niveles; j++)
         {
             string[] filaDatos = new string[niveles + 1];
-            filaDatos[0] = $"j={j} (n={(int)Math.Pow(2, j)})";
+
+            int j_real = j + 1;
+            int n = (int)Math.Pow(2, j_real);
+            filaDatos[0] = $"j={j_real}  (n={n})"; // Etiqueta exacta: "j=1 (n=2)"
 
             for (int k = 0; k < niveles; k++)
             {
+                // Solo imprimimos la parte triangular, el resto se queda vacío con guiones
                 if (k <= niveles - 1 - j) filaDatos[k + 1] = R[j, k].ToString("F8");
-                else filaDatos[k + 1] = "---"; // Espacios vacíos de la matriz triangular
+                else filaDatos[k + 1] = "---";
             }
             dgv.Rows.Add(filaDatos);
         }
 
         double integral = R[0, niveles - 1];
 
-        // Agregar fila de Gran Total adaptada a múltiples columnas
+        // Fila del Gran Total unificada
         int idxFinal = dgv.Rows.Add();
         dgv.Rows[idxFinal].Cells[0].Value = "🔮 ROMBERG 1D";
         dgv.Rows[idxFinal].Cells[1].Value = "Extrapolación Final ➔";
@@ -2527,21 +2536,17 @@ public class MetodosNumericos
     }
 
     // =====================================================================
-    // MOTOR DE INTEGRACIÓN: ROMBERG 2D (Funciones Anidadas)
+    // MOTOR DE INTEGRACIÓN: ROMBERG 2D
     // =====================================================================
     public void EjecutarRomberg(Func<double, double, double> f, double ax, double bx, int nx, double cy, double dy, int ny, DataGridView dgv)
     {
         if (nx < 1 || ny < 1) throw new Exception("El número de niveles nx y ny debe ser >= 1.");
 
-        // LA MAGIA: Creamos una función de 1D que por dentro resuelve el Romberg de Y
         Func<double, double> funcionExterior = (x) => CalcularRombergInterno((y) => f(x, y), cy, dy, ny);
-
-        // Mandamos a resolver y dibujar esa función exterior usando el Romberg 1D
         EjecutarRomberg(funcionExterior, ax, bx, nx, dgv);
 
-        // Ajustamos la etiqueta final para que diga 2D
-        int ultimaFila = dgv.Rows.Count - 1;
-        dgv.Rows[ultimaFila].Cells[0].Value = "🔮 ROMBERG 2D";
+        int ultimaFilaIdx = dgv.Rows.Count - 1;
+        dgv.Rows[ultimaFilaIdx].Cells[0].Value = "🔮 ROMBERG 2D";
     }
 
     // =====================================================================

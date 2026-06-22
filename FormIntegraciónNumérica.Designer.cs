@@ -68,13 +68,13 @@
             // dgvResultados
             // 
             dgvResultados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvResultados.Location = new Point(398, 270);
+            dgvResultados.Location = new Point(460, 249);
             dgvResultados.Name = "dgvResultados";
             dgvResultados.RowHeadersWidth = 51;
             dgvResultados.Size = new Size(300, 188);
-            dgvResultados.TabIndex = 4;
+            dgvResultados.TabIndex = 3;
             // 
-            // FormTrapecio
+            // FormIntegraciónNumérica
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -83,7 +83,7 @@
             Controls.Add(btnLimpiar);
             Controls.Add(btnExportar);
             Controls.Add(btnCalcular);
-            Name = "FormTrapecio";
+            Name = "FormIntegraciónNumérica";
             Text = "FormTrapecio";
             ((System.ComponentModel.ISupportInitialize)dgvResultados).EndInit();
             ResumeLayout(false);

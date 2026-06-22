@@ -25,31 +25,30 @@ namespace Métodos_Numéricos
             {
                 btnEntrar.FlatStyle = FlatStyle.Flat;
                 btnEntrar.FlatAppearance.BorderSize = 0;
-                // El morado vibrante que usamos en las tarjetas del sistema
-                btnEntrar.BackColor = Color.FromArgb(79, 70, 229);
+                btnEntrar.BackColor = Color.FromArgb(79, 70, 229); // Morado vibrante
                 btnEntrar.ForeColor = Color.White;
-                btnEntrar.Font = new Font("Segoe UI", 28, FontStyle.Bold);
-                btnEntrar.Size = new Size(350, 90);
+                btnEntrar.Font = new Font("Segoe UI", 26, FontStyle.Bold);
+                btnEntrar.Size = new Size(350, 85); // Más grande y proporcionado
                 btnEntrar.Cursor = Cursors.Hand;
 
-                // Efecto Hover sencillo
+                // Efecto Hover
                 btnEntrar.FlatAppearance.MouseOverBackColor = Color.FromArgb(99, 90, 255);
             }
 
             // --- BOTÓN SALIR (La 'X' roja) ---
             if (btnSalir != null)
             {
-                btnSalir.Text = "X";
+                btnSalir.Text = "✕";
                 btnSalir.FlatStyle = FlatStyle.Flat;
                 btnSalir.FlatAppearance.BorderSize = 0;
-                // Rojo elegante
-                btnSalir.BackColor = Color.FromArgb(220, 38, 38);
-                btnSalir.ForeColor = Color.White;
-                btnSalir.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+                btnSalir.BackColor = Color.Transparent; // Transparente para no romper el fondo
+                btnSalir.ForeColor = Color.FromArgb(156, 163, 175);
+                btnSalir.Font = new Font("Segoe UI", 20, FontStyle.Bold);
                 btnSalir.Size = new Size(50, 50);
                 btnSalir.Cursor = Cursors.Hand;
 
-                btnSalir.FlatAppearance.MouseOverBackColor = Color.FromArgb(239, 68, 68);
+                btnSalir.FlatAppearance.MouseOverBackColor = Color.FromArgb(220, 38, 38); // Rojo brillante al pasar el mouse
+                btnSalir.FlatAppearance.MouseDownBackColor = Color.FromArgb(153, 27, 27);
 
                 btnSalir.Click -= btnSalir_Click;
                 btnSalir.Click += btnSalir_Click;
@@ -67,14 +66,14 @@ namespace Métodos_Numéricos
 
             if (btnEntrar != null)
             {
-                // Botón exactamente en el centro, un poco más abajo de los textos
-                btnEntrar.Location = new Point((this.Width - btnEntrar.Width) / 2, (this.Height / 2) + 20);
+                // Botón exactamente en el centro, un poco más abajo de los textos gigantes
+                btnEntrar.Location = new Point((this.Width - btnEntrar.Width) / 2, (this.Height / 2) + 60);
             }
             if (btnSalir != null)
             {
-                btnSalir.Location = new Point(this.Width - btnSalir.Width - 30, 30);
+                btnSalir.Location = new Point(this.Width - btnSalir.Width - 20, 20);
             }
-            this.Invalidate();
+            this.Invalidate(); // Repinta el fondo al cambiar de tamaño
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -85,35 +84,33 @@ namespace Métodos_Numéricos
 
             if (this.Width <= 0 || this.Height <= 0) return;
 
-            // 🚀 1. DEGRADADO DARK MODE (Integrado con el menú del sistema)
+            // 🚀 1. DEGRADADO DARK MODE (EL FONDO TUANI)
             Rectangle rect = new Rectangle(0, 0, this.Width, this.Height);
             using (LinearGradientBrush brush = new LinearGradientBrush(rect,
-                Color.FromArgb(17, 24, 39), // El Azul oscuro de tu menú lateral
-                Color.FromArgb(8, 12, 20),  // Un tono casi negro para dar profundidad
+                Color.FromArgb(17, 24, 39), // Azul oscuro
+                Color.FromArgb(8, 12, 20),  // Casi negro
                 45F))
             {
                 g.FillRectangle(brush, rect);
             }
 
-            // 🚀 2. LÍNEAS Y NODOS TECNOLÓGICOS (Constelación más visible)
-            // 🛠️ FIX: Subimos la opacidad de 30 a 120 para que las líneas blancas destaquen más
-            using (Pen pen = new Pen(Color.FromArgb(120, 255, 255, 255), 2f))
+            // 🚀 2. LÍNEAS Y NODOS TECNOLÓGICOS (Vuelven las constelaciones)
+            using (Pen pen = new Pen(Color.FromArgb(90, 255, 255, 255), 2f)) // Blanco con opacidad sutil
             {
                 g.DrawLine(pen, 0, this.Height / 3, this.Width / 3, this.Height / 2);
                 g.DrawLine(pen, this.Width / 3, this.Height / 2, this.Width, 100);
                 g.DrawLine(pen, this.Width / 2, this.Height, this.Width - 200, this.Height / 3);
 
-                // Nodos color morado a juego con el botón
+                // Nodos morados
                 SolidBrush nodeBrush = new SolidBrush(Color.FromArgb(129, 140, 248));
-                g.FillEllipse(nodeBrush, (this.Width / 3) - 5, (this.Height / 2) - 5, 10, 10);
-                g.FillEllipse(nodeBrush, (this.Width - 200) - 5, (this.Height / 3) - 5, 10, 10);
+                g.FillEllipse(nodeBrush, (this.Width / 3) - 6, (this.Height / 2) - 6, 12, 12);
+                g.FillEllipse(nodeBrush, (this.Width - 200) - 6, (this.Height / 3) - 6, 12, 12);
                 nodeBrush.Dispose();
             }
 
-            // 🚀 3. SÍMBOLOS MATEMÁTICOS (Más interactivos y presentes)
-            using (Font mathFont = new Font("Cambria", 70, FontStyle.Italic))
-            // 🛠️ FIX: Subimos la opacidad de 15 a 90 para que no parezcan fantasmas
-            using (SolidBrush textBrush = new SolidBrush(Color.FromArgb(90, 255, 255, 255)))
+            // 🚀 3. SÍMBOLOS MATEMÁTICOS GIGANTES (Como marcas de agua flotantes)
+            using (Font mathFont = new Font("Cambria", 90, FontStyle.Italic))
+            using (SolidBrush textBrush = new SolidBrush(Color.FromArgb(60, 255, 255, 255))) // Opacidad perfecta para no estorbar
             {
                 g.DrawString("∑", mathFont, textBrush, this.Width - 250, 150);
                 g.DrawString("π", mathFont, textBrush, 150, this.Height - 300);
@@ -121,15 +118,12 @@ namespace Métodos_Numéricos
                 g.DrawString("x²", mathFont, textBrush, this.Width - 400, this.Height - 250);
             }
 
-            // 🚀 4. TEXTOS DE ALTO IMPACTO (Centrados)
-            using (Font titleFont = new Font("Segoe UI", 60, FontStyle.Bold))
-            using (Font subFont = new Font("Segoe UI", 24, FontStyle.Regular))
-            using (Font devFont = new Font("Segoe UI", 16, FontStyle.Italic))
+            // 🚀 4. TEXTOS DE ALTO IMPACTO (Gigantes y bien centrados)
+            using (Font titleFont = new Font("Segoe UI", 85, FontStyle.Bold)) // Aumentado a 85 para que sea masivo
+            using (Font subFont = new Font("Segoe UI", 22, FontStyle.Regular))
             using (SolidBrush whiteTextBrush = new SolidBrush(Color.White))
-            using (SolidBrush accentTextBrush = new SolidBrush(Color.FromArgb(165, 180, 252))) // Morado pastel claro
-            using (SolidBrush shadowBrush = new SolidBrush(Color.FromArgb(150, 0, 0, 0))) // Sombra negra
-            // 🛠️ FIX: Ahora usamos blanco puro (Color.White) en lugar del gris apagado
-            using (SolidBrush footerBrush = new SolidBrush(Color.White))
+            using (SolidBrush accentTextBrush = new SolidBrush(Color.FromArgb(165, 180, 252))) // Morado pastel
+            using (SolidBrush shadowBrush = new SolidBrush(Color.FromArgb(150, 0, 0, 0)))
             {
                 StringFormat centrado = new StringFormat();
                 centrado.Alignment = StringAlignment.Center;
@@ -137,23 +131,34 @@ namespace Métodos_Numéricos
 
                 float centroY = this.Height / 2;
 
-                // Coordenadas
-                RectangleF rectTitulo = new RectangleF(0, centroY - 250, this.Width, 150);
-                RectangleF rectTituloSombra = new RectangleF(4, centroY - 246, this.Width, 150);
+                // TÍTULO (MATH ENGINE gigante con sombra)
+                RectangleF rectTitulo = new RectangleF(0, centroY - 220, this.Width, 150);
+                RectangleF rectTituloSombra = new RectangleF(6, centroY - 214, this.Width, 150);
 
-                RectangleF rectSub = new RectangleF(0, centroY - 100, this.Width, 60);
+                g.DrawString("MATH ENGINE", titleFont, shadowBrush, rectTituloSombra, centrado);
+                g.DrawString("MATH ENGINE", titleFont, whiteTextBrush, rectTitulo, centrado);
 
-                RectangleF rectDev = new RectangleF(0, this.Height - 60, this.Width, 50);
+                // SUBTÍTULO
+                RectangleF rectSub = new RectangleF(0, centroY - 60, this.Width, 60);
+                g.DrawString("MÉTODOS NUMÉRICOS", subFont, accentTextBrush, rectSub, centrado);
+            }
 
-                // TÍTULO (Primero dibujamos la sombra para dar efecto 3D, luego el texto blanco)
-                g.DrawString("MÉTODOS NUMÉRICOS", titleFont, shadowBrush, rectTituloSombra, centrado);
-                g.DrawString("MÉTODOS NUMÉRICOS", titleFont, whiteTextBrush, rectTitulo, centrado);
+            // 🚀 5. FOOTER DE PRESENTACIÓN UNIVERSITARIA (UNI)
+            using (Font devFont = new Font("Segoe UI", 20, FontStyle.Bold))    // 🚀 Aumentado de 15 a 20
+            using (Font uniFont = new Font("Segoe UI", 15, FontStyle.Regular)) // 🚀 Aumentado de 12 a 15
+            using (SolidBrush whiteBrush = new SolidBrush(Color.White))
+            using (SolidBrush grayBrush = new SolidBrush(Color.FromArgb(156, 163, 175)))
+            {
+                StringFormat centrado = new StringFormat();
+                centrado.Alignment = StringAlignment.Center;
+                centrado.LineAlignment = StringAlignment.Center;
 
-                // SUBTÍTULO (Color de acento para contrastar)
-                g.DrawString("SISTEMA PARA EL CÁLCULO DE RAÍCES LINEALES Y NO LINEALES", subFont, accentTextBrush, rectSub, centrado);
+                // 🚀 Cajas más altas (45px) y ubicaciones (Y) recalculadas para evitar que se aplasten
+                RectangleF rectDev = new RectangleF(0, this.Height - 120, this.Width, 45);
+                g.DrawString("Desarrollado por: Rodrigo Zelaya, Hillary Ordoñez e Ismaurily Pichardo", devFont, whiteBrush, rectDev, centrado);
 
-                // DESARROLLADORES (Footer resaltado en blanco)
-                g.DrawString("Desarrollado por: Rodrigo Zelaya, Hillary Ordoñez e Ismaurily Pichardo", devFont, footerBrush, rectDev, centrado);
+                RectangleF rectUni = new RectangleF(0, this.Height - 70, this.Width, 45);
+                g.DrawString("Universidad Nacional de Ingeniería (UNI) - Managua, Nicaragua", uniFont, grayBrush, rectUni, centrado);
             }
         }
 
