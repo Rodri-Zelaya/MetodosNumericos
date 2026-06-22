@@ -19,6 +19,9 @@
     <Compile Update="FormDash.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormEuler.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FormExtrapolaciónRichardson.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,7 +79,7 @@
     <Compile Update="FormSecante.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FormTrapecio.cs">
+    <Compile Update="FormIntegraciónNumérica.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

@@ -2544,6 +2544,159 @@ public class MetodosNumericos
         dgv.Rows[ultimaFila].Cells[0].Value = "🔮 ROMBERG 2D";
     }
 
+    // =====================================================================
+    // MOTOR DE EDO: MÉTODO DE EULER SIMPLE
+    // Fórmula: yᵢ₊₁ = yᵢ + h · f(xᵢ, yᵢ)
+    // =====================================================================
+    public void EjecutarEulerSimple(Func<double, double, double> f, double x0, double y0, double xf, int n, DataGridView dgv)
+    {
+        if (n < 1) throw new Exception("El número de pasos 'n' debe ser mayor o igual a 1.");
+
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Iteracion", "i");
+        dgv.Columns.Add("X", "xᵢ");
+        dgv.Columns.Add("Y", "yᵢ");
+        dgv.Columns.Add("Derivada", "f(xᵢ, yᵢ)");
+        dgv.Columns.Add("Siguiente", "yᵢ₊₁ = yᵢ + h·f");
+
+        double h = (xf - x0) / n;
+        double x = x0;
+        double y = y0;
+
+        for (int i = 0; i <= n; i++)
+        {
+            // En el último paso solo mostramos el punto final, ya no calculamos el siguiente
+            if (i == n)
+            {
+                dgv.Rows.Add(i.ToString(), x.ToString("F4"), y.ToString("F6"), "---", "---");
+                break;
+            }
+
+            double derivada = f(x, y);
+            double ySiguiente = y + h * derivada;
+
+            dgv.Rows.Add(i.ToString(), x.ToString("F4"), y.ToString("F6"), derivada.ToString("F6"), ySiguiente.ToString("F6"));
+
+            // Avanzamos al siguiente punto (x se calcula así para evitar errores de redondeo en double)
+            x = x0 + (i + 1) * h;
+            y = ySiguiente;
+        }
+
+        // Fila del gran total resaltada
+        int idxFinal = dgv.Rows.Add("🎯 RESULTADO", $"x = {xf:F4}", $"y ≈ {y:F8}", "", "");
+
+        // Aplicamos el estilo a la última fila (reutilizando el método que ya tienes)
+        dgv.Rows[idxFinal].DefaultCellStyle.BackColor = Color.FromArgb(14, 116, 144);
+        dgv.Rows[idxFinal].DefaultCellStyle.ForeColor = Color.White;
+        dgv.Rows[idxFinal].DefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Bold);
+        dgv.Rows[idxFinal].DefaultCellStyle.SelectionBackColor = Color.FromArgb(21, 94, 117);
+        dgv.Rows[idxFinal].DefaultCellStyle.SelectionForeColor = Color.White;
+    }
+
+    // =====================================================================
+    // MOTOR DE EDO: MÉTODO DE EULER MEJORADO (HEUN)
+    // Predictora: y* = yᵢ + h·f(xᵢ, yᵢ)
+    // Correctora: yᵢ₊₁ = yᵢ + (h/2)·[f(xᵢ, yᵢ) + f(xᵢ₊₁, y*)]
+    // =====================================================================
+    public void EjecutarEulerMejorado(Func<double, double, double> f, double x0, double y0, double xf, int n, DataGridView dgv)
+    {
+        if (n < 1) throw new Exception("El número de pasos 'n' debe ser mayor o igual a 1.");
+
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("Iteracion", "i");
+        dgv.Columns.Add("X", "xᵢ");
+        dgv.Columns.Add("Y", "yᵢ");
+        dgv.Columns.Add("m1", "m₁ = f(xᵢ, yᵢ)");
+        dgv.Columns.Add("Y_Predictora", "y* (Predictora)");
+        dgv.Columns.Add("m2", "m₂ = f(xᵢ₊₁, y*)");
+        dgv.Columns.Add("Y_Correctora", "yᵢ₊₁ (Correctora)");
+
+        double h = (xf - x0) / n;
+        double x = x0;
+        double y = y0;
+
+        for (int i = 0; i <= n; i++)
+        {
+            if (i == n)
+            {
+                // Fila final, ya no hay más predicciones
+                dgv.Rows.Add(i.ToString(), x.ToString("F4"), y.ToString("F6"), "---", "---", "---", "---");
+                break;
+            }
+
+            // 1. Calcular m1 (Pendiente inicial)
+            double m1 = f(x, y);
+
+            // 2. Aplicar fórmula Predictora (Euler Simple)
+            double yPredictora = y + h * m1;
+
+            // Avanzamos X al siguiente punto para evaluar m2
+            double xSiguiente = x0 + (i + 1) * h;
+
+            // 3. Calcular m2 (Pendiente en el punto predicho)
+            double m2 = f(xSiguiente, yPredictora);
+
+            // 4. Aplicar fórmula Correctora (Promedio de pendientes)
+            double yCorrectora = y + (h / 2.0) * (m1 + m2);
+
+            // Agregar fila a la tabla con todo el desglose
+            dgv.Rows.Add(i.ToString(),
+                         x.ToString("F4"),
+                         y.ToString("F6"),
+                         m1.ToString("F6"),
+                         yPredictora.ToString("F6"),
+                         m2.ToString("F6"),
+                         yCorrectora.ToString("F6"));
+
+            // Preparar variables para la siguiente iteración
+            x = xSiguiente;
+            y = yCorrectora;
+        }
+
+        // Fila del gran total resaltada
+        int idxFinal = dgv.Rows.Add("🎯 RESULTADO", $"x = {xf:F4}", $"y ≈ {y:F8}", "", "", "", "");
+
+        dgv.Rows[idxFinal].DefaultCellStyle.BackColor = Color.FromArgb(14, 116, 144);
+        dgv.Rows[idxFinal].DefaultCellStyle.ForeColor = Color.White;
+        dgv.Rows[idxFinal].DefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Bold);
+        dgv.Rows[idxFinal].DefaultCellStyle.SelectionBackColor = Color.FromArgb(21, 94, 117);
+        dgv.Rows[idxFinal].DefaultCellStyle.SelectionForeColor = Color.White;
+    }
+
+    // =====================================================================
+    // 🧠 EVALUADOR DE FUNCIONES DE 2 VARIABLES f(x, y) CON MXPARSER
+    // =====================================================================
+    public double EvaluarXY(string ecuacion, double valorX, double valorY)
+    {
+        try
+        {
+            // 1. Creamos las variables (Argumentos) para mXparser
+            // Nota: mXparser es sensible a mayúsculas/minúsculas. Usamos "x" y "y" en minúscula por convención.
+            org.mariuszgromada.math.mxparser.Argument argX = new org.mariuszgromada.math.mxparser.Argument("x", valorX);
+            org.mariuszgromada.math.mxparser.Argument argY = new org.mariuszgromada.math.mxparser.Argument("y", valorY);
+
+            // 2. Inicializamos la expresión inyectándole la ecuación de texto y los argumentos
+            org.mariuszgromada.math.mxparser.Expression expresion = new org.mariuszgromada.math.mxparser.Expression(ecuacion, argX, argY);
+
+            // 3. Mandamos a calcular
+            double resultado = expresion.calculate();
+
+            // 4. Blindaje: mxparser devuelve "NaN" (Not a Number) si escribís mal la fórmula (ej. "xy" en vez de "x*y")
+            if (double.IsNaN(resultado))
+            {
+                throw new Exception("Sintaxis inválida en la ecuación. Asegúrate de usar operadores explícitos (ej. 'x*y' en lugar de 'xy').");
+            }
+
+            return resultado;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error crítico en el motor mXparser: " + ex.Message);
+        }
+    }
+
     // 🧹 LA ESCOBA MÁGICA (VERSIÓN INTELIGENTE)
     public void LimpiarPantalla(DataGridView tabla, TextBox[] cajasDeTexto, Label[] etiquetasResultados = null)
     {

@@ -39,6 +39,7 @@ namespace Métodos_Numéricos
             panelSubMenuInterpolación.Visible = false;
             panelSubMenuCNumerico.Visible = false;
             panelSubMenuIntNumérica.Visible = false;
+            panelSubMenuEDO.Visible = false;
             // Si agregas más submenús en el futuro, los ocultas aquí también
         }
 
@@ -65,6 +66,8 @@ namespace Métodos_Numéricos
                 panelSubMenuCNumerico.Visible = false;
             if (panelSubMenuIntNumérica.Visible == true)
                 panelSubMenuIntNumérica.Visible = false;
+            if (panelSubMenuEDO.Visible == true)
+                panelSubMenuEDO.Visible = false;
         }
 
         // 3. El motor del Acordeón: Abre el que pediste y cierra los demás
@@ -130,6 +133,11 @@ namespace Métodos_Numéricos
         private void btnIntegraciónNumérica_Click(object sender, EventArgs e)
         {
             MostrarSubMenu(panelSubMenuIntNumérica);
+        }
+
+        private void btnEcuacionesDiferenciales_Click(object sender, EventArgs e)
+        {
+            MostrarSubMenu(panelSubMenuEDO);
         }
 
         // Variable para recordar qué formulario está abierto actualmente
@@ -302,7 +310,13 @@ namespace Métodos_Numéricos
 
         private void btnTrapecio_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new FormTrapecio());
+            AbrirFormularioHijo(new FormIntegraciónNumérica());
+            ActivarBoton(sender);
+        }
+
+        private void btnEuler_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormEuler());
             ActivarBoton(sender);
         }
 

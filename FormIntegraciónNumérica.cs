@@ -6,7 +6,7 @@ using org.mariuszgromada.math.mxparser; // 🚀 Importando mXparser
 
 namespace Métodos_Numéricos
 {
-    public partial class FormTrapecio : Form
+    public partial class FormIntegraciónNumérica : Form
     {
         private Panel pnlEspera;
         private Panel pnlControles;
@@ -18,7 +18,7 @@ namespace Métodos_Numéricos
         private TextBox txtC, txtD, txtNy;
         private Label lblCy, lblDy, lblNy;
 
-        public FormTrapecio()
+        public FormIntegraciónNumérica()
         {
             InitializeComponent();
 

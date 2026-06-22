@@ -1,6 +1,6 @@
 ﻿namespace Métodos_Numéricos
 {
-    partial class FormTrapecio
+    partial class FormIntegraciónNumérica
     {
         /// <summary>
         /// Required designer variable.
