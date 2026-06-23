@@ -50,6 +50,85 @@ public class MetodosNumericos
         }
         catch { return 0; }
     }
+    // =====================================================================
+    // =====================================================================
+    // MOTOR DE SERIES DE TAYLOR (Automático)
+    // Fórmula: P_n(x) = Σ [ f⁽ⁱ⁾(a) / i! ] · (x - a)ⁱ
+    // =====================================================================
+    public void EjecutarSerieTaylor(string funcionStr, double a, double x, int grado, DataGridView dgv)
+    {
+        if (grado < 0) throw new Exception("El grado (n) debe ser mayor o igual a 0.");
+
+        dgv.Columns.Clear();
+        dgv.Rows.Clear();
+        dgv.Columns.Add("n", "Grado (n)");
+        dgv.Columns.Add("Derivada", "f⁽ⁿ⁾(a)");
+        dgv.Columns.Add("Termino", "Término de la Serie");
+        dgv.Columns.Add("Aproximacion", "Polinomio Pₙ(x)");
+        dgv.Columns.Add("Error", "Error Absoluto");
+
+        // Calcular el valor real exacto para comparar
+        Argument argX_real = new Argument($"x = {x}");
+        Expression exprReal = new Expression(funcionStr, argX_real);
+        double valorReal = exprReal.calculate();
+
+        double aproximacion = 0;
+        Argument argBase = new Argument("x");
+
+        for (int i = 0; i <= grado; i++)
+        {
+            double derivada = 0;
+
+            // Evaluación automática de derivadas sucesivas con mXparser
+            if (i == 0)
+            {
+                argBase.setArgumentValue(a);
+                Expression expr0 = new Expression(funcionStr, argBase);
+                derivada = expr0.calculate();
+            }
+            else
+            {
+                // Construcción dinámica de derivadas anidadas: der(der(f(x),x,x),x,a)
+                string derStr = funcionStr;
+                for (int d = 0; d < i - 1; d++)
+                {
+                    derStr = $"der({derStr}, x, x)";
+                }
+                derStr = $"der({derStr}, x, {a.ToString(System.Globalization.CultureInfo.InvariantCulture)})";
+
+                Expression exprDer = new Expression(derStr, argBase);
+                derivada = exprDer.calculate();
+            }
+
+            // Aplicamos la fórmula del término general
+            double factorial = Factorial(i);
+            double termino = (derivada / factorial) * Math.Pow(x - a, i);
+            aproximacion += termino;
+
+            // Cálculo de error absoluto
+            double error = Math.Abs(valorReal - aproximacion);
+
+            dgv.Rows.Add(i.ToString(), derivada.ToString("F6"), termino.ToString("F6"), aproximacion.ToString("F8"), error.ToString("E4"));
+        }
+
+        // Fila de resultado final resaltada
+        int idxFinal = dgv.Rows.Add("🎯 RESULTADO", $"Valor Real: {valorReal:F6}", "", aproximacion.ToString("F8"), "");
+
+        dgv.Rows[idxFinal].DefaultCellStyle.BackColor = Color.FromArgb(14, 116, 144);
+        dgv.Rows[idxFinal].DefaultCellStyle.ForeColor = Color.White;
+        dgv.Rows[idxFinal].DefaultCellStyle.Font = new Font("Consolas", 12, FontStyle.Bold);
+        dgv.Rows[idxFinal].DefaultCellStyle.SelectionBackColor = Color.FromArgb(21, 94, 117);
+        dgv.Rows[idxFinal].DefaultCellStyle.SelectionForeColor = Color.White;
+    }
+
+    // Auxiliar para factoriales
+    private double Factorial(int n)
+    {
+        if (n <= 1) return 1;
+        double result = 1;
+        for (int i = 2; i <= n; i++) result *= i;
+        return result;
+    }
 
     // Fíjate que agregamos "string funcion" a los parámetros
     public string Biseccion(string funcion, double a, double b, double tol, DataGridView dgv)

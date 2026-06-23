@@ -15,6 +15,7 @@ namespace Métodos_Numéricos
         public FormDash()
         {
             InitializeComponent();
+
             // 🚀 1. PRIMERO LE INYECTAMOS EL TEXTO GIGANTE Y EL SALTO DE LÍNEA
             btnTrapecio.Text = "Regla del Trapecio" + Environment.NewLine + "Simpson y Romberg";
 
@@ -40,6 +41,7 @@ namespace Métodos_Numéricos
             panelSubMenuCNumerico.Visible = false;
             panelSubMenuIntNumérica.Visible = false;
             panelSubMenuEDO.Visible = false;
+            panelSubMenuErrores.Visible = false;
             // Si agregas más submenús en el futuro, los ocultas aquí también
         }
 
@@ -68,7 +70,10 @@ namespace Métodos_Numéricos
                 panelSubMenuIntNumérica.Visible = false;
             if (panelSubMenuEDO.Visible == true)
                 panelSubMenuEDO.Visible = false;
+            if (panelSubMenuErrores.Visible == true)
+                panelSubMenuErrores.Visible = false;
         }
+        
 
         // 3. El motor del Acordeón: Abre el que pediste y cierra los demás
         private void MostrarSubMenu(Panel subMenu)
@@ -140,6 +145,11 @@ namespace Métodos_Numéricos
             MostrarSubMenu(panelSubMenuEDO);
         }
 
+        private void btnErrores_Click(object sender, EventArgs e)
+        {
+            MostrarSubMenu(panelSubMenuErrores);
+        }
+
         // Variable para recordar qué formulario está abierto actualmente
         private Form formularioActivo = null;
 
@@ -182,6 +192,12 @@ namespace Métodos_Numéricos
                 botonActivo.BackColor = Color.FromArgb(75, 85, 99); // Un gris más claro para que resalte
                 botonActivo.Font = new Font("Segoe UI", 10, FontStyle.Bold); // ¡Pum! Letra en negrita
             }
+        }
+
+        private void btnTaylor_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(new FormTaylor());
+            ActivarBoton(sender);
         }
 
         private void btnBiseccion_Click(object sender, EventArgs e)
@@ -348,6 +364,7 @@ namespace Métodos_Numéricos
             panelSubMenuPolinomios.BackColor = colorSubMenu;
             panelSubMenuNoLineales.BackColor = colorSubMenu;
             panelSubMenuIntNumérica.BackColor = colorSubMenu;
+            panelSubMenuErrores.BackColor = colorSubMenu;
 
             // 3. Magia automática: Renderizado y Auto-Ajuste de Alturas
             foreach (Control control in PanelMenuLateral.Controls)

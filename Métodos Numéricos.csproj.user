@@ -85,5 +85,8 @@
     <Compile Update="FormIntegraciónNumérica.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormTaylor.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
