@@ -79,12 +79,21 @@ namespace Métodos_Numéricos
                 }
 
                 double x0 = metodos.ConvertirADouble(txtX0.Text);
-                double h = metodos.ConvertirADouble(txtH.Text);
+
+                // 🚀 VALIDACIÓN 1: Forzamos h a ser positivo y mayor a cero
+                double h = Math.Abs(metodos.ConvertirADouble(txtH.Text));
+                if (h == 0)
+                {
+                    MessageBox.Show("El tamaño de paso (h) debe ser estrictamente mayor a cero para calcular una derivada.", "División por Cero Evitada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 double? vExacto = null;
                 if (!string.IsNullOrWhiteSpace(txtExacto.Text)) vExacto = metodos.ConvertirADouble(txtExacto.Text);
 
-                double xBack = Math.Round(x0 - h, 6);
-                double xForw = Math.Round(x0 + h, 6);
+                // 🚀 CORRECCIÓN 2: Eliminamos Math.Round para evitar colisión con la tolerancia interna
+                double xBack = x0 - h;
+                double xForw = x0 + h;
 
                 // Buscar los 3 puntos clave en la tabla ingresada
                 bool hasY0 = EncontrarEnTabla(x0, listX, listY, out double y0);
@@ -93,7 +102,7 @@ namespace Métodos_Numéricos
 
                 if (!hasY0)
                 {
-                    MessageBox.Show($"El punto central X = {x0} no se encontró en tu tabla.", "Falta Punto Central", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"El punto central X₀ = {x0} no se encontró en la tabla de datos.\n\nAsegúrate de haber ingresado sus coordenadas f(X₀) para poder calcular las derivadas.", "Falta Punto Central", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -109,25 +118,25 @@ namespace Métodos_Numéricos
                 if (hasYForw)
                 {
                     double res = (yForw - y0) / h;
-                    string sust = $"[f({xForw}) - f({x0})] / {h}   ➔   [{yForw} - {y0}] / {h}";
+                    string sust = $"[f({xForw.ToString("G5")}) - f({x0.ToString("G5")})] / {h}   ➔   [{yForw} - {y0}] / {h}";
                     dgvResultados.Rows.Add("Hacia Adelante", sust, res.ToString("F6"), CalcularError(res, vExacto));
                 }
-                else dgvResultados.Rows.Add("Hacia Adelante", $"Falta f({xForw}) en la tabla", "---", "---");
+                else dgvResultados.Rows.Add("Hacia Adelante", $"Falta f(X₀+h) = f({xForw.ToString("G5")}) en la tabla", "---", "---");
 
                 // 2. HACIA ATRÁS
                 if (hasYBack)
                 {
                     double res = (y0 - yBack) / h;
-                    string sust = $"[f({x0}) - f({xBack})] / {h}   ➔   [{y0} - {yBack}] / {h}";
+                    string sust = $"[f({x0.ToString("G5")}) - f({xBack.ToString("G5")})] / {h}   ➔   [{y0} - {yBack}] / {h}";
                     dgvResultados.Rows.Add("Hacia Atrás", sust, res.ToString("F6"), CalcularError(res, vExacto));
                 }
-                else dgvResultados.Rows.Add("Hacia Atrás", $"Falta f({xBack}) en la tabla", "---", "---");
+                else dgvResultados.Rows.Add("Hacia Atrás", $"Falta f(X₀-h) = f({xBack.ToString("G5")}) en la tabla", "---", "---");
 
                 // 3. CENTRAL (1ra Derivada)
                 if (hasYForw && hasYBack)
                 {
                     double res = (yForw - yBack) / (2 * h);
-                    string sust = $"[f({xForw}) - f({xBack})] / 2({h})   ➔   [{yForw} - {yBack}] / {2 * h}";
+                    string sust = $"[f({xForw.ToString("G5")}) - f({xBack.ToString("G5")})] / 2({h})   ➔   [{yForw} - {yBack}] / {2 * h}";
                     int idxCentral = dgvResultados.Rows.Add("Central (Mejor Aproximación)", sust, res.ToString("F6"), CalcularError(res, vExacto));
 
                     dgvResultados.Rows[idxCentral].DefaultCellStyle.BackColor = Color.FromArgb(16, 185, 129); // Verde Esmeralda
@@ -140,7 +149,7 @@ namespace Métodos_Numéricos
                 if (hasYForw && hasYBack)
                 {
                     double res2 = (yForw - 2 * y0 + yBack) / (h * h);
-                    string sust2 = $"[f({xForw}) - 2f({x0}) + f({xBack})] / {h}²   ➔   [{yForw} - 2({y0}) + {yBack}] / {h * h}";
+                    string sust2 = $"[f({xForw.ToString("G5")}) - 2f({x0.ToString("G5")}) + f({xBack.ToString("G5")})] / {h}²   ➔   [{yForw} - 2({y0}) + {yBack}] / {h * h}";
                     int idxSegunda = dgvResultados.Rows.Add("Segunda Derivada f''(X₀)", sust2, res2.ToString("F6"), "--- (Requiere Exacto f'')");
                     dgvResultados.Rows[idxSegunda].DefaultCellStyle.BackColor = Color.FromArgb(31, 41, 55);
                     dgvResultados.Rows[idxSegunda].DefaultCellStyle.ForeColor = Color.White;

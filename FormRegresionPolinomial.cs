@@ -51,6 +51,8 @@ namespace Métodos_Numéricos
             MetodosNumericos metodos = new MetodosNumericos();
             List<double> listX = new List<double>();
             List<double> listY = new List<double>();
+            // 🚀 Lista auxiliar para contar las 'X' únicas
+            HashSet<double> puntosXUnicos = new HashSet<double>();
 
             try
             {
@@ -63,8 +65,12 @@ namespace Métodos_Numéricos
                         string valY = fila.Cells[1].Value.ToString().Trim();
                         if (!string.IsNullOrEmpty(valX) && !string.IsNullOrEmpty(valY))
                         {
-                            listX.Add(metodos.ConvertirADouble(valX));
+                            double xParseado = metodos.ConvertirADouble(valX);
+                            listX.Add(xParseado);
                             listY.Add(metodos.ConvertirADouble(valY));
+
+                            // 🚀 Agregamos al conjunto de valores únicos
+                            puntosXUnicos.Add(xParseado);
                         }
                     }
                 }
@@ -76,9 +82,11 @@ namespace Métodos_Numéricos
                 }
 
                 int grado = (int)numGrado.Value;
-                if (listX.Count <= grado)
+
+                // 🚀 VALIDACIÓN BLINDADA: Verificar puntos X distintos
+                if (puntosXUnicos.Count <= grado)
                 {
-                    MessageBox.Show($"Para un polinomio de Grado {grado} necesitas al menos {grado + 1} puntos.", "Error Matemático", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Para calcular un polinomio de Grado {grado}, necesitas al menos {grado + 1} puntos con valores de X que sean DIFERENTES entre sí.\n\nActualmente tienes datos redundantes que provocarían una matriz singular (sin solución única).", "Falta Dispersión de Datos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 

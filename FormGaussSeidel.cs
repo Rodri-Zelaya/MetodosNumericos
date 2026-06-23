@@ -26,7 +26,6 @@ namespace Métodos_Numéricos
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
-            // 🛠️ REGLA AJUSTADA: Ya no validamos la caja de iteraciones
             if (string.IsNullOrWhiteSpace(txtMatrizA.Text) || string.IsNullOrWhiteSpace(txtVectorB.Text) ||
                 string.IsNullOrWhiteSpace(txtValoresIniciales.Text) || string.IsNullOrWhiteSpace(txtTolerancia.Text))
             {
@@ -38,7 +37,7 @@ namespace Métodos_Numéricos
 
             if (!metodos.EsToleranciaValida(txtTolerancia.Text)) return;
 
-            // 🚀 FIJADO DESDE CÓDIGO: Límite de seguridad para evitar bucles infinitos
+            // 🚀 Límite de seguridad
             int maxIter = 100;
 
             try
@@ -53,17 +52,49 @@ namespace Métodos_Numéricos
                     string[] elementos = lineasA[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (elementos.Length != n)
                     {
-                        MessageBox.Show($"La Matriz A debe ser cuadrada ({n}x{n}). Fila {i + 1} tiene {elementos.Length} elementos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show($"La Matriz A debe ser cuadrada ({n}x{n}). La fila {i + 1} tiene {elementos.Length} elementos.", "Error de Dimensión", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
                     for (int j = 0; j < n; j++) A[i, j] = metodos.ConvertirADouble(elementos[j]);
                 }
 
+                // 🚀 INICIO DE AUDITORÍA MATRICIAL BLINDADA (Igual que en Jacobi) 🚀
+                bool esDominante = true;
+                for (int i = 0; i < n; i++)
+                {
+                    // 🚨 Validar división por cero en la diagonal
+                    if (A[i, i] == 0)
+                    {
+                        MessageBox.Show($"Violación Matemática: El elemento de la diagonal en la fila {i + 1} es CERO.\n\nEl método de Gauss-Seidel divide por este valor. Modifique el sistema (ej. intercambiando filas) antes de continuar.", "División por Cero", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return; // Bloqueo total
+                    }
+
+                    // 🚨 Validar Criterio EDD
+                    double sumaFila = 0;
+                    for (int j = 0; j < n; j++)
+                    {
+                        if (i != j) sumaFila += Math.Abs(A[i, j]);
+                    }
+
+                    if (Math.Abs(A[i, i]) <= sumaFila)
+                    {
+                        esDominante = false;
+                    }
+                }
+
+                // Advertir si no es dominante, pero permitir intentar (Gauss-Seidel a veces converge aunque no sea EDD)
+                if (!esDominante)
+                {
+                    DialogResult advertencia = MessageBox.Show("La matriz ingresada NO es Estrictamente Dominante por Diagonal (EDD).\n\nAunque Gauss-Seidel tiene mejor convergencia que Jacobi, el método iterativo podría diverger (no encontrar solución). ¿Deseas intentar calcularlo de todos modos?", "Riesgo de Divergencia", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (advertencia == DialogResult.No) return;
+                }
+                // 🚀 FIN DE AUDITORÍA MATRICIAL 🚀
+
                 // 2. Parsear Vector B
                 string[] lineasB = txtVectorB.Text.Split(new string[] { "\r\n", "\n", " " }, StringSplitOptions.RemoveEmptyEntries);
                 if (lineasB.Length != n)
                 {
-                    MessageBox.Show($"El vector b debe tener exactamente {n} términos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"El vector b debe tener exactamente {n} términos.", "Error de Dimensión", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 double[] b = new double[n];
@@ -73,7 +104,7 @@ namespace Métodos_Numéricos
                 string[] lineasX0 = txtValoresIniciales.Text.Split(new string[] { "\r\n", "\n", " " }, StringSplitOptions.RemoveEmptyEntries);
                 if (lineasX0.Length != n)
                 {
-                    MessageBox.Show($"Debes proporcionar {n} valores iniciales (uno por cada variable del sistema).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Debes proporcionar {n} valores iniciales (uno por cada variable del sistema).", "Error de Dimensión", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 double[] X0 = new double[n];
@@ -82,25 +113,23 @@ namespace Métodos_Numéricos
                 // 4. Tolerancia
                 double tol = metodos.ConvertirADouble(txtTolerancia.Text);
 
-                // 🚀 ARRANCAR MOTOR
+                // 🚀 ARRANCAR MOTOR DE GAUSS-SEIDEL
                 metodos.GaussSeidel(A, b, X0, tol, maxIter, dgvGaussSeidel);
-                // 🚀 EL REMEDIO SANTO: Forzamos el color aquí, ya con las columnas creadas en pantalla
+
+                // Configuración visual...
                 dgvGaussSeidel.EnableHeadersVisualStyles = false;
-                dgvGaussSeidel.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(17, 24, 39); // Azul oscuro
-                dgvGaussSeidel.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;                // Texto blanco
+                dgvGaussSeidel.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(17, 24, 39);
+                dgvGaussSeidel.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
                 dgvGaussSeidel.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
 
-                // Quitemos también la columna gris extra de la izquierda que no hace nada
                 dgvGaussSeidel.RowHeadersVisible = false;
-                // 🚀 EL FIX PARA LAS FILAS INTERCALADAS (Estilo "Hielo")
                 dgvGaussSeidel.DefaultCellStyle.BackColor = Color.White;
                 dgvGaussSeidel.DefaultCellStyle.ForeColor = Color.Black;
                 dgvGaussSeidel.DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-                dgvGaussSeidel.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(235, 238, 245); // El color hielo
-                dgvGaussSeidel.DefaultCellStyle.SelectionBackColor = Color.FromArgb(79, 70, 229); // Morado al seleccionar
+                dgvGaussSeidel.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(235, 238, 245);
+                dgvGaussSeidel.DefaultCellStyle.SelectionBackColor = Color.FromArgb(79, 70, 229);
                 dgvGaussSeidel.DefaultCellStyle.SelectionForeColor = Color.White;
 
-                // Ocultar bienvenida, mostrar tabla
                 pnlEspera.Visible = false;
                 dgvGaussSeidel.Visible = true;
             }

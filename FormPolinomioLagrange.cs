@@ -25,6 +25,8 @@ namespace Métodos_Numéricos
             MetodosNumericos metodos = new MetodosNumericos();
             List<double> listX = new List<double>();
             List<double> listY = new List<double>();
+            // 🚀 HashSet para detectar colisiones en X y evitar división por cero
+            HashSet<double> xVerificador = new HashSet<double>();
 
             try
             {
@@ -40,7 +42,16 @@ namespace Métodos_Numéricos
 
                         if (!string.IsNullOrEmpty(valX) && !string.IsNullOrEmpty(valY))
                         {
-                            listX.Add(metodos.ConvertirADouble(valX));
+                            double xConvertido = metodos.ConvertirADouble(valX);
+
+                            // 🚀 VALIDACIÓN: Bloqueo de puntos alineados verticalmente
+                            if (!xVerificador.Add(xConvertido))
+                            {
+                                MessageBox.Show($"El valor de X = {xConvertido} está repetido en la tabla.\n\nEn la interpolación de Lagrange, la fórmula requiere dividir entre la diferencia de los nodos (x_i - x_j). Si dos coordenadas X son iguales, el sistema sufrirá una división por cero matemática.\n\nPor favor, ingresa puntos con coordenadas X estrictamente únicas.", "Violación de Función Matemática", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+                            listX.Add(xConvertido);
                             listY.Add(metodos.ConvertirADouble(valY));
                         }
                     }
@@ -93,7 +104,7 @@ namespace Métodos_Numéricos
                     dgvResultados.Rows.Add("🎯 Y Predicho", "--- (Estimación no solicitada)");
                 }
 
-                // 5. 🚀 APLICAR ESTILO TUANI (Para habilitar el scroll en ecuaciones largas)
+                // 5. 🚀 APLICAR ESTILO TUANI
                 ConfigurarEstiloTuaniTablas(dgvPolinomiosBase);
                 ConfigurarEstiloTuaniTablas(dgvResultados);
 

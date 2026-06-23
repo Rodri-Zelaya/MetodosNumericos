@@ -60,7 +60,18 @@ namespace Métodos_Numéricos
 
                 double Dh = metodos.ConvertirADouble(txtDh.Text);
                 double DhMedios = metodos.ConvertirADouble(txtDhMedios.Text);
-                double n = metodos.ConvertirADouble(txtOrden.Text);
+
+                // 🚀 Forzamos a que el orden sea un número entero
+                int n = (int)Math.Round(metodos.ConvertirADouble(txtOrden.Text));
+
+                // 🚀 VALIDACIÓN BLINDADA: Evitar la División por Cero
+                if (n <= 0)
+                {
+                    MessageBox.Show("El Orden (n) del error de truncamiento debe ser un número entero estrictamente mayor a cero.\n\nSi n = 0, la fórmula genera una división por cero.", "Violación Matemática", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Restauramos el valor por defecto para ayudar al usuario
+                    txtOrden.Text = "2";
+                    return;
+                }
 
                 double? exacto = null;
                 if (!string.IsNullOrWhiteSpace(txtExacto.Text)) exacto = metodos.ConvertirADouble(txtExacto.Text);

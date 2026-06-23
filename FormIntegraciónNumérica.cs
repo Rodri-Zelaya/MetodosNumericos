@@ -117,6 +117,29 @@ namespace Métodos_Numéricos
                     double b = metodos.ConvertirADouble(txtB.Text);
                     int n = (int)metodos.ConvertirADouble(txtN.Text);
 
+                    // 🚀 INICIO DE VALIDACIONES BLINDADAS 1D 🚀
+                    if (a >= b)
+                    {
+                        MessageBox.Show("El límite inferior (A) debe ser estrictamente menor que el límite superior (B).", "Error Geométrico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    if (n <= 0)
+                    {
+                        MessageBox.Show("El número de intervalos (n) debe ser mayor a cero.", "Error Geométrico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    if (cmbTipoIntegral.SelectedIndex == 2 && n % 2 != 0) // Simpson 1/3
+                    {
+                        MessageBox.Show("Simpson 1/3 exige que el número de intervalos (n) sea estrictamente PAR.", "Violación de Método", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    if (cmbTipoIntegral.SelectedIndex == 4 && n % 3 != 0) // Simpson 3/8
+                    {
+                        MessageBox.Show("Simpson 3/8 exige que el número de intervalos (n) sea MÚLTIPLO DE 3.", "Violación de Método", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    // 🚀 FIN DE VALIDACIONES 🚀
+
                     Argument xArg = new Argument("x");
                     Expression expr = new Expression(formula, xArg);
 
@@ -147,6 +170,29 @@ namespace Métodos_Numéricos
                     double cy = metodos.ConvertirADouble(txtC.Text);
                     double dy = metodos.ConvertirADouble(txtD.Text);
                     int ny = (int)metodos.ConvertirADouble(txtNy.Text);
+
+                    // 🚀 INICIO DE VALIDACIONES BLINDADAS 2D 🚀
+                    if (ax >= bx || cy >= dy)
+                    {
+                        MessageBox.Show("Los límites inferiores deben ser menores que los superiores en ambos ejes (X e Y).", "Error Geométrico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    if (nx <= 0 || ny <= 0)
+                    {
+                        MessageBox.Show("El número de intervalos debe ser mayor a cero en ambos ejes.", "Error Geométrico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    if (cmbTipoIntegral.SelectedIndex == 3 && (nx % 2 != 0 || ny % 2 != 0)) // Simpson 1/3 Doble
+                    {
+                        MessageBox.Show("La Regla de Simpson 1/3 exige intervalos PARES en ambos ejes.", "Violación de Método", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    if (cmbTipoIntegral.SelectedIndex == 5 && (nx % 3 != 0 || ny % 3 != 0)) // Simpson 3/8 Doble
+                    {
+                        MessageBox.Show("La Regla de Simpson 3/8 exige intervalos MÚLTIPLOS DE 3 en ambos ejes.", "Violación de Método", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    // 🚀 FIN DE VALIDACIONES 🚀
 
                     Argument xArg = new Argument("x");
                     Argument yArg = new Argument("y");
@@ -324,7 +370,7 @@ namespace Métodos_Numéricos
                 "▶ Integración de Romberg:\n" +
                 " R_{j,k} = [4^k R_{j+1,k-1} - R_{j,k-1}] / [4^k - 1]";
 
-            pnlDerecha.Controls.Add(new Label { Text = formulasMatematicas, Font = new Font("Consolas", 9, FontStyle.Bold), ForeColor = Color.FromArgb(167, 243, 208), AutoSize = true, Location = new Point(25, 90) });
+            pnlDerecha.Controls.Add(new Label { Text = formulasMatematicas, Font = new Font("Consolas", 8, FontStyle.Bold), ForeColor = Color.FromArgb(167, 243, 208), AutoSize = true, Location = new Point(25, 90) });
 
             pnlTarjeta.Controls.Add(new Label { Text = "⚡ " + nombreMetodo, Font = new Font("Segoe UI", 22, FontStyle.Bold), ForeColor = Color.FromArgb(17, 24, 39), AutoSize = true, Location = new Point(40, 30) });
 

@@ -87,11 +87,29 @@ namespace Métodos_Numéricos
             {
                 double a = metodos.ConvertirADouble(txtA.Text);
                 double x = metodos.ConvertirADouble(txtX.Text);
-                int n = (int)metodos.ConvertirADouble(txtGrado.Text);
+
+                // 🚀 Redondeo seguro para evitar decimales trucados
+                int n = (int)Math.Round(metodos.ConvertirADouble(txtGrado.Text));
+
+                // 🚀 INICIO DE VALIDACIONES BLINDADAS PARA TAYLOR 🚀
+                if (n < 0)
+                {
+                    MessageBox.Show("El grado (n) del polinomio no puede ser negativo.", "Error Geométrico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (n > 15) // Límite de seguridad para el procesador
+                {
+                    MessageBox.Show($"El grado {n} es demasiado alto para cálculo analítico en tiempo real.\n\nEl cálculo sucesivo de derivadas de alto orden y factoriales masivos causará un desbordamiento de memoria.\n\nPor favor, ingresa un grado entre 0 y 15.", "Protección de Hardware", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                // 🚀 FIN DE VALIDACIONES 🚀
 
                 Argument arg = new Argument("x");
                 Expression expr = new Expression(formula, arg);
-                if (!expr.checkSyntax()) throw new Exception("Error de sintaxis en la función: " + expr.getErrorMessage());
+
+                if (!expr.checkSyntax())
+                    throw new Exception("Error de sintaxis en la función: " + expr.getErrorMessage());
 
                 metodos.EjecutarSerieTaylor(formula, a, x, n, dgvResultados);
 

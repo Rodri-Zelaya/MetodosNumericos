@@ -79,16 +79,42 @@ namespace Métodos_Numéricos
                     return;
                 }
 
-                string ecuacion = txtFuncion.Text;
+                string ecuacion = txtFuncion.Text.Trim();
                 double x0 = metodos.ConvertirADouble(txtX0.Text);
                 double y0 = metodos.ConvertirADouble(txtY0.Text);
                 double xf = metodos.ConvertirADouble(txtXf.Text);
 
-                double h = metodos.ConvertirADouble(txtH.Text);
-                if (h <= 0) throw new Exception("El tamaño de paso (h) debe ser mayor que cero.");
+                // Forzamos a que el usuario ingrese una magnitud positiva para 'h'
+                double h = Math.Abs(metodos.ConvertirADouble(txtH.Text));
 
-                int n = (int)Math.Round((xf - x0) / h);
-                if (n < 1) throw new Exception("La combinación de X inicial, el valor a estimar y 'h' no genera pasos válidos.");
+                if (h == 0)
+                {
+                    MessageBox.Show("El tamaño de paso (h) no puede ser cero.", "Error Geométrico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (x0 == xf)
+                {
+                    MessageBox.Show("El valor a estimar (xf) no puede ser igual al inicial (x0).", "Error Geométrico", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // 🚀 LÓGICA DE DIRECCIÓN Y PASO BLINDADA 🚀
+                double distanciaTotal = Math.Abs(xf - x0);
+
+                // Si el usuario quiere ir hacia atrás (xf < x0), hacemos 'h' negativo internamente
+                if (xf < x0) h = -h;
+
+                // Verificamos si 'h' encaja perfectamente en la distancia
+                double pasosFisicos = distanciaTotal / Math.Abs(h);
+                int n = (int)Math.Round(pasosFisicos);
+
+                // Si la división tiene decimales (ej. 6.66), h no es compatible con los límites
+                if (Math.Abs(pasosFisicos - n) > 0.0001)
+                {
+                    MessageBox.Show($"El tamaño de paso (h = {Math.Abs(h)}) no coincide exactamente con la distancia entre x0 y xf.\n\nPor favor, ajusta 'h' para que la división (xf - x0) / h sea un número entero.", "Ajuste de Parámetros", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 Func<double, double, double> funcionEDO = (x, y) => metodos.EvaluarXY(ecuacion, x, y);
 
@@ -108,7 +134,7 @@ namespace Métodos_Numéricos
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Falla analítica en el procesamiento: " + ex.Message, "Error Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Falla analítica en el procesamiento:\n" + ex.Message, "Error Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

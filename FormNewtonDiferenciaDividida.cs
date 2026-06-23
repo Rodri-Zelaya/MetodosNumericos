@@ -25,6 +25,8 @@ namespace Métodos_Numéricos
             MetodosNumericos metodos = new MetodosNumericos();
             List<double> listX = new List<double>();
             List<double> listY = new List<double>();
+            // 🚀 HashSet para detectar colisiones en X
+            HashSet<double> xVerificador = new HashSet<double>();
 
             try
             {
@@ -40,7 +42,16 @@ namespace Métodos_Numéricos
 
                         if (!string.IsNullOrEmpty(valX) && !string.IsNullOrEmpty(valY))
                         {
-                            listX.Add(metodos.ConvertirADouble(valX));
+                            double xConvertido = metodos.ConvertirADouble(valX);
+
+                            // 🚀 Validación Anti-División por cero (X repetidas)
+                            if (!xVerificador.Add(xConvertido))
+                            {
+                                MessageBox.Show($"El valor de X = {xConvertido} está repetido en la tabla.\n\nEn la interpolación matemática estricta, una función no puede tener dos puntos con la misma coordenada X, ya que causaría una división por cero al calcular la pendiente.\n\nPor favor, corrige los datos.", "Violación de Función Matemática", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+                            listX.Add(xConvertido);
                             listY.Add(metodos.ConvertirADouble(valY));
                         }
                     }
@@ -52,7 +63,7 @@ namespace Métodos_Numéricos
                     return;
                 }
 
-                // 2. 🚀 ESTIMACIÓN OPCIONAL: Ya no obligamos al usuario a llenarlo
+                // 2. 🚀 ESTIMACIÓN OPCIONAL
                 double? xEval = null;
                 if (!string.IsNullOrWhiteSpace(txtXEvaluar.Text))
                 {
@@ -63,7 +74,7 @@ namespace Métodos_Numéricos
                 int gradoReal;
                 double? yPredicho;
 
-                // 3. 🚀 ARRANCAR MOTOR MATEMÁTICO (Fijate cómo atrapamos las variables 'out')
+                // 3. 🚀 ARRANCAR MOTOR MATEMÁTICO
                 metodos.NewtonDiferenciasDivididasPasoAPaso(listX.ToArray(), listY.ToArray(), xEval, dgvMatrizDiferencias, out ecuacion, out gradoReal, out yPredicho);
 
                 // 4. 🚀 CONSTRUIR LA TABLA DE RESULTADOS FINALES MANUALMENTE
